@@ -1,4 +1,6 @@
 import UIKit
+import CoreLocation
+import Mapbox
 import MapboxCoreNavigation
 import MapboxDirections
 import AVFoundation

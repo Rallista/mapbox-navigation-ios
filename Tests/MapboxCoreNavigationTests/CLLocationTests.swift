@@ -1,8 +1,7 @@
 import XCTest
 import CoreLocation
 @testable import MapboxCoreNavigation
-@testable import MapboxNavigationNative
-
+@testable 
 class CLLocationTests: XCTestCase {
     func testFixLocationToCLLocation() {
         let coordinate = CLLocationCoordinate2D(latitude: 0, longitude: 1)

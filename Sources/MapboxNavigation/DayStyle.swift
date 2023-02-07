@@ -1,4 +1,5 @@
-import Foundation
+import UIKit
+import Mapbox
 
 extension UIColor {
     class var defaultRouteCasing: UIColor { get { return .defaultTintStroke } }

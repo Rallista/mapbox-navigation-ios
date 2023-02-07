@@ -1,7 +1,6 @@
 import XCTest
 import MapboxDirections
 import Turf
-import MapboxMobileEvents
 import os.log
 #if !SWIFT_PACKAGE
 @testable import TestHelper

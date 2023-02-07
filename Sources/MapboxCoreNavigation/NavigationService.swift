@@ -1,8 +1,7 @@
 import UIKit
 import CoreLocation
 import MapboxDirections
-import MapboxAccounts
-
+import MaplibrePlayground
 
 public enum SimulationIntent: Int{
     case manual, poorGPS

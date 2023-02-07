@@ -1,5 +1,7 @@
 import UIKit
+import CoreLocation
 import MapboxDirections
+import MaplibrePlayground
 
 /// :nodoc:
 public class InstructionsCardCell: UICollectionViewCell {

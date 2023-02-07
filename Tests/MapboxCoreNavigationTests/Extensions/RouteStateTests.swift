@@ -1,6 +1,5 @@
 import XCTest
-@testable import MapboxNavigationNative
-@testable import MapboxCoreNavigation
+@testable @testable import MapboxCoreNavigation
 
 class RouteStateTests: XCTestCase {
     func testDescriptionPropertyReturnsExpectedValue() {

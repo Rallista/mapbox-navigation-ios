@@ -1,6 +1,6 @@
 import Foundation
+import MaplibrePlayground
 import MapboxDirections
-import MapboxNavigationNative
 
 /** :nodoc:
  A closure to call when the `NavigationDirections` router has been configured completely.
@@ -120,7 +120,7 @@ public class NavigationDirections: Directions {
                                           onDiskTileCache: nil,
                                           mapMatchingSpatialCache: nil,
                                           threadsCount: nil,
-                                          endpointConfig: nil)
+                                          endpointConfig: .init(credentials: .init(), tilesVersion: nil, minimumDaysToPersistVersion: nil))
             
             let settingsProfile = SettingsProfile(application: ProfileApplication.kMobile, platform: ProfilePlatform.KIOS)
             self.navigator = Navigator(profile: settingsProfile, config: NavigatorConfig() , customConfig: "", tilesConfig: tilesConfig)

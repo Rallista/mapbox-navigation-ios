@@ -1,7 +1,6 @@
-import MapboxNavigationNative
 import CoreLocation
 import MapboxDirections
-import MapboxAccounts
+import MaplibrePlayground
 
 /**
  An object that notifies its delegate when the user’s location changes, minimizing the noise that normally accompanies location updates from a `CLLocationManager` object.
@@ -197,6 +196,13 @@ extension TileEndpointConfiguration {
             preconditionFailure("No access token specified in Info.plist")
         }
         let skuTokenProvider = SkuTokenProvider(with: credentials)
-        self.init(host: host, version: tilesVersion ?? "", token: accessToken, userAgent: URLSession.userAgent, navigatorVersion: "", skuTokenSource: skuTokenProvider, minDiffInDaysToConsiderServerVersion: minimumDaysToPersistVersion as NSNumber?, disableCleanOlderLocalVersions: !removesOldLocalVersions)
+        self.init(host: host,
+                  version: tilesVersion ?? "",
+                  token: accessToken,
+                  userAgent: URLSession.userAgent,
+                  navigatorVersion: "",
+                  skuTokenSource: skuTokenProvider,
+                  minDiffInDaysToConsiderServerVersion: minimumDaysToPersistVersion as NSNumber?,
+                  disableCleanOlderLocalVersions: !removesOldLocalVersions)
     }
 }

@@ -1,7 +1,6 @@
 import XCTest
 import MapboxCoreNavigation
 import MapboxDirections
-import MapboxMobileEvents
 @testable import TestHelper
 @testable import MapboxNavigation
 

@@ -1,6 +1,6 @@
 import CoreLocation
+import MaplibrePlayground
 import MapboxDirections
-import MapboxNavigationNative
 import Turf
 
 extension CLLocation {

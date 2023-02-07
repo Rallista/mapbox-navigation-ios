@@ -1,8 +1,7 @@
-import Foundation
+import UIKit
 import AVFoundation
 import MapboxDirections
 import MapboxCoreNavigation
-import MapboxSpeech
 
 extension NSAttributedString {
     public func pronounced(_ pronunciation: String) -> NSAttributedString {

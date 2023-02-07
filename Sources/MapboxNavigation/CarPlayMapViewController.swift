@@ -1,5 +1,6 @@
 import Foundation
 import CarPlay
+import Mapbox
 
 /**
  `CarPlayMapViewController` is responsible for administering the Mapbox map, the interface styles and the map template buttons to display on CarPlay.
