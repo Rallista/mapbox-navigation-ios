@@ -63,6 +63,10 @@ public class MapboxNavigationNative {
     }
 }
 
+public enum MBNavigationAccuracyAuthorization: Int {
+    case fullAccuracy = 0
+    case reducedAccuracy = 1
+}
 
 // MARK: Navigator
 

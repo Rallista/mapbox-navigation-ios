@@ -13,3 +13,7 @@ public class MBXAccounts {
         
     }
 }
+
+public class MGLAccountManager {
+    
+}
