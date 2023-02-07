@@ -3,6 +3,7 @@ import Mapbox
 import MapboxDirections
 import MapboxCoreNavigation
 import Turf
+import MaplibrePlayground
 
 let identifierNamespace = Bundle.mapboxNavigation.bundleIdentifier ?? ""
 

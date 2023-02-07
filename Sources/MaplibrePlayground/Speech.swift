@@ -7,6 +7,10 @@
 
 import Foundation
 
+public enum SpeechError {
+    case unknown(response: Int, underlying: Error?, code: Int?, message: String?)
+}
+
 public class SpeechOptions {
     public var locale: Locale = .current
     
@@ -20,7 +24,7 @@ public class SpeechSynthesizer {
         
     }
     
-    public func audioData(with options: SpeechOptions, completion: (Data?, Error?) -> Void) -> URLSessionDataTask {
+    public func audioData(with options: SpeechOptions, completion: (Data?, SpeechError?) -> Void) -> URLSessionDataTask {
         return .init()
     }
 }
