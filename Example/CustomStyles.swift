@@ -1,5 +1,6 @@
 import Foundation
 import MapboxNavigation
+import MaplibrePlayground
 
 // MARK: CustomDayStyle
 
@@ -9,7 +10,7 @@ import MapboxNavigation
 class CustomDayStyle: DayStyle {
     required init() {
         super.init()
-        mapStyleURL = URL(string: "mapbox://styles/mapbox/satellite-streets-v9")!
+        mapStyleURL = RallistaMapboxDataSource.dayStyleUrl
         previewMapStyleURL = mapStyleURL
         styleType = .day
     }
@@ -24,7 +25,7 @@ class CustomDayStyle: DayStyle {
 class CustomNightStyle: NightStyle {
     required init() {
         super.init()
-        mapStyleURL = URL(string: "mapbox://styles/mapbox/satellite-streets-v9")!
+        mapStyleURL = RallistaMapboxDataSource.dayStyleUrl
         previewMapStyleURL = mapStyleURL
         styleType = .night
     }

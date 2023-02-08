@@ -1644,7 +1644,7 @@ extension NavigationMapView {
         let buildingsSource = style?.source(withIdentifier: SourceIdentifier.buildingExtrusion)
         if buildingsSource == nil {
             let buildingsSource = MGLVectorTileSource(identifier: SourceIdentifier.buildingExtrusion,
-                                                      configurationURL: URL(string: "mapbox://mapbox.mapbox-streets-v8")!)
+                                                      configurationURL: RallistaMapboxDataSource.vectorTileUrl)
             style?.addSource(buildingsSource)
             
             return buildingsSource
