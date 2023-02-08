@@ -19,6 +19,11 @@ let package = Package(
             targets: [
                 "MapboxNavigation",
             ]),
+        .library(
+            name: "MaplibrePlayground",
+            targets: [
+                "MaplibrePlayground"
+            ])
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
@@ -49,7 +54,9 @@ let package = Package(
             exclude: ["Info.plist"]),
         .target(
             name: "MaplibrePlayground",
-            dependencies: []),
+            dependencies: [
+                "MapboxDirections"
+            ]),
         .testTarget(
             name: "MapboxCoreNavigationTests",
             dependencies: [
