@@ -6,9 +6,15 @@
 //
 
 import Foundation
+import MapboxDirections
 
-public enum SpeechError {
+public enum SpeechError: Error {
+    
     case unknown(response: Int, underlying: Error?, code: Int?, message: String?)
+    
+    case apiError(instruction: SpokenInstruction, options: SpeechOptions, underlying: Error?)
+    
+    case noData(instruction: SpokenInstruction, options: SpeechOptions)
 }
 
 public class SpeechOptions {
@@ -24,6 +30,7 @@ public class SpeechSynthesizer {
         
     }
     
+    @discardableResult
     public func audioData(with options: SpeechOptions, completion: (Data?, SpeechError?) -> Void) -> URLSessionDataTask {
         return .init()
     }

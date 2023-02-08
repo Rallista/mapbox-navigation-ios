@@ -323,14 +323,15 @@ open class NavigationMapView: MGLMapView, UIGestureRecognizerDelegate {
         }
     }
     
-    open override func mapViewDidFinishRenderingFrameFullyRendered(_ fullyRendered: Bool) {
-        super.mapViewDidFinishRenderingFrameFullyRendered(fullyRendered)
-        
-        guard shouldPositionCourseViewFrameByFrame else { return }
-        guard let location = userLocationForCourseTracking else { return }
-        
-        userCourseView.center = convert(location.coordinate, toPointTo: self)
-    }
+    // TODO: determine why this override is not available:
+//    open override func mapViewDidFinishRenderingFrameFullyRendered(_ fullyRendered: Bool) {
+//        super.mapViewDidFinishRenderingFrameFullyRendered(fullyRendered)
+//
+//        guard shouldPositionCourseViewFrameByFrame else { return }
+//        guard let location = userLocationForCourseTracking else { return }
+//
+//        userCourseView.center = convert(location.coordinate, toPointTo: self)
+//    }
     
     /**
      Updates the map view’s preferred frames per second to the appropriate value for the current route progress.

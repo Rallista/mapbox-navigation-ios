@@ -16,4 +16,6 @@ public class MBXAccounts {
 
 public class MGLAccountManager {
     
+    public static var accessToken: String? = nil
+    
 }

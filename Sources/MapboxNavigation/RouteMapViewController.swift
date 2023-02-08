@@ -3,6 +3,7 @@ import Mapbox
 import MapboxDirections
 import MapboxCoreNavigation
 import Turf
+import MaplibrePlayground
 
 class ArrowFillPolyline: MGLPolylineFeature {}
 class ArrowStrokePolyline: ArrowFillPolyline {}
