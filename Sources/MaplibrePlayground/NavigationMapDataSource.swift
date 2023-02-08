@@ -12,4 +12,3 @@ public protocol NavigationMapDataSource {
     static var nightStyleUrl: URL { get }
     static var vectorTileUrl: URL { get }
 }
-
