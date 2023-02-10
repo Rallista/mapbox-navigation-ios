@@ -1,5 +1,6 @@
-import Foundation
-import MapboxMobileEvents
+import UIKit
+import MaplibrePlayground
+import CoreLocation
 import MapboxDirections
 
 let NavigationEventTypeRouteRetrieval = "mobile.performance_trace"

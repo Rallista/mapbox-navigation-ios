@@ -1,5 +1,5 @@
 import Foundation
-import MapboxNavigationNative
+import MaplibrePlayground
 
 /// :nodoc:
 extension RouteState: CustomStringConvertible {

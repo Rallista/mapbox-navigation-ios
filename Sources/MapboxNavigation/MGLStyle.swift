@@ -1,6 +1,7 @@
 import Foundation
 import Mapbox
 import Turf
+import MaplibrePlayground
 
 extension MGLStyle {
     // The Mapbox China Day Style URL.

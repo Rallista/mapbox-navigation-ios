@@ -1,3 +1,6 @@
+import UIKit
+import Mapbox
+
 /**
  `NightStyle` is the default night style for Mapbox Navigation SDK. Only will be applied when necessary and if `automaticallyAdjustStyleForSunPosition`.
  */

@@ -1,7 +1,6 @@
 import AVFoundation
 import MapboxDirections
 import MapboxCoreNavigation
-import MapboxSpeech
 
 /// `SpeechSynthesizing`implementation, aggregating other implementations, to allow 'fallback' mechanism.
 /// Can be initialized with array of synthesizers which will be called in order of appearance, until one of them is capable to vocalize current `SpokenInstruction`

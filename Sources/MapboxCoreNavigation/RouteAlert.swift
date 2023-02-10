@@ -1,7 +1,7 @@
 import Foundation
 import CoreLocation
-import MapboxNavigationNative
 import MapboxDirections
+import MaplibrePlayground
 
 /**
  `RouteAlert` encapsulates information about various incoming events. Common attributes like location, distance to the event, length and other is provided for each POI, while specific meta data is supplied via `alert` property.

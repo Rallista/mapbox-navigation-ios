@@ -1,6 +1,6 @@
 
 import Foundation
-import MapboxNavigationNative
+import MaplibrePlayground
 
 /**
  `Tunnel` is used for naming incoming tunnels, together with route alerts.

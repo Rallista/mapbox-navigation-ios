@@ -1,4 +1,6 @@
 import Foundation
+import CoreLocation
+import Mapbox
 import MapboxDirections
 import MapboxCoreNavigation
 

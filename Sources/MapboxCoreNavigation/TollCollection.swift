@@ -1,7 +1,7 @@
 
 import Foundation
-import MapboxNavigationNative
 import MapboxDirections
+import MaplibrePlayground
 
 extension TollCollection {
     init(_ tollInfo: RouteAlertTollCollectionInfo) {

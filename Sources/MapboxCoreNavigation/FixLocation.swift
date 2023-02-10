@@ -1,6 +1,6 @@
 import CoreLocation
+import MaplibrePlayground
 import Foundation
-import MapboxNavigationNative
 
 extension FixLocation {
     convenience init(_ location: CLLocation) {

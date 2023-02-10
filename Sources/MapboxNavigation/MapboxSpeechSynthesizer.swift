@@ -1,7 +1,7 @@
 import AVFoundation
 import MapboxCoreNavigation
 import MapboxDirections
-import MapboxSpeech
+import MaplibrePlayground
 
 /**
  `SpeechSynthesizing` implementation, using `MapboxSpeech` framework. Uses pre-caching mechanism for upcoming instructions.

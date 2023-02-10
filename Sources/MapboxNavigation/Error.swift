@@ -1,8 +1,8 @@
 import Foundation
 import MapboxCoreNavigation
 import MapboxDirections
-import MapboxSpeech
 import AVKit
+import MaplibrePlayground
 
 /**
  The speech-related action that failed.

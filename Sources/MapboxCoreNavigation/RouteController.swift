@@ -1,8 +1,6 @@
-import Foundation
+import UIKit
+import MaplibrePlayground
 import CoreLocation
-import MapboxCommon
-import MapboxNavigationNative
-import MapboxMobileEvents
 import MapboxDirections
 import Polyline
 import Turf

@@ -1,3 +1,5 @@
+import CoreLocation
+import Mapbox
 import MapboxDirections
 import MapboxCoreNavigation
 import Turf

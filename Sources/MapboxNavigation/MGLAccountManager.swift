@@ -1,5 +1,6 @@
 import Foundation
 import Mapbox
+import MaplibrePlayground
 
 extension MGLAccountManager {
     // Mapbox China base API URL

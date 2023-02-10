@@ -3,6 +3,7 @@ import Mapbox
 import MapboxDirections
 import MapboxCoreNavigation
 import Turf
+import MaplibrePlayground
 
 let identifierNamespace = Bundle.mapboxNavigation.bundleIdentifier ?? ""
 
@@ -322,14 +323,15 @@ open class NavigationMapView: MGLMapView, UIGestureRecognizerDelegate {
         }
     }
     
-    open override func mapViewDidFinishRenderingFrameFullyRendered(_ fullyRendered: Bool) {
-        super.mapViewDidFinishRenderingFrameFullyRendered(fullyRendered)
-        
-        guard shouldPositionCourseViewFrameByFrame else { return }
-        guard let location = userLocationForCourseTracking else { return }
-        
-        userCourseView.center = convert(location.coordinate, toPointTo: self)
-    }
+    // TODO: determine why this override is not available:
+//    open override func mapViewDidFinishRenderingFrameFullyRendered(_ fullyRendered: Bool) {
+//        super.mapViewDidFinishRenderingFrameFullyRendered(fullyRendered)
+//
+//        guard shouldPositionCourseViewFrameByFrame else { return }
+//        guard let location = userLocationForCourseTracking else { return }
+//
+//        userCourseView.center = convert(location.coordinate, toPointTo: self)
+//    }
     
     /**
      Updates the map view’s preferred frames per second to the appropriate value for the current route progress.
@@ -1642,7 +1644,7 @@ extension NavigationMapView {
         let buildingsSource = style?.source(withIdentifier: SourceIdentifier.buildingExtrusion)
         if buildingsSource == nil {
             let buildingsSource = MGLVectorTileSource(identifier: SourceIdentifier.buildingExtrusion,
-                                                      configurationURL: URL(string: "mapbox://mapbox.mapbox-streets-v8")!)
+                                                      configurationURL: RallistaMapboxDataSource.vectorTileUrl)
             style?.addSource(buildingsSource)
             
             return buildingsSource

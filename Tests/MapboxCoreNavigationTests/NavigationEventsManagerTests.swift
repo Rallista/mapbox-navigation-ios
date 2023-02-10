@@ -1,5 +1,4 @@
 import XCTest
-import MapboxMobileEvents
 #if !SWIFT_PACKAGE
 @testable import TestHelper
 @testable import MapboxCoreNavigation
