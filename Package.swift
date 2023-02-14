@@ -69,7 +69,11 @@ let package = Package(
             path: "Support/TestHelper",
             resources: [
                 .process("Fixtures"),
-                .process("tiles")
+                .process("tiles"),
+                .process("GGPark-to-BernalHeights.route"),
+                .process("li.tar"),
+                .process("turn_left.data"),
+                .process("UnionSquare-to-GGPark.route"),
             ]),
         .target(
             name: "MaplibreTestPlayground",
@@ -80,23 +84,25 @@ let package = Package(
             path: "Support/MaplibreTestPlayground"),
         
         // MARK: Test Targets
-//        .testTarget(
-//            name: "MapboxNavigationTests",
-//            dependencies: [
-//                "TestHelper",
-//                .product(name: "Quick", package: "Quick"),
-//                .product(name: "Nimble", package: "Nimble"),
-//            ],
-//            exclude: ["Info.plist"],
-//            resources: [
-//                .process("Fixtures")
-//            ]),
+
         
         .testTarget(
             name: "MapboxCoreNavigationTests",
             dependencies: [
                 "MapboxCoreNavigation",
                 "MaplibreTestPlayground",
+                "TestHelper",
+                .product(name: "Quick", package: "Quick"),
+                .product(name: "Nimble", package: "Nimble"),
+            ],
+            exclude: ["Info.plist"],
+            resources: [
+                .process("Fixtures")
+            ]),
+        .testTarget(
+            name: "MapboxNavigationTests",
+            dependencies: [
+                "MapboxNavigation",
                 "TestHelper",
                 .product(name: "Quick", package: "Quick"),
                 .product(name: "Nimble", package: "Nimble"),

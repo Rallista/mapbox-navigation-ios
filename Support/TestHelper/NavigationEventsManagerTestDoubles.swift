@@ -76,8 +76,12 @@ class MMEEventsManagerSpy: MMEEventsManager {
     var enqueuedEvents = [FakeTelemetryEvent]()
     var flushedEvents = [FakeTelemetryEvent]()
 
+    public override init() {
+        super.init()
+    }
+    
     public static func testableInstance() -> MMEEventsManagerSpy {
-        return MMEEventsManager() as! MMEEventsManagerSpy
+        return MMEEventsManagerSpy()
     }
     
     public func reset() {

@@ -1,6 +1,7 @@
 import Foundation
 import CoreLocation
 import MapboxDirections
+import MaplibrePlayground
 
 /**
  A router data source, also known as a location manager, supplies location data to a `Router` instance. For example, a `MapboxNavigationService` supplies location data to a `RouteController` or `LegacyRouteController`.
@@ -41,7 +42,7 @@ public protocol Router: CLLocationManagerDelegate {
      - parameter directions: The Directions object that created `route`.
      - parameter source: The data source for the RouteController.
      */
-    init(along route: Route, routeIndex: Int, options: RouteOptions, directions: Directions, dataSource source: RouterDataSource)
+    init(along route: Route, routeIndex: Int, options: RouteOptions, directions: DirectionsProvider, dataSource source: RouterDataSource)
     
     /**
      Details about the user’s progress along the current route, leg, and step.
@@ -112,7 +113,7 @@ protocol InternalRouter: AnyObject {
     
     var isRefreshing: Bool { get set }
     
-    var directions: Directions { get }
+    var directions: DirectionsProvider { get }
     
     var routeProgress: RouteProgress { get set }
 }

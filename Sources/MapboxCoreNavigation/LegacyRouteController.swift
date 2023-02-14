@@ -3,13 +3,13 @@ import CoreLocation
 import MapboxDirections
 import Polyline
 import Turf
+import MaplibrePlayground
 
 protocol RouteControllerDataSource: AnyObject {
     var location: CLLocation? { get }
     var locationProvider: NavigationLocationManager.Type { get }
 }
 
-@available(*, deprecated, renamed: "RouteController")
 open class LegacyRouteController: NSObject, Router, InternalRouter, CLLocationManagerDelegate {
     
     public weak var delegate: RouterDelegate?
@@ -19,7 +19,7 @@ open class LegacyRouteController: NSObject, Router, InternalRouter, CLLocationMa
     /**
      The Directions object used to create the route.
      */
-    public var directions: Directions
+    public var directions: DirectionsProvider
 
     /**
      The threshold used when we determine when the user has arrived at the waypoint.
@@ -86,7 +86,7 @@ open class LegacyRouteController: NSObject, Router, InternalRouter, CLLocationMa
 
     var userSnapToStepDistanceFromManeuver: CLLocationDistance?
     
-    required public init(along route: Route, routeIndex: Int, options: RouteOptions, directions: Directions = Directions.shared, dataSource source: RouterDataSource) {
+    required public init(along route: Route, routeIndex: Int, options: RouteOptions, directions: DirectionsProvider, dataSource source: RouterDataSource) {
         self.directions = directions
         self._routeProgress = RouteProgress(route: route, routeIndex: routeIndex, options: options)
         self.dataSource = source
