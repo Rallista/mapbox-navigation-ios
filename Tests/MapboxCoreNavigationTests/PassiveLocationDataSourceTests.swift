@@ -1,5 +1,6 @@
 import Foundation
-#if !SWIFT_PACKAGE
+import CoreLocation
+//#if !SWIFT_PACKAGE
 import TestHelper
 import XCTest
 @testable import MapboxCoreNavigation
@@ -109,4 +110,4 @@ private extension CLLocation {
         )
     }
 }
-#endif
+//#endif

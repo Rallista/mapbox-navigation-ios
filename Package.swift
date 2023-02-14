@@ -1,4 +1,4 @@
-// swift-tools-version:5.3
+// swift-tools-version:5.7
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -6,7 +6,7 @@ import PackageDescription
 let package = Package(
     name: "MapboxNavigation",
     defaultLocalization: "en",
-    platforms: [.iOS(.v10)],
+    platforms: [.iOS(.v11)],
     products: [
         // Products define the executables and libraries a package produces, and make them visible to other packages.
         .library(
@@ -27,46 +27,83 @@ let package = Package(
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
-        .package(name: "Mapbox", url: "https://github.com/maplibre/maplibre-gl-native-distribution.git", from: "5.13.0"),
-        .package(name: "MapboxDirections", url: "https://github.com/mapbox/mapbox-directions-swift.git", from: "1.2.0"),
-        .package(name: "Solar", url: "https://github.com/ceeK/Solar.git", from: "3.0.0"),
-        .package(name: "Quick", url: "https://github.com/Quick/Quick.git", from: "2.0.0"),
-        .package(name: "Nimble", url: "https://github.com/Quick/Nimble.git", from: "8.0.0"),
+        .package(url: "https://github.com/maplibre/maplibre-gl-native-distribution.git", from: "5.13.0"),
+        .package(url: "https://github.com/mapbox/mapbox-directions-swift.git", from: "1.2.0"),
+        .package(url: "https://github.com/ceeK/Solar.git", from: "3.0.0"),
+        .package(url: "https://github.com/Quick/Quick.git", from: "2.0.0"),
+        .package(url: "https://github.com/Quick/Nimble.git", from: "8.0.0"),
     ],
     targets: [
-        // Targets are the basic building blocks of a package. A target can define a module or a test suite.
-        // Targets can depend on other targets in this package, and on products in packages this package depends on.
+        // MARK: Library Targets
         .target(
             name: "MapboxNavigation",
             dependencies: [
                 "MapboxCoreNavigation",
-                "Mapbox",
-                "MapboxDirections",
-                "Solar"
+                .product(name: "Mapbox", package: "maplibre-gl-native-distribution"),
+                .product(name: "MapboxDirections", package: "mapbox-directions-swift"),
+                .product(name: "Solar", package: "Solar"),
             ],
             exclude: ["Info.plist"]),
         .target(
             name: "MapboxCoreNavigation",
             dependencies: [
-                "MapboxDirections",
+                .product(name: "MapboxDirections", package: "mapbox-directions-swift"),
                 "MaplibrePlayground"
             ],
             exclude: ["Info.plist"]),
+        
+        // MARK: Support Targets
         .target(
             name: "MaplibrePlayground",
             dependencies: [
-                "MapboxDirections"
+                .product(name: "MapboxDirections", package: "mapbox-directions-swift")
+            ],
+            path: "Support/MaplibrePlayground"),
+        .target(
+            name: "TestHelper",
+            dependencies: [
+                "MapboxCoreNavigation",
+                "MapboxNavigation",
+                "MaplibreTestPlayground",
+            ],
+            path: "Support/TestHelper",
+            resources: [
+                .process("Fixtures"),
+                .process("tiles")
             ]),
+        .target(
+            name: "MaplibreTestPlayground",
+            dependencies: [
+                .product(name: "Quick", package: "Quick"),
+                .product(name: "Nimble", package: "Nimble"),
+            ],
+            path: "Support/MaplibreTestPlayground"),
+        
+        // MARK: Test Targets
+//        .testTarget(
+//            name: "MapboxNavigationTests",
+//            dependencies: [
+//                "TestHelper",
+//                .product(name: "Quick", package: "Quick"),
+//                .product(name: "Nimble", package: "Nimble"),
+//            ],
+//            exclude: ["Info.plist"],
+//            resources: [
+//                .process("Fixtures")
+//            ]),
+        
         .testTarget(
             name: "MapboxCoreNavigationTests",
             dependencies: [
                 "MapboxCoreNavigation",
-                "Quick",
-                "Nimble",
+                "MaplibreTestPlayground",
+                "TestHelper",
+                .product(name: "Quick", package: "Quick"),
+                .product(name: "Nimble", package: "Nimble"),
             ],
             exclude: ["Info.plist"],
             resources: [
-                .process("Fixtures"),
+                .process("Fixtures")
             ]),
     ]
 )

@@ -2,24 +2,6 @@
   "object": {
     "pins": [
       {
-        "package": "MapboxAccounts",
-        "repositoryURL": "https://github.com/mapbox/mapbox-accounts-ios.git",
-        "state": {
-          "branch": null,
-          "revision": "cd438c7a5d41c520379a09d12340124c980a7225",
-          "version": "2.3.1"
-        }
-      },
-      {
-        "package": "MapboxCommon",
-        "repositoryURL": "https://github.com/mapbox/mapbox-common-ios.git",
-        "state": {
-          "branch": null,
-          "revision": "3f2a8cacc8d7f639d198253b7d53a45c08a71aca",
-          "version": "9.2.0"
-        }
-      },
-      {
         "package": "MapboxDirections",
         "repositoryURL": "https://github.com/mapbox/mapbox-directions-swift.git",
         "state": {
@@ -29,21 +11,12 @@
         }
       },
       {
-        "package": "MapboxMobileEvents",
-        "repositoryURL": "https://github.com/mapbox/mapbox-events-ios.git",
+        "package": "MapLibre GL Native",
+        "repositoryURL": "https://github.com/maplibre/maplibre-gl-native-distribution.git",
         "state": {
           "branch": null,
-          "revision": "6e4aa13817d59038bf762032e938fe0f7b95b589",
-          "version": "0.10.8"
-        }
-      },
-      {
-        "package": "MapboxNavigationNative",
-        "repositoryURL": "https://github.com/mapbox/mapbox-navigation-native-ios.git",
-        "state": {
-          "branch": null,
-          "revision": "5e37ae2ebe0d49a78ed064813791e56a81926c1e",
-          "version": "31.0.1"
+          "revision": "ffda61e298c1490d4860d5184e80d618aaadc089",
+          "version": "5.13.0"
         }
       },
       {
@@ -71,6 +44,15 @@
           "branch": null,
           "revision": "09b3becb37cb2163919a3842a4c5fa6ec7130792",
           "version": "2.2.1"
+        }
+      },
+      {
+        "package": "Solar",
+        "repositoryURL": "https://github.com/ceeK/Solar.git",
+        "state": {
+          "branch": null,
+          "revision": "c2b96f2d5fb7f835b91cefac5e83101f54643901",
+          "version": "3.0.1"
         }
       },
       {

@@ -1,4 +1,5 @@
 import Foundation
+import MaplibrePlayground
 @testable import MapboxCoreNavigation
 import MapboxDirections
 
@@ -75,6 +76,10 @@ class MMEEventsManagerSpy: MMEEventsManager {
     var enqueuedEvents = [FakeTelemetryEvent]()
     var flushedEvents = [FakeTelemetryEvent]()
 
+    public static func testableInstance() -> MMEEventsManagerSpy {
+        return MMEEventsManager() as! MMEEventsManagerSpy
+    }
+    
     public func reset() {
         enqueuedEvents.removeAll()
         flushedEvents.removeAll()

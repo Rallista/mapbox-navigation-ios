@@ -1643,11 +1643,7 @@ extension NavigationMapView {
     private func addBuildingsSource() -> MGLSource? {
         let buildingsSource = style?.source(withIdentifier: SourceIdentifier.buildingExtrusion)
         if buildingsSource == nil {
-            let buildingsSource = MGLVectorTileSource(identifier: SourceIdentifier.buildingExtrusion,
-                                                      configurationURL: RallistaMapboxDataSource.vectorTileUrl)
-            style?.addSource(buildingsSource)
-            
-            return buildingsSource
+            fatalError("NavigationMapView cannot add buildings without a buildingExtrusion style layer")
         }
         
         return buildingsSource

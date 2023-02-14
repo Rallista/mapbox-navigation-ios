@@ -1,8 +1,11 @@
 import XCTest
+import CoreLocation
 import MapboxDirections
 import Turf
 import os.log
-#if !SWIFT_PACKAGE
+//#if !SWIFT_PACKAGE
+import MaplibrePlayground
+import MaplibreTestPlayground
 @testable import TestHelper
 @testable import MapboxCoreNavigation
 
@@ -626,4 +629,4 @@ class NavigationServiceTests: XCTestCase {
 }
 
 class EmptyNavigationServiceDelegate: NavigationServiceDelegate {}
-#endif
+//#endif

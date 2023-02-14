@@ -1,6 +1,7 @@
 import XCTest
+import CoreLocation
 import MapboxDirections
-#if !SWIFT_PACKAGE
+//#if !SWIFT_PACKAGE
 import TestHelper
 @testable import MapboxCoreNavigation
 
@@ -129,4 +130,4 @@ class OfflineRoutingTests: XCTestCase {
         wait(for: [configureExpectation], timeout: 60)
     }
 }
-#endif
+//#endif

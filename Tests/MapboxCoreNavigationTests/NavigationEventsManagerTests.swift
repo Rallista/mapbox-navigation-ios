@@ -1,17 +1,20 @@
 import XCTest
-#if !SWIFT_PACKAGE
+import CoreLocation
+//#if !SWIFT_PACKAGE
+import MaplibrePlayground
 @testable import TestHelper
 @testable import MapboxCoreNavigation
 
 class NavigationEventsManagerTests: XCTestCase {
-    func testMobileEventsManagerIsInitializedImmediately() {
-        let mobileEventsManagerSpy = MMEEventsManagerSpy()
-        let _ = NavigationEventsManager(dataSource: nil, accessToken: "example token", mobileEventsManager: mobileEventsManagerSpy)
-
-        let config = UserDefaults.mme_configuration()
-        let token = config.mme_accessToken
-        XCTAssertEqual(token, "example token")
-    }
+    // TODO: Remove or replace
+//    func testMobileEventsManagerIsInitializedImmediately() {
+//        let mobileEventsManagerSpy = MMEEventsManagerSpy()
+//        let _ = NavigationEventsManager(dataSource: nil, accessToken: "example token", mobileEventsManager: mobileEventsManagerSpy)
+//
+//        let config = UserDefaults.mme_configuration()
+//        let token = config.mme_accessToken
+//        XCTAssertEqual(token, "example token")
+//    }
     
     func skipped_testDepartRerouteArrive() {
         
@@ -94,4 +97,4 @@ class NavigationEventsManagerTests: XCTestCase {
         let _ = NavigationEventDetails(dataSource: dataSource, session: sessionState, defaultInterface: false)
     }
 }
-#endif
+//#endif
