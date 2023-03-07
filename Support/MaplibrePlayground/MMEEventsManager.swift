@@ -25,8 +25,11 @@ public let MMEEventTypeNavigationFeedback = "MMEEventTypeNavigationFeedback"
 
 public let SecondsBeforeCollectionAfterFeedbackEvent: Double = 1.0
 
+// Test Events
+public let MMEEventTypeAppUserTurnstile = "MMEEventTypeAppUserTurnstile"
 
-public class MMEEventsManager {
+
+open class MMEEventsManager {
     
     private static let sharedInstance = MMEEventsManager()
     
@@ -36,25 +39,33 @@ public class MMEEventsManager {
     
     public static let unrated: Int = 1
     
-    public func initialize(withAccessToken: String,
-                           userAgentBase: String,
-                           hostSDKVersion: String) {
+    public init() {
         
     }
     
-    public func disableLocationMetrics() {
+    open func initialize(withAccessToken: String,
+                         userAgentBase: String,
+                         hostSDKVersion: String) {
         
     }
     
-    public func sendTurnstileEvent() {
+    open func disableLocationMetrics() {
         
     }
     
-    public func enqueueEvent(withName: String, attributes: [String: Any]) {
+    open func sendTurnstileEvent() {
         
     }
     
-    public func flush() {
+    open func enqueueEvent(withName: String, attributes: [String: Any]) {
+        
+    }
+    
+    open func enqueueEvent(withName: String) {
+        
+    }
+    
+    open func flush() {
         
     }
 }

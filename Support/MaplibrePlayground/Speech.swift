@@ -25,13 +25,16 @@ public class SpeechOptions {
     }
 }
 
-public class SpeechSynthesizer {
+open class SpeechSynthesizer {
+    
+    public typealias CompletionHandler = (Data?, SpeechError?) -> Void
+    
     public init(accessToken: String?, host: String?) {
         
     }
     
     @discardableResult
-    public func audioData(with options: SpeechOptions, completion: (Data?, SpeechError?) -> Void) -> URLSessionDataTask {
+    open func audioData(with options: SpeechOptions, completionHandler: @escaping SpeechSynthesizer.CompletionHandler) -> URLSessionDataTask {
         return .init()
     }
 }

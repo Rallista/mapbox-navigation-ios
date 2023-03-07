@@ -11,6 +11,7 @@ import Turf
  `RouteController` is responsible for the core navigation logic whereas
  `NavigationViewController` is responsible for displaying a default drop-in navigation UI.
  */
+@available(*, deprecated, renamed: "LegacyRouteController")
 open class RouteController: NSObject {
     public enum DefaultBehavior {
         public static let shouldRerouteFromLocation: Bool = true
@@ -139,7 +140,7 @@ open class RouteController: NSObject {
     /**
      The Directions object used to create the route.
      */
-    public var directions: Directions
+    public var directions: DirectionsProvider
     
     /**
      The idealized user location. Snapped to the route line, if applicable, otherwise raw.
@@ -149,7 +150,7 @@ open class RouteController: NSObject {
         return snappedLocation ?? rawLocation
     }
     
-    required public init(along route: Route, routeIndex: Int, options: RouteOptions, directions: Directions = Directions.shared, dataSource source: RouterDataSource) {
+    required public init(along route: Route, routeIndex: Int, options: RouteOptions, directions: DirectionsProvider, dataSource source: RouterDataSource) {
         self.directions = directions
         self._routeProgress = RouteProgress(route: route, routeIndex: routeIndex, options: options)
         self.dataSource = source

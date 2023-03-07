@@ -18,7 +18,7 @@ public class Fixture: NSObject {
     }
     
     public class func JSONFromFileNamed(name: String) -> Data {
-        guard let path = Bundle(for: Fixture.self).path(forResource: name, ofType: "json") else {
+        guard let path = Bundle.module.path(forResource: name, ofType: "json") else {
             preconditionFailure("Fixture \(name) not found.")
         }
         guard let data = NSData(contentsOfFile: path) as Data? else {
@@ -52,7 +52,7 @@ public class Fixture: NSObject {
     }
     
     public class func locations(from name: String) -> [CLLocation] {
-        guard let path = Bundle(for: Fixture.self).path(forResource: name, ofType: "json") else {
+        guard let path = Bundle.module.path(forResource: name, ofType: "json") else {
             assert(false, "Fixture \(name) not found.")
             return []
         }

@@ -20,4 +20,6 @@ Carthage/Checkouts
 
 Examples/Swift/Navigation_Example.mobileprovision
 
+.swiftpm/
+
 Sources/MaplibrePlayground/RallistaDataSource.swift

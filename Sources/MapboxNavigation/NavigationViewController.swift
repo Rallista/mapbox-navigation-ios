@@ -73,7 +73,7 @@ open class NavigationViewController: UIViewController, NavigationStatusPresenter
     /**
      An instance of `Directions` need for rerouting. See [Mapbox Directions](https://docs.mapbox.com/ios/api/directions/) for further information.
      */
-    public var directions: Directions {
+    public var directions: DirectionsProvider {
         return navigationService!.directions
     }
     
@@ -303,7 +303,7 @@ open class NavigationViewController: UIViewController, NavigationStatusPresenter
     required public init(for route: Route, routeIndex: Int, routeOptions: RouteOptions, navigationOptions: NavigationOptions? = nil) {
         super.init(nibName: nil, bundle: nil)
         
-        self.navigationService = navigationOptions?.navigationService ?? MapboxNavigationService(route: route, routeIndex: routeIndex, routeOptions: routeOptions)
+        self.navigationService = navigationOptions?.navigationService ?? MapboxNavigationService(route: route, routeIndex: routeIndex, routeOptions: routeOptions, directions: directions)
         self.navigationService.delegate = self
 
         let credentials = navigationService.directions.credentials

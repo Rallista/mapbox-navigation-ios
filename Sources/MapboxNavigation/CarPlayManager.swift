@@ -471,7 +471,7 @@ extension CarPlayManager: CPMapTemplateDelegate {
         
         let service = navigationService ??
             delegate?.carPlayManager(self, navigationServiceAlong: route, routeIndex: routeIndex, routeOptions: options, desiredSimulationMode: desiredSimulationMode) ??
-            MapboxNavigationService(route: route, routeIndex: routeIndex, routeOptions: options, simulating: desiredSimulationMode)
+        MapboxNavigationService(route: route, routeIndex: routeIndex, routeOptions: options, directions: directions, simulating: desiredSimulationMode)
         
         navigationService = service //store the service it was newly created/fetched
 

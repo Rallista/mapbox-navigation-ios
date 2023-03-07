@@ -1,8 +1,8 @@
 import Foundation
-import MapboxSpeech
 import AVKit
 import MapboxDirections
 import MapboxCoreNavigation
+import MaplibrePlayground
 @testable import MapboxNavigation
 
 /**
@@ -12,7 +12,7 @@ public class SpeechAPISpy: SpeechSynthesizer {
     public struct AudioDataCall {
         public static let sound = NSDataAsset(name: "reroute-sound", bundle: .mapboxNavigation)!
         
-        public let options: MapboxSpeech.SpeechOptions
+        public let options: SpeechOptions
         public let completion: SpeechSynthesizer.CompletionHandler
         
         func fulfill() {
@@ -22,7 +22,7 @@ public class SpeechAPISpy: SpeechSynthesizer {
 
     public var audioDataCalls: [AudioDataCall] = []
 
-    override public func audioData(with options: MapboxSpeech.SpeechOptions, completionHandler: @escaping MapboxSpeech.SpeechSynthesizer.CompletionHandler) -> URLSessionDataTask {
+    override public func audioData(with options: SpeechOptions, completionHandler: @escaping SpeechSynthesizer.CompletionHandler) -> URLSessionDataTask {
         let call = AudioDataCall(options: options, completion: completionHandler)
         audioDataCalls.append(call)
         return DummyURLSessionDataTask()
