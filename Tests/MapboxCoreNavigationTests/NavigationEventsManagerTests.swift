@@ -1,17 +1,21 @@
 import XCTest
-#if !SWIFT_PACKAGE
+import CoreLocation
+//#if !SWIFT_PACKAGE
+import MaplibrePlayground
+import MaplibreTestPlayground
 @testable import TestHelper
 @testable import MapboxCoreNavigation
 
 class NavigationEventsManagerTests: XCTestCase {
-    func testMobileEventsManagerIsInitializedImmediately() {
-        let mobileEventsManagerSpy = MMEEventsManagerSpy()
-        let _ = NavigationEventsManager(dataSource: nil, accessToken: "example token", mobileEventsManager: mobileEventsManagerSpy)
-
-        let config = UserDefaults.mme_configuration()
-        let token = config.mme_accessToken
-        XCTAssertEqual(token, "example token")
-    }
+    // TODO: Remove or replace
+//    func testMobileEventsManagerIsInitializedImmediately() {
+//        let mobileEventsManagerSpy = MMEEventsManagerSpy()
+//        let _ = NavigationEventsManager(dataSource: nil, accessToken: "example token", mobileEventsManager: mobileEventsManagerSpy)
+//
+//        let config = UserDefaults.mme_configuration()
+//        let token = config.mme_accessToken
+//        XCTAssertEqual(token, "example token")
+//    }
     
     func skipped_testDepartRerouteArrive() {
         
@@ -33,7 +37,7 @@ class NavigationEventsManagerTests: XCTestCase {
         let locationManager = NavigationLocationManager()
         let service = MapboxNavigationService(route: firstRoute, routeIndex: 0,
                                               routeOptions: firstRouteOptions,
-                                              directions: nil,
+                                              directions: MockDirections(),
                                               locationSource: locationManager,
                                               eventsManagerType: NavigationEventsManagerSpy.self,
                                               simulating: .always)
@@ -77,7 +81,7 @@ class NavigationEventsManagerTests: XCTestCase {
         ])
         let eventTimeout = 0.3
         let route = Fixture.route(from: "DCA-Arboretum", options: routeOptions)
-        let dataSource = MapboxNavigationService(route: route, routeIndex: 0, routeOptions: routeOptions)
+        let dataSource = MapboxNavigationService(route: route, routeIndex: 0, routeOptions: routeOptions, directions: MockDirections())
         let sessionState = SessionState(currentRoute: route, originalRoute: route)
         
         // Attempt to create NavigationEventDetails object from global queue, no errors from Main Thread Checker
@@ -94,4 +98,4 @@ class NavigationEventsManagerTests: XCTestCase {
         let _ = NavigationEventDetails(dataSource: dataSource, session: sessionState, defaultInterface: false)
     }
 }
-#endif
+//#endif

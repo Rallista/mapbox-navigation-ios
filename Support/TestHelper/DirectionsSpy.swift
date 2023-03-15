@@ -1,8 +1,9 @@
 import Foundation
 import MapboxDirections
+import MaplibreTestPlayground
 
-public class DirectionsSpy: Directions {
-    public var lastCalculateOptionsCompletion: RouteCompletionHandler?
+public class DirectionsSpy: MockDirections {
+    public var lastCalculateOptionsCompletion: Directions.RouteCompletionHandler?
     
     override public func calculate(_ options: MatchOptions, completionHandler: @escaping Directions.MatchCompletionHandler) -> URLSessionDataTask {
         assert(false, "Not ready to handle \(#function)")

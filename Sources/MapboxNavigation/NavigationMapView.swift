@@ -826,6 +826,40 @@ open class NavigationMapView: MGLMapView, UIGestureRecognizerDelegate {
         }
     }
     
+    public func showWaypoints(waypoints: [Waypoint], legIndex: Int = 0) {
+        guard let style = style else {
+            return
+        }
+        
+        if let destinationCoordinate = waypoints.last?.coordinate {
+            removeAnnotations(annotationsToRemove() ?? [])
+            let destination = NavigationAnnotation()
+            destination.coordinate = destinationCoordinate
+            addAnnotation(destination)
+        }
+        
+        let waypoints = Array(waypoints.dropLast())
+        let source = navigationMapViewDelegate?.navigationMapView(self, shapeFor: waypoints, legIndex: legIndex) ?? shape(for: waypoints, legIndex: legIndex)
+        
+        if let waypointSource = style.source(withIdentifier: SourceIdentifier.waypoint) as? MGLShapeSource {
+            waypointSource.shape = source
+        } else {
+            let sourceShape = MGLShapeSource(identifier: SourceIdentifier.waypoint, shape: source, options: sourceOptions)
+            style.addSource(sourceShape)
+            
+            let circles = navigationMapViewDelegate?.navigationMapView(self, waypointStyleLayerWithIdentifier: StyleLayerIdentifier.waypointCircle, source: sourceShape) ?? routeWaypointCircleStyleLayer(identifier: StyleLayerIdentifier.waypointCircle, source: sourceShape)
+            let symbols = navigationMapViewDelegate?.navigationMapView(self, waypointSymbolStyleLayerWithIdentifier: StyleLayerIdentifier.waypointSymbol, source: sourceShape) ?? routeWaypointSymbolStyleLayer(identifier: StyleLayerIdentifier.waypointSymbol, source: sourceShape)
+            
+            if let arrowLayer = style.layer(withIdentifier: StyleLayerIdentifier.arrowCasingSymbol) {
+                style.insertLayer(circles, above: arrowLayer)
+            } else {
+                style.addLayer(circles)
+            }
+            
+            style.insertLayer(symbols, above: circles)
+        }
+    }
+    
     func annotationsToRemove() -> [MGLAnnotation]? {
         return annotations?.filter { $0 is NavigationAnnotation }
     }
@@ -1643,11 +1677,7 @@ extension NavigationMapView {
     private func addBuildingsSource() -> MGLSource? {
         let buildingsSource = style?.source(withIdentifier: SourceIdentifier.buildingExtrusion)
         if buildingsSource == nil {
-            let buildingsSource = MGLVectorTileSource(identifier: SourceIdentifier.buildingExtrusion,
-                                                      configurationURL: RallistaMapboxDataSource.vectorTileUrl)
-            style?.addSource(buildingsSource)
-            
-            return buildingsSource
+            fatalError("NavigationMapView cannot add buildings without a buildingExtrusion style layer")
         }
         
         return buildingsSource

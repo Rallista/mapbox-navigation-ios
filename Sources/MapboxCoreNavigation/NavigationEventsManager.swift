@@ -82,8 +82,14 @@ open class NavigationEventsManager {
     public var delaysEventFlushing = true
 
     func start() {
+        // TODO: Fix if necessary. SPM doesn't allow top level Info.plist in sources.
+//        let sdkVersion = String(describing: Bundle.module.object(forInfoDictionaryKey: "CFBundleShortVersionString")!)
+        let sdkVersion = "0.0.0"
+        
         let userAgent = usesDefaultUserInterface ? "mapbox-navigation-ui-ios" : "mapbox-navigation-ios"
-        mobileEventsManager.initialize(withAccessToken: accessToken, userAgentBase: userAgent, hostSDKVersion: String(describing: Bundle.mapboxCoreNavigation.object(forInfoDictionaryKey: "CFBundleShortVersionString")!))
+        mobileEventsManager.initialize(withAccessToken: accessToken,
+                                       userAgentBase: userAgent,
+                                       hostSDKVersion: sdkVersion)
         mobileEventsManager.disableLocationMetrics()
         mobileEventsManager.sendTurnstileEvent()
     }

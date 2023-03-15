@@ -120,7 +120,7 @@ public class NavigationDirections: Directions {
                                           onDiskTileCache: nil,
                                           mapMatchingSpatialCache: nil,
                                           threadsCount: nil,
-                                          endpointConfig: .init(credentials: .init(), tilesVersion: nil, minimumDaysToPersistVersion: nil))
+                                          endpointConfig: .init(credentials: self.credentials, tilesVersion: nil, minimumDaysToPersistVersion: nil))
             
             let settingsProfile = SettingsProfile(application: ProfileApplication.kMobile, platform: ProfilePlatform.KIOS)
             self.navigator = Navigator(profile: settingsProfile, config: NavigatorConfig() , customConfig: "", tilesConfig: tilesConfig)

@@ -45,7 +45,7 @@ public protocol NavigationService: CLLocationManagerDelegate, RouterDataSource, 
     /**
      A reference to a MapboxDirections service. Used for rerouting.
      */
-    var directions: Directions { get }
+    var directions: DirectionsProvider { get }
     
     /**
      The router object that tracks the user’s progress as they travel along a predetermined route.
@@ -118,7 +118,7 @@ public protocol NavigationService: CLLocationManagerDelegate, RouterDataSource, 
  If you use a navigation service by itself, outside of `NavigationViewController`, call `start()` when the user is ready to begin navigating along the route.
  */
 public class MapboxNavigationService: NSObject, NavigationService {
-    typealias DefaultRouter = RouteController
+    typealias DefaultRouter = LegacyRouteController
     
     /**
      The default time interval before beginning simulation when the `.onPoorGPS` simulation option is enabled.
@@ -144,7 +144,7 @@ public class MapboxNavigationService: NSObject, NavigationService {
     /**
      A reference to a MapboxDirections service. Used for rerouting.
      */
-    public var directions: Directions
+    public var directions: DirectionsProvider
     
     /**
      The active router. By default, a `RouteController`.
@@ -213,8 +213,8 @@ public class MapboxNavigationService: NSObject, NavigationService {
      - parameter route: The route to follow.
      - parameter routeindex: The index of the route within the original `RouteController` object.
      */
-    convenience init(route: Route, routeIndex: Int, routeOptions options: RouteOptions) {
-        self.init(route: route, routeIndex: routeIndex, routeOptions: options, directions: nil, locationSource: nil, eventsManagerType: nil)
+    convenience init(route: Route, routeIndex: Int, routeOptions options: RouteOptions, directions: DirectionsProvider) {
+        self.init(route: route, routeIndex: routeIndex, routeOptions: options, directions: directions, locationSource: nil, eventsManagerType: nil)
     }
     
     /**
@@ -231,13 +231,13 @@ public class MapboxNavigationService: NSObject, NavigationService {
     required public init(route: Route,
                          routeIndex: Int,
                          routeOptions: RouteOptions,
-                         directions: Directions? = nil,
+                         directions: DirectionsProvider,
                          locationSource: NavigationLocationManager? = nil,
                          eventsManagerType: NavigationEventsManager.Type? = nil,
                          simulating simulationMode: SimulationMode = .onPoorGPS,
                          routerType: Router.Type? = nil) {
         nativeLocationSource = locationSource ?? NavigationLocationManager()
-        self.directions = directions ?? Directions.shared
+        self.directions = directions
         self.simulationMode = simulationMode
         super.init()
         resumeNotifications()
