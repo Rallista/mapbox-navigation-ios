@@ -107,7 +107,9 @@ public protocol NavigationService: CLLocationManagerDelegate, RouterDataSource, 
     /**
      Interrogates the navigationService as to whether or not the passed-in location is in a tunnel.
      */
-    func isInTunnel(at location: CLLocation, along progress: RouteProgress) -> Bool 
+    func isInTunnel(at location: CLLocation, along progress: RouteProgress) -> Bool
+    
+    func setRoute(route: Route, routeOptions: RouteOptions)
 }
 
 /**
@@ -315,6 +317,10 @@ public class MapboxNavigationService: NSObject, NavigationService {
     
     public var route: Route {
         return indexedRoute.0
+    }
+    
+    public func setRoute(route: Route, routeOptions: RouteOptions) {
+        router.setRoute(route: route, routeOptions: routeOptions)
     }
     
     public func start() {

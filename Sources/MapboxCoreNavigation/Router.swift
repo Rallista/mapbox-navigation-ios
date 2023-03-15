@@ -61,6 +61,18 @@ public protocol Router: CLLocationManagerDelegate {
     func userIsOnRoute(_ location: CLLocation) -> Bool
     func reroute(from: CLLocation, along: RouteProgress)
     
+    
+    /// Set a new route manually.
+    ///
+    /// This function provides a direct access point to change the navigation service's current
+    /// route and progress. This is the same set process that happens when the router
+    /// automatically generates a new route.
+    ///
+    /// - Parameters:
+    ///   - route: The new route to navigate
+    ///   - routeOptions: The route's options
+    func setRoute(route: Route, routeOptions: RouteOptions)
+    
     /**
      The idealized user location. Snapped to the route line, if applicable, otherwise raw or nil.
      */

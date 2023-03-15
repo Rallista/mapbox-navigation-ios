@@ -11,6 +11,8 @@ protocol RouteControllerDataSource: AnyObject {
 }
 
 open class LegacyRouteController: NSObject, Router, InternalRouter, CLLocationManagerDelegate {
+
+    
     
     public weak var delegate: RouterDelegate?
 
@@ -334,6 +336,13 @@ open class LegacyRouteController: NSObject, Router, InternalRouter, CLLocationMa
                 delegate?.router(self, willArriveAt: currentDestination, after: legProgress.durationRemaining, distance: legProgress.distanceRemaining)
             }
         }
+    }
+    
+    public func setRoute(route: Route, routeOptions: RouteOptions) {
+        indexedRoute = (route, 0) // unconditionally getting the first route above
+        _routeProgress = RouteProgress(route: route, routeIndex: 0, options: routeOptions, legIndex: 0)
+        _routeProgress.currentLegProgress.stepIndex = 0
+        announce(reroute: route, at: location, proactive: false)
     }
 
     public func reroute(from location: CLLocation, along progress: RouteProgress) {
