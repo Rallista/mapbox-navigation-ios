@@ -5,6 +5,7 @@ import MaplibrePlayground
 extension Incident {
     init?(_ incidentInfo: RouteAlertIncidentInfo) {
         var incidentType: Incident.Kind!
+        
         switch incidentInfo.type {
         case .kAccident:
             incidentType = .accident
@@ -36,13 +37,18 @@ extension Incident {
             return nil
         }
         
+        var impact: Impact?
+        if let impactValue = incidentInfo.impact {
+            impact = Impact(rawValue: impactValue)
+        }
+        
         self.init(identifier: incidentInfo.id,
                   type: incidentType,
                   description: incidentInfo.description ?? "",
                   creationDate: incidentInfo.creationTime ?? Date.distantPast,
                   startDate: incidentInfo.startTime ?? Date.distantPast,
                   endDate: incidentInfo.endTime ?? Date.distantPast,
-                  impact: incidentInfo.impact ?? "",
+                  impact: impact,
                   subtype: incidentInfo.subType,
                   subtypeDescription: incidentInfo.subTypeDescription,
                   alertCodes: Set(incidentInfo.alertcCodes.map { $0.intValue }),

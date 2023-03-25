@@ -1,4 +1,5 @@
 import XCTest
+import Mapbox
 import MapboxDirections
 import TestHelper
 import Turf

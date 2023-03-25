@@ -29,47 +29,47 @@ extension DismissAnimator: UIViewControllerAnimatedTransitioning {
     }
 }
 
-class PresentAnimator: NSObject { }
-
-extension PresentAnimator: UIViewControllerAnimatedTransitioning {
-    func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
-        return 0.5
-    }
-    
-    func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
-        guard let fromVC = transitionContext.viewController(forKey: .from) else { return }
-        let containerView = transitionContext.containerView
-        let toView = transitionContext.view(forKey: .to)!
-        let toVC = transitionContext.viewController(forKey: .to)!
-        
-        containerView.backgroundColor = .clear
-        toView.frame = CGRect(x: 0, y: containerView.bounds.height,
-                              width: containerView.bounds.width, height: containerView.bounds.midY)
-        
-        containerView.addSubview(toView)
-        
-        let tap = UITapGestureRecognizer(target: toVC, action: #selector(FeedbackViewController.handleDismissTap(sender:)))
-        if let responder = toVC as? UIGestureRecognizerDelegate {
-            tap.delegate = responder
-        }
-        containerView.addGestureRecognizer(tap)
-        
-        var height = toVC.view.bounds.height
-        if let draggable = toVC as? DismissDraggable {
-            height = draggable.draggableHeight
-        }
-        
-        let finalFrame = CGRect(origin: CGPoint(x: 0, y: fromVC.view.bounds.height - height),
-                                size: CGSize(width: fromVC.view.bounds.width, height: height))
-        
-        UIView.animate(withDuration: transitionDuration(using: transitionContext), delay: 0, options: [.curveEaseInOut], animations: {
-            toView.frame = finalFrame
-            containerView.backgroundColor = UIColor.black.withAlphaComponent(0.5)
-        }) { _ in
-            transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
-        }
-    }
-}
+//class PresentAnimator: NSObject { }
+//
+//extension PresentAnimator: UIViewControllerAnimatedTransitioning {
+//    func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
+//        return 0.5
+//    }
+//    
+//    func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
+//        guard let fromVC = transitionContext.viewController(forKey: .from) else { return }
+//        let containerView = transitionContext.containerView
+//        let toView = transitionContext.view(forKey: .to)!
+//        let toVC = transitionContext.viewController(forKey: .to)!
+//        
+//        containerView.backgroundColor = .clear
+//        toView.frame = CGRect(x: 0, y: containerView.bounds.height,
+//                              width: containerView.bounds.width, height: containerView.bounds.midY)
+//        
+//        containerView.addSubview(toView)
+//        
+//        let tap = UITapGestureRecognizer(target: toVC, action: #selector(FeedbackViewController.handleDismissTap(sender:)))
+//        if let responder = toVC as? UIGestureRecognizerDelegate {
+//            tap.delegate = responder
+//        }
+//        containerView.addGestureRecognizer(tap)
+//        
+//        var height = toVC.view.bounds.height
+//        if let draggable = toVC as? DismissDraggable {
+//            height = draggable.draggableHeight
+//        }
+//        
+//        let finalFrame = CGRect(origin: CGPoint(x: 0, y: fromVC.view.bounds.height - height),
+//                                size: CGSize(width: fromVC.view.bounds.width, height: height))
+//        
+//        UIView.animate(withDuration: transitionDuration(using: transitionContext), delay: 0, options: [.curveEaseInOut], animations: {
+//            toView.frame = finalFrame
+//            containerView.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+//        }) { _ in
+//            transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
+//        }
+//    }
+//}
 
 protocol DismissDraggable: UIViewControllerTransitioningDelegate {
     var interactor: Interactor { get }

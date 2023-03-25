@@ -143,7 +143,7 @@ extension InternalRouter where Self: Router {
     }
     
     func refreshRoute(from location: CLLocation, legIndex: Int, completion: @escaping ()->()) {
-        guard refreshesRoute, let routeIdentifier = route.routeIdentifier else {
+        guard refreshesRoute else {
             completion()
             return
         }
@@ -165,7 +165,8 @@ extension InternalRouter where Self: Router {
         }
         isRefreshing = true
         
-        directions.refreshRoute(responseIdentifier: routeIdentifier, routeIndex: indexedRoute.1, fromLegAtIndex: legIndex) { [weak self] (session, result) in
+        // TODO: Handle responseId?
+        directions.refreshRoute(responseIdentifier: "", routeIndex: indexedRoute.1, fromLegAtIndex: legIndex) { [weak self] (session, result) in
             defer {
                 self?.isRefreshing = false
                 self?.lastRouteRefresh = nil

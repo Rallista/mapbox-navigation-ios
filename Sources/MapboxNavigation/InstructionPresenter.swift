@@ -107,9 +107,9 @@ class InstructionPresenter {
         ]
         let attributedTextRepresentations = components.map { (component) -> NSAttributedString in
             switch component {
-            case .delimiter(let text):
+            case .delimiter(text: let text):
                 return NSAttributedString(string: text.text, attributes: defaultAttributes)
-            case .text(let text):
+            case .text(text: let text):
                 let attributedString = NSMutableAttributedString(string: text.text, attributes: defaultAttributes)
                 // Annotate the attributed text representation with an abbreviation.
                 if let abbreviation = text.abbreviation, let abbreviationPriority = text.abbreviationPriority {
@@ -120,22 +120,22 @@ class InstructionPresenter {
                     ], range: wholeRange)
                 }
                 return attributedString
-            case .image(let image, let alternativeText):
+            case .image(image: let image, alternativeText: let alternativeText):
                 // Ideally represent the image component as a shield image.
                 return self.attributedString(forShieldComponent: image, repository: imageRepository, dataSource: dataSource, cacheKey: component.cacheKey!, onImageDownload: onImageDownload)
                     // Fall back to a generic shield if no shield image is available.
                     ?? genericShield(text: alternativeText.text, dataSource: dataSource, cacheKey: component.cacheKey!)
                     // Finally, fall back to a plain text representation if the generic shield couldn’t be rendered.
                     ?? NSAttributedString(string: alternativeText.text, attributes: defaultAttributes)
-            case .exit(_):
+            case .exit(text: _):
                 preconditionFailure("Exit components should have been removed above")
-            case .exitCode(let text):
+            case .exitCode(text: let text):
                 let exitSide: ExitSide = instruction.maneuverDirection == .left ? .left : .right
                 return exitShield(side: exitSide, text: text.text, dataSource: dataSource, cacheKey: component.cacheKey!)
                     ?? NSAttributedString(string: text.text, attributes: defaultAttributes)
-            case .lane(_, _):
+            case .lane(indications: _, isUsable: _, preferredDirection: _):
                 preconditionFailure("Lane component has no attributed string representation.")
-            case .guidanceView(_, let alternativeText):
+            case .guidanceView(image: _, alternativeText: let alternativeText):
                 return NSAttributedString(string: alternativeText.text, attributes: defaultAttributes)
             }
         }

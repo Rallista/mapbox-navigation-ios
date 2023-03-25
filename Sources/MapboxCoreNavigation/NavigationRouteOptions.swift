@@ -17,7 +17,7 @@ open class NavigationRouteOptions: RouteOptions, OptimizedForNavigation {
 
      - seealso: `RouteOptions`
      */
-    public required init(waypoints: [Waypoint], profileIdentifier: DirectionsProfileIdentifier? = .automobileAvoidingTraffic) {
+    public required init(waypoints: [Waypoint], profileIdentifier: ProfileIdentifier? = .automobileAvoidingTraffic) {
         super.init(waypoints: waypoints.map {
             $0.coordinateAccuracy = -1
             return $0
@@ -49,7 +49,7 @@ open class NavigationRouteOptions: RouteOptions, OptimizedForNavigation {
 
      - seealso: `RouteOptions`
      */
-    public convenience init(locations: [CLLocation], profileIdentifier: DirectionsProfileIdentifier? = .automobileAvoidingTraffic) {
+    public convenience init(locations: [CLLocation], profileIdentifier: ProfileIdentifier? = .automobileAvoidingTraffic) {
         self.init(waypoints: locations.map { Waypoint(location: $0) }, profileIdentifier: profileIdentifier)
     }
 
@@ -58,12 +58,16 @@ open class NavigationRouteOptions: RouteOptions, OptimizedForNavigation {
 
      - seealso: `RouteOptions`
      */
-    public convenience init(coordinates: [CLLocationCoordinate2D], profileIdentifier: DirectionsProfileIdentifier? = .automobileAvoidingTraffic) {
+    public convenience init(coordinates: [CLLocationCoordinate2D], profileIdentifier: ProfileIdentifier? = .automobileAvoidingTraffic) {
         self.init(waypoints: coordinates.map { Waypoint(coordinate: $0) }, profileIdentifier: profileIdentifier)
     }
     
     required public init(from decoder: Decoder) throws {
         try super.init(from: decoder)
+    }
+    
+    required public init(waypoints: [Waypoint], profileIdentifier: ProfileIdentifier? = nil, queryItems: [URLQueryItem]? = nil) {
+        fatalError("init(waypoints:profileIdentifier:queryItems:) has not been implemented")
     }
 }
 
@@ -80,7 +84,7 @@ open class NavigationMatchOptions: MatchOptions, OptimizedForNavigation {
      
      - seealso: `RouteOptions`
      */
-    public required init(waypoints: [Waypoint], profileIdentifier: DirectionsProfileIdentifier? = .automobileAvoidingTraffic) {
+    public required init(waypoints: [Waypoint], profileIdentifier: ProfileIdentifier? = .automobileAvoidingTraffic) {
         super.init(waypoints: waypoints.map {
             $0.coordinateAccuracy = -1
             return $0
@@ -99,7 +103,7 @@ open class NavigationMatchOptions: MatchOptions, OptimizedForNavigation {
      
      - seealso: `MatchOptions`
      */
-    public convenience init(locations: [CLLocation], profileIdentifier: DirectionsProfileIdentifier? = .automobileAvoidingTraffic) {
+    public convenience init(locations: [CLLocation], profileIdentifier: ProfileIdentifier? = .automobileAvoidingTraffic) {
         self.init(waypoints: locations.map { Waypoint(location: $0) }, profileIdentifier: profileIdentifier)
     }
     
@@ -108,12 +112,16 @@ open class NavigationMatchOptions: MatchOptions, OptimizedForNavigation {
      
      - seealso: `MatchOptions`
      */
-    public convenience init(coordinates: [CLLocationCoordinate2D], profileIdentifier: DirectionsProfileIdentifier? = .automobileAvoidingTraffic) {
+    public convenience init(coordinates: [CLLocationCoordinate2D], profileIdentifier: ProfileIdentifier? = .automobileAvoidingTraffic) {
         self.init(waypoints: coordinates.map { Waypoint(coordinate: $0) }, profileIdentifier: profileIdentifier)
     }
     
     required public init(from decoder: Decoder) throws {
         try super.init(from: decoder)
+    }
+    
+    required public init(waypoints: [Waypoint], profileIdentifier: ProfileIdentifier? = nil, queryItems: [URLQueryItem]? = nil) {
+        fatalError("init(waypoints:profileIdentifier:queryItems:) has not been implemented")
     }
 }
 

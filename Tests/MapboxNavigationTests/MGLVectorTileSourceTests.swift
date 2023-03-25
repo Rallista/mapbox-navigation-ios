@@ -1,4 +1,5 @@
 import XCTest
+import Mapbox
 @testable import MapboxNavigation
 
 class MGLVectorTileSourceTests: XCTestCase {

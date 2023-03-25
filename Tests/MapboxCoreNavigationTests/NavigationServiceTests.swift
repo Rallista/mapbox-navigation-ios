@@ -18,14 +18,13 @@ fileprivate let distanceThreshold: CLLocationDistance = 2
 fileprivate let coordinateThreshold: CLLocationDistance = 0.0005
 
 class NavigationServiceTests: XCTestCase {
-    var eventsManagerSpy: NavigationEventsManagerSpy!
     let directionsClientSpy = DirectionsSpy()
     let delegate = NavigationServiceDelegateSpy()
 
     typealias RouteLocations = (firstLocation: CLLocation, penultimateLocation: CLLocation, lastLocation: CLLocation)
 
     lazy var dependencies: (navigationService: NavigationService, routeLocations: RouteLocations) = {
-        let navigationService = MapboxNavigationService(route: initialRoute, routeIndex: 0, routeOptions: routeOptions, directions: directionsClientSpy, eventsManagerType: NavigationEventsManagerSpy.self, simulating: .never)
+        let navigationService = MapboxNavigationService(route: initialRoute, routeIndex: 0, routeOptions: routeOptions, directions: directionsClientSpy, simulating: .never)
         navigationService.delegate = delegate
 
         let legProgress: RouteLegProgress = navigationService.router.routeProgress.currentLegProgress
@@ -54,10 +53,6 @@ class NavigationServiceTests: XCTestCase {
 
         directionsClientSpy.reset()
         delegate.reset()
-    }
-
-    func testDefaultUserInterfaceUsage() {
-        XCTAssertTrue(dependencies.navigationService.eventsManager.usesDefaultUserInterface, "MapboxCoreNavigationTests should have an implicit dependency on MapboxNavigation due to running inside the Example application target.")
     }
 
     func testUserIsOnRoute() {
@@ -330,89 +325,6 @@ class NavigationServiceTests: XCTestCase {
 
     // MARK: - Events & Delegation
 
-    func testTurnstileEventSentUponInitialization() {
-        // MARK: it sends a turnstile event upon initialization
-
-        let service = MapboxNavigationService(route: initialRoute, routeIndex: 0, routeOptions: routeOptions, directions: directionsClientSpy, locationSource: NavigationLocationManager(), eventsManagerType: NavigationEventsManagerSpy.self)
-        let eventsManagerSpy = service.eventsManager as! NavigationEventsManagerSpy
-        XCTAssertTrue(eventsManagerSpy.hasFlushedEvent(with: MMEEventTypeAppUserTurnstile))
-    }
-
-    func testReroutingFromLocationUpdatesSimulatedLocationSource() {
-        let navigationService = MapboxNavigationService(route: initialRoute, routeIndex: 0, routeOptions: routeOptions,  directions: directionsClientSpy, eventsManagerType: NavigationEventsManagerSpy.self, simulating: .always)
-        navigationService.delegate = delegate
-        let router = navigationService.router!
-
-        navigationService.eventsManager.delaysEventFlushing = false
-        navigationService.start()
-
-        let eventsManagerSpy = navigationService.eventsManager as! NavigationEventsManagerSpy
-        XCTAssertTrue(eventsManagerSpy.hasFlushedEvent(with: NavigationEventTypeRouteRetrieval))
-
-        router.indexedRoute = (alternateRoute, 0)
-
-        let simulatedLocationManager = navigationService.locationManager as! SimulatedLocationManager
-
-        XCTAssert(simulatedLocationManager.route == alternateRoute, "Simulated Location Manager should be updated with new route progress model")
-    }
-
-    func testReroutingFromALocationSendsEvents() {
-        let navigationService = dependencies.navigationService
-        let router = navigationService.router!
-        let testLocation = dependencies.routeLocations.firstLocation
-
-        navigationService.eventsManager.delaysEventFlushing = false
-
-        let willRerouteNotificationExpectation = expectation(forNotification: .routeControllerWillReroute, object: router) { (notification) -> Bool in
-            let fromLocation = notification.userInfo![RouteController.NotificationUserInfoKey.locationKey] as? CLLocation
-
-            XCTAssertTrue(fromLocation == testLocation)
-
-            return true
-        }
-
-        let didRerouteNotificationExpectation = expectation(forNotification: .routeControllerDidReroute, object: router, handler: nil)
-
-        let routeProgressDidChangeNotificationExpectation = expectation(forNotification: .routeControllerProgressDidChange, object: router) { (notification) -> Bool in
-            let location = notification.userInfo![RouteController.NotificationUserInfoKey.locationKey] as? CLLocation
-            let rawLocation = notification.userInfo![RouteController.NotificationUserInfoKey.rawLocationKey] as? CLLocation
-            let _ = notification.userInfo![RouteController.NotificationUserInfoKey.routeProgressKey] as! RouteProgress
-
-            XCTAssertTrue(location!.distance(from: rawLocation!) <= distanceThreshold)
-
-            return true
-        }
-
-        // MARK: When told to re-route from location -- `reroute(from:)`
-        router.reroute(from: testLocation, along: router.routeProgress)
-
-        // MARK: it tells the delegate & posts a willReroute notification
-        XCTAssertTrue(delegate.recentMessages.contains("navigationService(_:willRerouteFrom:)"))
-        wait(for: [willRerouteNotificationExpectation], timeout: 0.1)
-
-        // MARK: Upon rerouting successfully...
-        directionsClientSpy.fireLastCalculateCompletion(with: nil, routes: [alternateRoute], error: nil)
-
-        // MARK: It tells the delegate & posts a didReroute notification
-        XCTAssertTrue(delegate.recentMessages.contains("navigationService(_:didRerouteAlong:at:proactive:)"))
-        wait(for: [didRerouteNotificationExpectation], timeout: 0.1)
-
-        // MARK: On the next call to `locationManager(_, didUpdateLocations:)`
-        navigationService.locationManager!(navigationService.locationManager, didUpdateLocations: [testLocation])
-
-        // MARK: It tells the delegate & posts a routeProgressDidChange notification
-        XCTAssertTrue(delegate.recentMessages.contains("navigationService(_:didUpdate:with:rawLocation:)"))
-        wait(for: [routeProgressDidChangeNotificationExpectation], timeout: 0.1)
-
-        // MARK: It enqueues and flushes a NavigationRerouteEvent
-        let expectedEventName = MMEEventTypeNavigationReroute
-        let eventsManagerSpy = navigationService.eventsManager as! NavigationEventsManagerSpy
-        XCTAssertTrue(eventsManagerSpy.hasEnqueuedEvent(with: expectedEventName))
-        XCTAssertTrue(eventsManagerSpy.hasFlushedEvent(with: expectedEventName))
-        XCTAssertEqual(eventsManagerSpy.enqueuedEventCount(with: expectedEventName), 1)
-        XCTAssertEqual(eventsManagerSpy.flushedEventCount(with: expectedEventName), 1)
-    }
-
     func testGeneratingAnArrivalEvent() {
         let navigation = dependencies.navigationService
 
@@ -424,20 +336,11 @@ class NavigationServiceTests: XCTestCase {
         navigation.router!.locationManager!(navigation.locationManager,
                                             didUpdateLocations: [trace.last!.shifted(to: now + (trace.count + 1))])
 
-        // MARK: It queues and flushes a Depart event
-        let eventsManagerSpy = navigation.eventsManager as! NavigationEventsManagerSpy
-        XCTAssertTrue(eventsManagerSpy.hasFlushedEvent(with: MMEEventTypeNavigationDepart))
-
         // MARK: When at a valid location just before the last location
         XCTAssertTrue(delegate.recentMessages.contains("navigationService(_:willArriveAt:after:distance:)"), "Pre-arrival delegate message not fired.")
 
         // MARK: It tells the delegate that the user did arrive
         XCTAssertTrue(delegate.recentMessages.contains("navigationService(_:didArriveAt:)"))
-
-        // MARK: It enqueues and flushes an arrival event
-        let expectedEventName = MMEEventTypeNavigationArrive
-        XCTAssertTrue(eventsManagerSpy.hasEnqueuedEvent(with: expectedEventName))
-        XCTAssertTrue(eventsManagerSpy.hasFlushedEvent(with: expectedEventName))
     }
 
     func testNoReroutesAfterArriving() {
@@ -448,10 +351,7 @@ class NavigationServiceTests: XCTestCase {
         let trace = Fixture.generateTrace(for: route).shiftedToPresent()
 
         trace.forEach { navigation.router.locationManager!(navigation.locationManager, didUpdateLocations: [$0]) }
-
-        let eventsManagerSpy = navigation.eventsManager as! NavigationEventsManagerSpy
-        XCTAssertTrue(eventsManagerSpy.hasFlushedEvent(with: MMEEventTypeNavigationDepart))
-
+        
         // MARK: It tells the delegate that the user did arrive
         XCTAssertTrue(delegate.recentMessages.contains("navigationService(_:didArriveAt:)"))
 
@@ -468,11 +368,6 @@ class NavigationServiceTests: XCTestCase {
 
         // We should not reroute here because the user has arrived.
         XCTAssertFalse(delegate.recentMessages.contains("navigationService(_:didRerouteAlong:)"))
-
-        // It enqueues and flushes an arrival event
-        let expectedEventName = MMEEventTypeNavigationArrive
-        XCTAssertTrue(eventsManagerSpy.hasEnqueuedEvent(with: expectedEventName))
-        XCTAssertTrue(eventsManagerSpy.hasFlushedEvent(with: expectedEventName))
     }
 
     func testRouteControllerDoesNotHaveRetainCycle() {

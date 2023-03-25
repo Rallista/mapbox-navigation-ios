@@ -97,7 +97,6 @@ public class Fixture: NSObject {
         }
         
         // Like `Directions.postprocess(_:fetchStartDate:uuid:)`
-        route.routeIdentifier = response.identifier
         let fetchStartDate = Date(timeIntervalSince1970: 3600)
         route.fetchStartDate = fetchStartDate
         route.responseEndDate = Date(timeInterval: 1, since: fetchStartDate)

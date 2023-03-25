@@ -42,7 +42,6 @@ class RouteMapViewController: UIViewController {
     private struct Actions {
         static let overview: Selector = #selector(RouteMapViewController.toggleOverview(_:))
         static let mute: Selector = #selector(RouteMapViewController.toggleMute(_:))
-        static let feedback: Selector = #selector(RouteMapViewController.feedback(_:))
         static let recenter: Selector = #selector(RouteMapViewController.recenter(_:))
     }
 
@@ -184,7 +183,6 @@ class RouteMapViewController: UIViewController {
         makeGestureRecognizersResetFrameRate()
         navigationView.overviewButton.addTarget(self, action: Actions.overview, for: .touchUpInside)
         navigationView.muteButton.addTarget(self, action: Actions.mute, for: .touchUpInside)
-        navigationView.reportButton.addTarget(self, action: Actions.feedback, for: .touchUpInside)
         navigationView.resumeButton.addTarget(self, action: Actions.recenter, for: .touchUpInside)
         resumeNotifications()
     }
@@ -290,18 +288,7 @@ class RouteMapViewController: UIViewController {
         let muted = sender.isSelected
         NavigationSettings.shared.voiceMuted = muted
     }
-
-    @objc func feedback(_ sender: Any) {
-        showFeedback()
-    }
-
-    func showFeedback(source: FeedbackSource = .user) {
-        guard let parent = parent else { return }
-        let feedbackViewController = FeedbackViewController(eventsManager: navService.eventsManager)
-        feedbackViewController.detailedFeedbackEnabled = detailedFeedbackEnabled
-        parent.present(feedbackViewController, animated: true, completion: nil)
-    }
-
+    
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         mapView.enableFrameByFrameCourseViewTracking(for: 3)

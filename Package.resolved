@@ -1,79 +1,86 @@
 {
-  "object": {
-    "pins": [
-      {
-        "package": "MapboxDirections",
-        "repositoryURL": "https://github.com/mapbox/mapbox-directions-swift.git",
-        "state": {
-          "branch": null,
-          "revision": "457fdba8cd39783d5ffb2c2ccdfa033d38e7cc8b",
-          "version": "1.2.0"
-        }
-      },
-      {
-        "package": "MapLibre GL Native",
-        "repositoryURL": "https://github.com/maplibre/maplibre-gl-native-distribution.git",
-        "state": {
-          "branch": null,
-          "revision": "ffda61e298c1490d4860d5184e80d618aaadc089",
-          "version": "5.13.0"
-        }
-      },
-      {
-        "package": "Nimble",
-        "repositoryURL": "https://github.com/Quick/Nimble.git",
-        "state": {
-          "branch": null,
-          "revision": "7a46a5fc86cb917f69e3daf79fcb045283d8f008",
-          "version": "8.1.2"
-        }
-      },
-      {
-        "package": "Polyline",
-        "repositoryURL": "https://github.com/raphaelmor/Polyline.git",
-        "state": {
-          "branch": null,
-          "revision": "36f7b1222aaf8fa741d0d179c12e186998d97f42",
-          "version": "5.0.2"
-        }
-      },
-      {
-        "package": "Quick",
-        "repositoryURL": "https://github.com/Quick/Quick.git",
-        "state": {
-          "branch": null,
-          "revision": "09b3becb37cb2163919a3842a4c5fa6ec7130792",
-          "version": "2.2.1"
-        }
-      },
-      {
-        "package": "Solar",
-        "repositoryURL": "https://github.com/ceeK/Solar.git",
-        "state": {
-          "branch": null,
-          "revision": "c2b96f2d5fb7f835b91cefac5e83101f54643901",
-          "version": "3.0.1"
-        }
-      },
-      {
-        "package": "SwiftCLI",
-        "repositoryURL": "https://github.com/jakeheis/SwiftCLI",
-        "state": {
-          "branch": null,
-          "revision": "2816678bcc37f4833d32abeddbdf5e757fa891d8",
-          "version": "6.0.2"
-        }
-      },
-      {
-        "package": "Turf",
-        "repositoryURL": "https://github.com/mapbox/turf-swift.git",
-        "state": {
-          "branch": null,
-          "revision": "ed6f8dd1036c7ece722c7b2548f1f454f491d91e",
-          "version": "1.2.0"
-        }
+  "pins" : [
+    {
+      "identity" : "mapbox-directions-swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/mapbox/mapbox-directions-swift.git",
+      "state" : {
+        "revision" : "edcc5b30009e784f17c1cced1075878eaf781187",
+        "version" : "2.10.0"
       }
-    ]
-  },
-  "version": 1
+    },
+    {
+      "identity" : "maplibre-gl-native-distribution",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/maplibre/maplibre-gl-native-distribution.git",
+      "state" : {
+        "revision" : "ffda61e298c1490d4860d5184e80d618aaadc089",
+        "version" : "5.13.0"
+      }
+    },
+    {
+      "identity" : "nimble",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Quick/Nimble.git",
+      "state" : {
+        "revision" : "7a46a5fc86cb917f69e3daf79fcb045283d8f008",
+        "version" : "8.1.2"
+      }
+    },
+    {
+      "identity" : "polyline",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/raphaelmor/Polyline.git",
+      "state" : {
+        "revision" : "36f7b1222aaf8fa741d0d179c12e186998d97f42",
+        "version" : "5.0.2"
+      }
+    },
+    {
+      "identity" : "quick",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Quick/Quick.git",
+      "state" : {
+        "revision" : "09b3becb37cb2163919a3842a4c5fa6ec7130792",
+        "version" : "2.2.1"
+      }
+    },
+    {
+      "identity" : "solar",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ceeK/Solar.git",
+      "state" : {
+        "revision" : "c2b96f2d5fb7f835b91cefac5e83101f54643901",
+        "version" : "3.0.1"
+      }
+    },
+    {
+      "identity" : "swift-argument-parser",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-argument-parser",
+      "state" : {
+        "revision" : "fee6933f37fde9a5e12a1e4aeaa93fe60116ff2a",
+        "version" : "1.2.2"
+      }
+    },
+    {
+      "identity" : "swift-snapshot-testing",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/pointfreeco/swift-snapshot-testing",
+      "state" : {
+        "revision" : "cef5b3f6f11781dd4591bdd1dd0a3d22bd609334",
+        "version" : "1.11.0"
+      }
+    },
+    {
+      "identity" : "turf-swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/mapbox/turf-swift.git",
+      "state" : {
+        "revision" : "87b5b37108ba9f37f0885b586d8f6355d8240dd8",
+        "version" : "2.6.1"
+      }
+    }
+  ],
+  "version" : 2
 }
