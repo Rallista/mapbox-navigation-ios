@@ -1,4 +1,6 @@
 import XCTest
+import CoreLocation
+import Mapbox
 import MapboxDirections
 import Turf
 @testable import TestHelper

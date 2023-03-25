@@ -395,6 +395,11 @@ open class RouteController: NSObject {
 }
 
 extension RouteController: Router {
+    public func setRoute(route: Route, routeOptions: RouteOptions) {
+        _routeProgress = RouteProgress(route: route, routeIndex: 0, options: routeOptions, legIndex: 0)
+        _routeProgress.currentLegProgress.stepIndex = 0
+    }
+    
     public func userIsOnRoute(_ location: CLLocation) -> Bool {
         return userIsOnRoute(location, status: nil)
     }

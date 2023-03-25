@@ -10,9 +10,9 @@ import MaplibrePlayground
 import MapboxDirections
 
 open class MockDirections: DirectionsProvider {
-    public let credentials: DirectionsCredentials
+    public let credentials: Credentials
     
-    public init(credentials: DirectionsCredentials = .init(accessToken: "mock", host: nil)) {
+    public init(credentials: Credentials = .init(accessToken: "mock", host: nil)) {
         self.credentials = credentials
     }
     

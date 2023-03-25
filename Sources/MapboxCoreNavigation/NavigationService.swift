@@ -36,7 +36,7 @@ public enum SimulationMode: Int {
  
  If you use a navigation service by itself, outside of `NavigationViewController`, call `start()` when the user is ready to begin navigating along the route.
  */
-public protocol NavigationService: CLLocationManagerDelegate, RouterDataSource, EventsManagerDataSource {
+public protocol NavigationService: CLLocationManagerDelegate, RouterDataSource {
     /**
      The location manager for the service. This will be the object responsible for notifying the service of GPS updates.
      */
@@ -53,11 +53,6 @@ public protocol NavigationService: CLLocationManagerDelegate, RouterDataSource, 
     var router: Router! { get }
     
     /**
-     The events manager, responsible for all telemetry.
-     */
-    var eventsManager: NavigationEventsManager! { get }
-    
-    /**
      The route along which the user is expected to travel, plus its index in the `RouteResponse`, if applicable.
      */
     var indexedRoute: IndexedRoute { get set }
@@ -66,6 +61,8 @@ public protocol NavigationService: CLLocationManagerDelegate, RouterDataSource, 
      The route along which the user is expected to travel.
      */
     var route: Route { get }
+    
+    var routeProgress: RouteProgress { get }
     
     /**
      The simulation mode of the service.
@@ -107,7 +104,9 @@ public protocol NavigationService: CLLocationManagerDelegate, RouterDataSource, 
     /**
      Interrogates the navigationService as to whether or not the passed-in location is in a tunnel.
      */
-    func isInTunnel(at location: CLLocation, along progress: RouteProgress) -> Bool 
+    func isInTunnel(at location: CLLocation, along progress: RouteProgress) -> Bool
+    
+    func setRoute(route: Route, routeOptions: RouteOptions)
 }
 
 /**
@@ -150,11 +149,6 @@ public class MapboxNavigationService: NSObject, NavigationService {
      The active router. By default, a `RouteController`.
      */
     public var router: Router!
-    
-    /**
-     The events manager. Sends telemetry back to the Mapbox platform.
-     */
-    public var eventsManager: NavigationEventsManager!
     
     /**
      The `NavigationService` delegate. Wraps `RouterDelegate` messages.
@@ -214,7 +208,7 @@ public class MapboxNavigationService: NSObject, NavigationService {
      - parameter routeindex: The index of the route within the original `RouteController` object.
      */
     convenience init(route: Route, routeIndex: Int, routeOptions options: RouteOptions, directions: DirectionsProvider) {
-        self.init(route: route, routeIndex: routeIndex, routeOptions: options, directions: directions, locationSource: nil, eventsManagerType: nil)
+        self.init(route: route, routeIndex: routeIndex, routeOptions: options, directions: directions, locationSource: nil)
     }
     
     /**
@@ -233,7 +227,6 @@ public class MapboxNavigationService: NSObject, NavigationService {
                          routeOptions: RouteOptions,
                          directions: DirectionsProvider,
                          locationSource: NavigationLocationManager? = nil,
-                         eventsManagerType: NavigationEventsManager.Type? = nil,
                          simulating simulationMode: SimulationMode = .onPoorGPS,
                          routerType: Router.Type? = nil) {
         nativeLocationSource = locationSource ?? NavigationLocationManager()
@@ -251,10 +244,7 @@ public class MapboxNavigationService: NSObject, NavigationService {
         router = routerType.init(along: route, routeIndex: routeIndex, options: routeOptions, directions: self.directions, dataSource: self)
         NavigationSettings.shared.distanceUnit = routeOptions.locale.usesMetric ? .kilometer : .mile
         
-        let eventType = eventsManagerType ?? NavigationEventsManager.self
-        eventsManager = eventType.init(dataSource: self, accessToken: self.directions.credentials.accessToken)
         locationManager.activityType = routeOptions.activityType
-        bootstrapEvents()
         
         router.delegate = self
         nativeLocationSource.delegate = self
@@ -317,6 +307,10 @@ public class MapboxNavigationService: NSObject, NavigationService {
         return indexedRoute.0
     }
     
+    public func setRoute(route: Route, routeOptions: RouteOptions) {
+        router.setRoute(route: route, routeOptions: routeOptions)
+    }
+    
     public func start() {
         // Jump to the first coordinate on the route if the location source does
         // not yet have a fixed location.
@@ -332,8 +326,6 @@ public class MapboxNavigationService: NSObject, NavigationService {
         if simulationMode == .always {
             simulate()
         }
-        
-        eventsManager.sendRouteRetrievalEvent()
     }
     
     public func stop() {
@@ -351,13 +343,7 @@ public class MapboxNavigationService: NSObject, NavigationService {
     }
     
     public func endNavigation(feedback: EndOfRouteFeedback? = nil) {
-        eventsManager.sendCancelEvent(rating: feedback?.rating, comment: feedback?.comment)
         stop()
-    }
-
-    private func bootstrapEvents() {
-        eventsManager.dataSource = self
-        eventsManager.resetSession()
     }
 
     private func resetGPSCountdown() {
@@ -394,9 +380,6 @@ extension MapboxNavigationService: CLLocationManagerDelegate {
     public func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         //If we're always simulating, make sure this is a simulated update.
         if simulationMode == .always, manager != simulatedLocationSource { return }
-        
-        //update the events manager with the received locations
-        eventsManager.record(locations: locations)
         
         //sanity check: make sure the update actually contains a location
         guard let location = locations.last else { return }
@@ -437,18 +420,11 @@ extension MapboxNavigationService: RouterDelegate {
     typealias Default = RouteController.DefaultBehavior
     
     public func router(_ router: Router, willRerouteFrom location: CLLocation) {
-        //save any progress made by the router until now
-        eventsManager.enqueueRerouteEvent()
-        eventsManager.incrementDistanceTraveled(by: router.routeProgress.distanceTraveled)
-        
         //notify our consumer
         delegate?.navigationService(self, willRerouteFrom: location)
     }
     
     public func router(_ router: Router, didRerouteAlong route: Route, at location: CLLocation?, proactive: Bool) {
-        //notify the events manager that the route has changed
-        eventsManager.reportReroute(progress: router.routeProgress, proactive: proactive)
-        
         //update the route progress model of the simulated location manager, if applicable.
         simulatedLocationSource?.route = router.route
         
@@ -465,9 +441,6 @@ extension MapboxNavigationService: RouterDelegate {
     }
     
     public func router(_ router: Router, didUpdate progress: RouteProgress, with location: CLLocation, rawLocation: CLLocation) {
-        //notify the events manager of the progress update
-        eventsManager.update(progress: progress)
-        
         //pass the update on to consumers
         delegate?.navigationService(self, didUpdate: progress, with: location, rawLocation: rawLocation)
     }
@@ -494,9 +467,6 @@ extension MapboxNavigationService: RouterDelegate {
     }
     
     public func router(_ router: Router, didArriveAt waypoint: Waypoint) -> Bool {
-        //Notify the events manager that we've arrived at a waypoint
-        eventsManager.arriveAtWaypoint()
-        
         let shouldAutomaticallyAdvance =  delegate?.navigationService(self, didArriveAt: waypoint) ?? Default.didArriveAtWaypoint
         if !shouldAutomaticallyAdvance {
             stop()
@@ -528,22 +498,6 @@ extension MapboxNavigationService {
 extension MapboxNavigationService {
     public var locationProvider: NavigationLocationManager.Type {
         return type(of: locationManager)
-    }
-}
-
-fileprivate extension NavigationEventsManager {
-    func incrementDistanceTraveled(by distance: CLLocationDistance) {
-        sessionState?.totalDistanceCompleted += distance
-    }
-    
-    func arriveAtWaypoint() {
-        sessionState?.departureTimestamp = nil
-        sessionState?.arrivalTimestamp = nil
-    }
-    
-    func record(locations: [CLLocation]) {
-        guard let state = sessionState else { return }
-        locations.forEach(state.pastLocations.push(_:))
     }
 }
 

@@ -390,7 +390,7 @@ extension TopBannerViewController: NavigationComponent {
     }
     
     public func navigationService(_ service: NavigationService, didRerouteAlong route: Route, at location: CLLocation?, proactive: Bool) {
-        instructionsBannerView.updateDistance(for: service.routeProgress.currentLegProgress.currentStepProgress)
+        instructionsBannerView.updateDistance(for: service.router.routeProgress.currentLegProgress.currentStepProgress)
         
         dismissStepsTable()
         if service.simulationMode == .always {

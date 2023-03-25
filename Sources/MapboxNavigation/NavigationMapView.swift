@@ -145,7 +145,7 @@ open class NavigationMapView: MGLMapView, UIGestureRecognizerDelegate {
     var userLocationForCourseTracking: CLLocation?
     var animatesUserLocation: Bool = false
     var altitude: CLLocationDistance
-    var routes: [Route]?
+    public internal(set) var routes: [Route]?
     var isAnimatingToOverheadMode = false
     var routePoints: RoutePoints?
     var routeLineGranularDistances: RouteLineGranularDistances?
