@@ -5,7 +5,7 @@ extension Bundle {
      The Mapbox Navigation framework bundle.
      */
     public class var mapboxNavigation: Bundle {
-        get { return Bundle(for: NavigationViewController.self) }
+        get { return Bundle.module }
     }
     
     func image(named: String) -> UIImage? {

@@ -98,6 +98,11 @@ class InstructionsBannerViewIntegrationTests: XCTestCase {
 
         XCTAssertNotNil(view.primaryLabel.text!.firstIndex(of: "/"))
     }
+    
+    func testExitViews() {
+        XCTAssertNotNil(ExitView.leftExitImage)
+        XCTAssertNotNil(ExitView.rightExitImage)
+    }
 
     func testDelimiterIsHiddenWhenAllShieldsAreAlreadyLoaded() {
         //prime the cache to simulate images having already been loaded
