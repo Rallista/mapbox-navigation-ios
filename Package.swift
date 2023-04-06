@@ -44,7 +44,10 @@ let package = Package(
                 .product(name: "MapboxDirections", package: "mapbox-directions-swift"),
                 .product(name: "Solar", package: "Solar"),
             ],
-            exclude: ["Info.plist"]),
+            exclude: ["Info.plist"],
+            resources: [
+                .process("Resources")
+            ]),
         .target(
             name: "MapboxCoreNavigation",
             dependencies: [
