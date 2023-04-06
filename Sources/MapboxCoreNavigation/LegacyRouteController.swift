@@ -502,21 +502,25 @@ open class LegacyRouteController: NSObject, Router, InternalRouter, CLLocationMa
     }
     
     func updateVisualInstructionProgress() {
-        guard let userSnapToStepDistanceFromManeuver = userSnapToStepDistanceFromManeuver else { return }
-        let currentStepProgress = routeProgress.currentLegProgress.currentStepProgress
-        guard let visualInstructions = currentStepProgress.remainingVisualInstructions else { return }
-        
-        for visualInstruction in visualInstructions {
-            if userSnapToStepDistanceFromManeuver <= visualInstruction.distanceAlongStep || isFirstLocation {
-                delegate?.router(self, didPassVisualInstructionPoint: visualInstruction, routeProgress: routeProgress)
-                NotificationCenter.default.post(name: .routeControllerDidPassVisualInstructionPoint, object: self, userInfo: [
-                    RouteController.NotificationUserInfoKey.routeProgressKey: routeProgress,
-                    RouteController.NotificationUserInfoKey.visualInstructionKey: visualInstruction,
-                ])
-                currentStepProgress.visualInstructionIndex += 1
-                return
-            }
-        }
+        // TODO: Delete me if needed.
+//        guard let userSnapToStepDistanceFromManeuver = userSnapToStepDistanceFromManeuver else { return }
+//        let currentStepProgress = routeProgress.currentLegProgress.currentStepProgress
+//        guard let visualInstructions = currentStepProgress.remainingVisualInstructions else { return }
+//
+//        for visualInstruction in visualInstructions {
+//            if userSnapToStepDistanceFromManeuver > visualInstruction.distanceAlongStep || isFirstLocation {
+//                print("LegacyRouteController updating visualInstructionIndex (userSnapToStepDistanceFromManeuver > visualInstruction.distanceAlongStep): \(userSnapToStepDistanceFromManeuver) <= \(visualInstruction.distanceAlongStep) = \(userSnapToStepDistanceFromManeuver <= visualInstruction.distanceAlongStep)")
+//
+//                delegate?.router(self, didPassVisualInstructionPoint: visualInstruction, routeProgress: routeProgress)
+//                NotificationCenter.default.post(name: .routeControllerDidPassVisualInstructionPoint, object: self, userInfo: [
+//                    RouteController.NotificationUserInfoKey.routeProgressKey: routeProgress,
+//                    RouteController.NotificationUserInfoKey.visualInstructionKey: visualInstruction,
+//                ])
+//                print("LegacyRouteController incrementing \(currentStepProgress.visualInstructionIndex) by 1")
+//                currentStepProgress.visualInstructionIndex += 1
+//                return
+//            }
+//        }
     }
 
     func advanceStepIndex(to: Array<RouteStep>.Index? = nil) {
