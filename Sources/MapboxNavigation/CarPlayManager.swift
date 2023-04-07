@@ -163,21 +163,21 @@ public class CarPlayManager: NSObject {
     /**
      Initializes a new CarPlay manager that manages a connection to the CarPlay interface.
      
-     - parameter styles: The styles to display in the CarPlay interface. If this argument is omitted, `DayStyle` and `NightStyle` are displayed by default.
+     - parameter styles: The styles to display in the CarPlay interface.
      - parameter directions: The object that calculates routes when the user interacts with the CarPlay interface. If this argument is `nil` or omitted, the shared `Directions` object is used by default.
      - parameter eventsManager: The events manager to use during turn-by-turn navigation while connected to CarPlay. If this argument is `nil` or omitted, a standard `NavigationEventsManager` object is used by default.
      */
-    public convenience init(styles: [Style]? = nil,
+    public convenience init(styles: [Style],
                             directions: Directions? = nil) {
         self.init(styles: styles,
                   directions: directions,
                   navigationViewControllerClass: nil)
     }
     
-    internal init(styles: [Style]? = nil,
+    internal init(styles: [Style],
                   directions: Directions? = nil,
                   navigationViewControllerClass: CarPlayNavigationViewController.Type? = nil) {
-        self.styles = styles ?? [DayStyle(), NightStyle()]
+        self.styles = styles
         let mapboxDirections = directions ?? .shared
         self.directions = mapboxDirections
         self.mapTemplateProvider = MapTemplateProvider()

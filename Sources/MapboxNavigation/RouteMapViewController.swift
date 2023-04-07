@@ -3,7 +3,6 @@ import Mapbox
 import MapboxDirections
 import MapboxCoreNavigation
 import Turf
-import MaplibrePlayground
 
 class ArrowFillPolyline: MGLPolylineFeature {}
 class ArrowStrokePolyline: ArrowFillPolyline {}
@@ -497,7 +496,7 @@ class RouteMapViewController: UIViewController {
 
     fileprivate func rating(for stars: Int) -> Int {
         assert(stars >= 0 && stars <= 5)
-        guard stars > 0 else { return MMEEventsManager.unrated } //zero stars means this was unrated.
+        guard stars > 0 else { return 0 } //zero stars means this was unrated.
         return (stars - 1) * 25
     }
 
@@ -699,13 +698,6 @@ extension RouteMapViewController: NavigationViewDelegate {
             return
         }
 
-        // Avoid aggressively opting the developer into Mapbox services if they
-        // haven’t provided an access token.
-        guard let _ = MGLAccountManager.accessToken else {
-            navigationView.wayNameView.isHidden = true
-            return
-        }
-
         let location = snappedLocation ?? rawLocation
 
         labelCurrentRoadFeature(at: location)
@@ -740,7 +732,7 @@ extension RouteMapViewController: NavigationViewDelegate {
             streetLabelLayer.lineWidth = NSExpression(forConstantValue: 20)
             streetLabelLayer.lineColor = NSExpression(forConstantValue: UIColor.white)
 
-            if ![DirectionsProfileIdentifier.walking, DirectionsProfileIdentifier.cycling].contains( router.routeProgress.routeOptions.profileIdentifier) {
+            if ![ProfileIdentifier.walking, ProfileIdentifier.cycling].contains( router.routeProgress.routeOptions.profileIdentifier) {
                 // filter out to road classes valid for motor transport
                 let roadPredicates = ["motorway", "motorway_link", "trunk", "trunk_link", "primary", "primary_link", "secondary", "secondary_link", "tertiary", "tertiary_link", "street", "street_limited", "roundabout"]
 

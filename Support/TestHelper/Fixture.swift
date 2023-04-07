@@ -3,6 +3,10 @@ import CoreLocation
 import MapboxDirections
 @testable import MapboxCoreNavigation
 
+public extension Bundle {
+    static var testHelperBundle: Bundle { Bundle.module }
+}
+
 public class Fixture: NSObject {
     public class func stringFromFileNamed(name: String) -> String {
         guard let path = Bundle(for: self).path(forResource: name, ofType: "json") else {
@@ -29,7 +33,7 @@ public class Fixture: NSObject {
     
     public class func downloadRouteFixture(coordinates: [CLLocationCoordinate2D], fileName: String, completion: @escaping () -> Void) {
         let accessToken = "<# Mapbox Access Token #>"
-        let credentials = DirectionsCredentials(accessToken: accessToken)
+        let credentials = Credentials(accessToken: accessToken)
         let directions = Directions(credentials: credentials)
         
         let options = RouteOptions(coordinates: coordinates, profileIdentifier: .automobileAvoidingTraffic)
@@ -47,7 +51,7 @@ public class Fixture: NSObject {
     }
     
     public class var blankStyle: URL {
-        let path = Bundle(for: self).path(forResource: "EmptyStyle", ofType: "json")
+        let path = Bundle.module.path(forResource: "EmptyStyle", ofType: "json")
         return URL(fileURLWithPath: path!)
     }
     
@@ -74,6 +78,7 @@ public class Fixture: NSObject {
             decoder.userInfo[.credentials] = Fixture.credentials
             return try decoder.decode(RouteResponse.self, from: responseData)
         } catch {
+            print("Unable to decode JSON fixture (data): \(String(data: responseData, encoding: .utf8) ?? "nil")")
             preconditionFailure("Unable to decode JSON fixture: \(error)")
         }
     }

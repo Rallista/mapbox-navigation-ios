@@ -2,11 +2,11 @@ import XCTest
 import CoreLocation
 import MapboxDirections
 import Turf
-//#if !SWIFT_PACKAGE
+
 import TestHelper
 @testable import MapboxCoreNavigation
 
-let jsonFileName = "routeWithInstructions"
+let jsonFileName = "routeWithInstructionsAlt"
 var routeOptions: NavigationRouteOptions {
     let from = Waypoint(coordinate: CLLocationCoordinate2D(latitude: 37.795042, longitude: -122.413165))
     let to = Waypoint(coordinate: CLLocationCoordinate2D(latitude: 37.7727, longitude: -122.433378))
@@ -64,7 +64,7 @@ class MapboxCoreNavigationTests: XCTestCase {
                                                                   timestamp: now + $0.offset) }
         
         expectation(forNotification: .routeControllerDidPassSpokenInstructionPoint, object: navigation.router) { (notification) -> Bool in
-            let routeProgress = notification.userInfo![RouteController.NotificationUserInfoKey.routeProgressKey] as? RouteProgress
+            let routeProgress = notification.userInfo![LegacyRouteController.NotificationUserInfoKey.routeProgressKey] as? RouteProgress
             
             return routeProgress != nil && routeProgress?.currentLegProgress.userHasArrivedAtWaypoint == false
         }
@@ -91,7 +91,7 @@ class MapboxCoreNavigationTests: XCTestCase {
         
         navigation = MapboxNavigationService(route: route, routeIndex: 0, routeOptions: routeOptions, directions: directions, simulating: .never)
         expectation(forNotification: .routeControllerDidPassSpokenInstructionPoint, object: navigation.router) { (notification) -> Bool in
-            let routeProgress = notification.userInfo![RouteController.NotificationUserInfoKey.routeProgressKey] as? RouteProgress
+            let routeProgress = notification.userInfo![LegacyRouteController.NotificationUserInfoKey.routeProgressKey] as? RouteProgress
             
             return routeProgress?.currentLegProgress.stepIndex == 2
         }
@@ -115,7 +115,7 @@ class MapboxCoreNavigationTests: XCTestCase {
         navigation = MapboxNavigationService(route: route, routeIndex: 0, routeOptions: routeOptions, directions: directions, locationSource: locationManager, simulating: .never)
         
         expectation(forNotification: .routeControllerDidPassSpokenInstructionPoint, object: navigation.router) { (notification) -> Bool in
-            let routeProgress = notification.userInfo![RouteController.NotificationUserInfoKey.routeProgressKey] as? RouteProgress
+            let routeProgress = notification.userInfo![LegacyRouteController.NotificationUserInfoKey.routeProgressKey] as? RouteProgress
             return routeProgress?.currentLegProgress.stepIndex == 4
         }
         
@@ -148,7 +148,7 @@ class MapboxCoreNavigationTests: XCTestCase {
         expectation(forNotification: .routeControllerWillReroute, object: navigation.router) { (notification) -> Bool in
             XCTAssertEqual(notification.userInfo?.count, 1)
             
-            let location = notification.userInfo![RouteController.NotificationUserInfoKey.locationKey] as? CLLocation
+            let location = notification.userInfo![LegacyRouteController.NotificationUserInfoKey.locationKey] as? CLLocation
             return location?.coordinate == offRouteLocations[1].coordinate
         }
         
@@ -168,160 +168,160 @@ class MapboxCoreNavigationTests: XCTestCase {
         let locations = Fixture.generateTrace(for: route).enumerated().map {
             $0.element.shifted(to: now + $0.offset)
         }
-
+        
         let locationManager = DummyLocationManager()
         navigation = MapboxNavigationService(route: route, routeIndex: 0, routeOptions: routeOptions, directions: directions, locationSource: locationManager, simulating: .never)
-
+        
         expectation(forNotification: .routeControllerProgressDidChange, object: navigation.router) { (notification) -> Bool in
-            let routeProgress = notification.userInfo![RouteController.NotificationUserInfoKey.routeProgressKey] as? RouteProgress
+            let routeProgress = notification.userInfo![LegacyRouteController.NotificationUserInfoKey.routeProgressKey] as? RouteProgress
             return routeProgress != nil
         }
-
+        
         class Responder: NSObject, NavigationServiceDelegate {
             var willArriveExpectation: XCTestExpectation!
             var didArriveExpectation: XCTestExpectation!
-
+            
             init(_ willArriveExpectation: XCTestExpectation, _ didArriveExpectation: XCTestExpectation) {
                 self.willArriveExpectation = willArriveExpectation
                 // TODO: remove next line (fulfill) when willArrive works properly
                 self.willArriveExpectation.fulfill()
                 self.didArriveExpectation = didArriveExpectation
             }
-
+            
             func navigationService(_ service: NavigationService, willArriveAt waypoint: Waypoint, after remainingTimeInterval: TimeInterval, distance: CLLocationDistance) {
                 willArriveExpectation.fulfill()
             }
-
+            
             func navigationService(_ service: NavigationService, didArriveAt waypoint: Waypoint) -> Bool {
                 didArriveExpectation.fulfill()
                 return true
             }
         }
-
+        
         let willArriveExpectation = expectation(description: "navigationService(_:willArriveAt:after:distance:) must trigger")
         let didArriveExpectation = expectation(description: "navigationService(_:didArriveAt:) must trigger once")
         willArriveExpectation.assertForOverFulfill = false
-
+        
         let responder = Responder(willArriveExpectation, didArriveExpectation)
         navigation.delegate = responder
         navigation.start()
-
+        
         for location in locations {
             navigation.locationManager(locationManager, didUpdateLocations: [location])
         }
-
+        
         self.waitForExpectations(timeout: 5) { (error) in
             XCTAssertNil(error)
         }
     }
     
     // TODO: Fixme
-//    func testOrderOfExecution() {
-//        let trace = Fixture.generateTrace(for: route).shiftedToPresent().qualified()
-//        let directions = DirectionsSpy()
-//        navigation = MapboxNavigationService(route: route, routeIndex: 0, routeOptions: routeOptions, directions: directions)
-//
-//        struct InstructionPoint {
-//            enum InstructionType {
-//                case visual, spoken
-//            }
-//
-//            let type: InstructionType
-//            let legIndex: Int
-//            let stepIndex: Int
-//            let spokenInstructionIndex: Int
-//            let visualInstructionIndex: Int
-//        }
-//
-//        var points = [InstructionPoint]()
-//
-//        expectation(forNotification: .routeControllerDidPassSpokenInstructionPoint, object: nil) { (notification) -> Bool in
-//            let routeProgress = notification.userInfo![RouteController.NotificationUserInfoKey.routeProgressKey] as! RouteProgress
-//            let legIndex = routeProgress.legIndex
-//            let stepIndex = routeProgress.currentLegProgress.stepIndex
-//            let spokenInstructionIndex = routeProgress.currentLegProgress.currentStepProgress.spokenInstructionIndex
-//            let visualInstructionIndex = routeProgress.currentLegProgress.currentStepProgress.visualInstructionIndex
-//
-//            let point = InstructionPoint(type: .spoken, legIndex: legIndex, stepIndex: stepIndex, spokenInstructionIndex: spokenInstructionIndex, visualInstructionIndex: visualInstructionIndex)
-//            points.append(point)
-//
-//            return true
-//        }
-//
-//        expectation(forNotification: .routeControllerDidPassVisualInstructionPoint, object: nil) { (notification) -> Bool in
-//            let routeProgress = notification.userInfo![RouteController.NotificationUserInfoKey.routeProgressKey] as! RouteProgress
-//            let legIndex = routeProgress.legIndex
-//            let stepIndex = routeProgress.currentLegProgress.stepIndex
-//            let spokenInstructionIndex = routeProgress.currentLegProgress.currentStepProgress.spokenInstructionIndex
-//            let visualInstructionIndex = routeProgress.currentLegProgress.currentStepProgress.visualInstructionIndex
-//
-//            let point = InstructionPoint(type: .visual, legIndex: legIndex, stepIndex: stepIndex, spokenInstructionIndex: spokenInstructionIndex, visualInstructionIndex: visualInstructionIndex)
-//            points.append(point)
-//
-//            return true
-//        }
-//
-//        for location in trace {
-//            // Attempt to snarf visual and spoken instructions by calling methods which internally call
-//            // `Navigator.getStatusForMonotonicTimestampNanoseconds(_:)` multiple times.
-//            let _ = navigation.router.userIsOnRoute(location)
-//            let _ = navigation.router.location
-//            let _ = (navigation.router as? LegacyRouteController)?.snappedLocation
-//
-//            navigation.router!.locationManager!(navigation.locationManager, didUpdateLocations: [location])
-//        }
-//
-//        waitForExpectations(timeout: 2) { (error) in
-//            XCTAssertNil(error)
-//        }
-//
-//        if points.isEmpty {
-//            XCTFail()
-//            return
-//        }
-//
-//        XCTAssertEqual(points[0].legIndex, 0)
-//        XCTAssertEqual(points[0].stepIndex, 0)
-//        XCTAssertEqual(points[0].visualInstructionIndex, 0)
-//        XCTAssertEqual(points[0].spokenInstructionIndex, 0)
-//        XCTAssertEqual(points[0].type, .spoken)
-//
-//        XCTAssertEqual(points[1].legIndex, 0)
-//        XCTAssertEqual(points[1].stepIndex, 0)
-//        XCTAssertEqual(points[1].visualInstructionIndex, 0)
-//        XCTAssertEqual(points[1].spokenInstructionIndex, 0)
-//        XCTAssertEqual(points[1].type, .visual)
-//
-//        XCTAssertEqual(points[2].legIndex, 0)
-//        XCTAssertEqual(points[2].stepIndex, 0)
-//        XCTAssertEqual(points[2].visualInstructionIndex, 0)
-//        XCTAssertEqual(points[2].spokenInstructionIndex, 1)
-//        XCTAssertEqual(points[2].type, .spoken)
-//
-//        XCTAssertEqual(points[3].legIndex, 0)
-//        XCTAssertEqual(points[3].stepIndex, 1)
-//        XCTAssertEqual(points[3].visualInstructionIndex, 0)
-//        XCTAssertEqual(points[3].spokenInstructionIndex, 0)
-//        XCTAssertEqual(points[3].type, .spoken)
-//
-//        // Make sure we never have unsynced indexes or move backward in time by comparing previous to current instruction point
-//        let zippedPoints = zip(points, points.suffix(from: 1))
-//
-//        for seq in zippedPoints {
-//            let previous = seq.0
-//            let current = seq.1
-//
-//            let sameStepAndLeg = previous.legIndex == current.legIndex && previous.stepIndex == current.stepIndex
-//
-//            if sameStepAndLeg {
-//                XCTAssert(current.visualInstructionIndex >= previous.visualInstructionIndex)
-//                XCTAssert(current.spokenInstructionIndex >= previous.spokenInstructionIndex)
-//            } else {
-//                XCTAssert(current.visualInstructionIndex == 0)
-//                XCTAssert(current.spokenInstructionIndex == 0)
-//            }
-//        }
-//    }
+    //    func testOrderOfExecution() {
+    //        let trace = Fixture.generateTrace(for: route).shiftedToPresent().qualified()
+    //        let directions = DirectionsSpy()
+    //        navigation = MapboxNavigationService(route: route, routeIndex: 0, routeOptions: routeOptions, directions: directions)
+    //
+    //        struct InstructionPoint {
+    //            enum InstructionType {
+    //                case visual, spoken
+    //            }
+    //
+    //            let type: InstructionType
+    //            let legIndex: Int
+    //            let stepIndex: Int
+    //            let spokenInstructionIndex: Int
+    //            let visualInstructionIndex: Int
+    //        }
+    //
+    //        var points = [InstructionPoint]()
+    //
+    //        expectation(forNotification: .routeControllerDidPassSpokenInstructionPoint, object: nil) { (notification) -> Bool in
+    //            let routeProgress = notification.userInfo![RouteController.NotificationUserInfoKey.routeProgressKey] as! RouteProgress
+    //            let legIndex = routeProgress.legIndex
+    //            let stepIndex = routeProgress.currentLegProgress.stepIndex
+    //            let spokenInstructionIndex = routeProgress.currentLegProgress.currentStepProgress.spokenInstructionIndex
+    //            let visualInstructionIndex = routeProgress.currentLegProgress.currentStepProgress.visualInstructionIndex
+    //
+    //            let point = InstructionPoint(type: .spoken, legIndex: legIndex, stepIndex: stepIndex, spokenInstructionIndex: spokenInstructionIndex, visualInstructionIndex: visualInstructionIndex)
+    //            points.append(point)
+    //
+    //            return true
+    //        }
+    //
+    //        expectation(forNotification: .routeControllerDidPassVisualInstructionPoint, object: nil) { (notification) -> Bool in
+    //            let routeProgress = notification.userInfo![RouteController.NotificationUserInfoKey.routeProgressKey] as! RouteProgress
+    //            let legIndex = routeProgress.legIndex
+    //            let stepIndex = routeProgress.currentLegProgress.stepIndex
+    //            let spokenInstructionIndex = routeProgress.currentLegProgress.currentStepProgress.spokenInstructionIndex
+    //            let visualInstructionIndex = routeProgress.currentLegProgress.currentStepProgress.visualInstructionIndex
+    //
+    //            let point = InstructionPoint(type: .visual, legIndex: legIndex, stepIndex: stepIndex, spokenInstructionIndex: spokenInstructionIndex, visualInstructionIndex: visualInstructionIndex)
+    //            points.append(point)
+    //
+    //            return true
+    //        }
+    //
+    //        for location in trace {
+    //            // Attempt to snarf visual and spoken instructions by calling methods which internally call
+    //            // `Navigator.getStatusForMonotonicTimestampNanoseconds(_:)` multiple times.
+    //            let _ = navigation.router.userIsOnRoute(location)
+    //            let _ = navigation.router.location
+    //            let _ = (navigation.router as? LegacyRouteController)?.snappedLocation
+    //
+    //            navigation.router!.locationManager!(navigation.locationManager, didUpdateLocations: [location])
+    //        }
+    //
+    //        waitForExpectations(timeout: 2) { (error) in
+    //            XCTAssertNil(error)
+    //        }
+    //
+    //        if points.isEmpty {
+    //            XCTFail()
+    //            return
+    //        }
+    //
+    //        XCTAssertEqual(points[0].legIndex, 0)
+    //        XCTAssertEqual(points[0].stepIndex, 0)
+    //        XCTAssertEqual(points[0].visualInstructionIndex, 0)
+    //        XCTAssertEqual(points[0].spokenInstructionIndex, 0)
+    //        XCTAssertEqual(points[0].type, .spoken)
+    //
+    //        XCTAssertEqual(points[1].legIndex, 0)
+    //        XCTAssertEqual(points[1].stepIndex, 0)
+    //        XCTAssertEqual(points[1].visualInstructionIndex, 0)
+    //        XCTAssertEqual(points[1].spokenInstructionIndex, 0)
+    //        XCTAssertEqual(points[1].type, .visual)
+    //
+    //        XCTAssertEqual(points[2].legIndex, 0)
+    //        XCTAssertEqual(points[2].stepIndex, 0)
+    //        XCTAssertEqual(points[2].visualInstructionIndex, 0)
+    //        XCTAssertEqual(points[2].spokenInstructionIndex, 1)
+    //        XCTAssertEqual(points[2].type, .spoken)
+    //
+    //        XCTAssertEqual(points[3].legIndex, 0)
+    //        XCTAssertEqual(points[3].stepIndex, 1)
+    //        XCTAssertEqual(points[3].visualInstructionIndex, 0)
+    //        XCTAssertEqual(points[3].spokenInstructionIndex, 0)
+    //        XCTAssertEqual(points[3].type, .spoken)
+    //
+    //        // Make sure we never have unsynced indexes or move backward in time by comparing previous to current instruction point
+    //        let zippedPoints = zip(points, points.suffix(from: 1))
+    //
+    //        for seq in zippedPoints {
+    //            let previous = seq.0
+    //            let current = seq.1
+    //
+    //            let sameStepAndLeg = previous.legIndex == current.legIndex && previous.stepIndex == current.stepIndex
+    //
+    //            if sameStepAndLeg {
+    //                XCTAssert(current.visualInstructionIndex >= previous.visualInstructionIndex)
+    //                XCTAssert(current.spokenInstructionIndex >= previous.spokenInstructionIndex)
+    //            } else {
+    //                XCTAssert(current.visualInstructionIndex == 0)
+    //                XCTAssert(current.spokenInstructionIndex == 0)
+    //            }
+    //        }
+    //    }
     
     func testFailToReroute() {
         let directionsClientSpy = DirectionsSpy()
@@ -343,4 +343,3 @@ class MapboxCoreNavigationTests: XCTestCase {
         }
     }
 }
-//#endif

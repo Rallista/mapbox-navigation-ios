@@ -1,6 +1,5 @@
 import Foundation
 import MapboxNavigation
-import MaplibrePlayground
 
 // MARK: CustomDayStyle
 

@@ -23,16 +23,6 @@ class FailingSpeechSynthesizerMock: SpeechSynthesizerStub {
     }
 }
 
-class MapboxSpeechSynthMock: MapboxSpeechSynthesizer {
-    var speakExpectation: XCTestExpectation?
-    
-    override func speak(_ instruction: SpokenInstruction, during legProgress: RouteLegProgress, locale: Locale?) {
-        super.speak(instruction, during: legProgress,locale: locale)
-        
-        speakExpectation?.fulfill()
-    }
-}
-
 class SystemSpeechSynthMock: SystemSpeechSynthesizer {
     var speakExpectation: XCTestExpectation?
     
@@ -75,7 +65,7 @@ class SpeechSynthesizersControllerTests: XCTestCase {
         
         (synthesizers[0] as! FailingSpeechSynthesizerMock).speakExpectation = speakExpectation
         (synthesizers[1] as! FailingSpeechSynthesizerMock).speakExpectation = dontSpeakExpectation
-        let speechSynthesizersController = MultiplexedSpeechSynthesizer(synthesizers)
+        let speechSynthesizersController = SystemSpeechSynthesizer()
         
         
         speechSynthesizersController.speak(SpokenInstruction(distanceAlongStep: .init(),
@@ -88,7 +78,7 @@ class SpeechSynthesizersControllerTests: XCTestCase {
     }
     
     func testFallback() {
-        let speechSynthesizersController = MultiplexedSpeechSynthesizer(synthesizers)
+        let speechSynthesizersController = SystemSpeechSynthesizer()
         let expectation = XCTestExpectation(description: "Both Synthesizers should be called")
         expectation.expectedFulfillmentCount = 2
         (synthesizers[0] as! FailingSpeechSynthesizerMock).failing = true
@@ -172,7 +162,7 @@ class SpeechSynthesizersControllerTests: XCTestCase {
     
     func testMissingLocaleOnMapboxSynth() {
         let expectation = XCTestExpectation(description: "Synthesizer should fail without Locale")
-        let sut = MapboxSpeechSynthMock()
+        let sut = SystemSpeechSynthMock()
         sut.locale = nil
         sut.delegate = self
         delegateErrorBlock = { error in
@@ -194,19 +184,15 @@ class SpeechSynthesizersControllerTests: XCTestCase {
     }
     
     func testMultiplexedParameters() {
-        let controller = MultiplexedSpeechSynthesizer()
+        let controller = SystemSpeechSynthMock()
         
         let testLocale = Locale(identifier: "zu")
         
         controller.muted = true
         controller.locale = testLocale
         
-        XCTAssert(controller.speechSynthesizers.allSatisfy {
-            $0.muted
-        }, "Child speech synthesizers should be muted")
-        XCTAssert(controller.speechSynthesizers.allSatisfy {
-            $0.locale == testLocale
-        }, "Child speech synthesizers should have locale \"\(testLocale.identifier)\" ")
+        XCTAssert(controller.muted, "Child speech synthesizers should be muted")
+        XCTAssertEqual(controller.locale, testLocale, "Child speech synthesizers should have locale \"\(testLocale.identifier)\"")
     }
 }
 

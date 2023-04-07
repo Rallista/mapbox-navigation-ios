@@ -1,5 +1,7 @@
 import XCTest
+import TestHelper
 import MapboxDirections
+
 @testable import MapboxNavigation
 @testable import MapboxCoreNavigation
 

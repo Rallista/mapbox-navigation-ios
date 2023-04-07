@@ -228,7 +228,7 @@ public extension NavigationViewControllerDelegate {
      */
     func navigationViewController(_ navigationViewController: NavigationViewController, didArriveAt waypoint: Waypoint) -> Bool {
         logUnimplemented(protocolType: NavigationViewControllerDelegate.self,  level: .debug)
-        return RouteController.DefaultBehavior.didArriveAtWaypoint
+        return LegacyRouteController.DefaultBehavior.didArriveAtWaypoint
     }
     
     /**
@@ -236,7 +236,7 @@ public extension NavigationViewControllerDelegate {
      */
     func navigationViewController(_ navigationViewController: NavigationViewController, shouldRerouteFrom location: CLLocation) -> Bool {
         logUnimplemented(protocolType: NavigationViewControllerDelegate.self,  level: .debug)
-        return RouteController.DefaultBehavior.shouldRerouteFromLocation
+        return LegacyRouteController.DefaultBehavior.shouldRerouteFromLocation
     }
     
     /**
@@ -350,7 +350,7 @@ public extension NavigationViewControllerDelegate {
      */
     func navigationViewController(_ navigationViewController: NavigationViewController, shouldDiscard location: CLLocation) -> Bool {
         logUnimplemented(protocolType: NavigationViewControllerDelegate.self,  level: .debug)
-        return RouteController.DefaultBehavior.shouldDiscardLocation
+        return LegacyRouteController.DefaultBehavior.shouldDiscardLocation
     }
     
     /**

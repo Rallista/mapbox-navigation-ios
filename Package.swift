@@ -19,11 +19,6 @@ let package = Package(
             targets: [
                 "MapboxNavigation",
             ]),
-        .library(
-            name: "MaplibrePlayground",
-            targets: [
-                "MaplibrePlayground"
-            ])
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
@@ -45,56 +40,17 @@ let package = Package(
                 .product(name: "Solar", package: "Solar"),
             ],
             exclude: ["Info.plist"],
-            resources: [
-                .process("Resources")
-            ]),
+            resources: [.process("Resources")]),
         .target(
             name: "MapboxCoreNavigation",
-            dependencies: [
-                .product(name: "MapboxDirections", package: "mapbox-directions-swift"),
-                "MaplibrePlayground"
-            ],
+            dependencies: [.product(name: "MapboxDirections", package: "mapbox-directions-swift")],
             exclude: ["Info.plist"]),
         
-        // MARK: Support Targets
-        .target(
-            name: "MaplibrePlayground",
-            dependencies: [
-                .product(name: "MapboxDirections", package: "mapbox-directions-swift")
-            ],
-            path: "Support/MaplibrePlayground"),
-        .target(
-            name: "TestHelper",
-            dependencies: [
-                "MapboxCoreNavigation",
-                "MapboxNavigation",
-                "MaplibreTestPlayground",
-            ],
-            path: "Support/TestHelper",
-            resources: [
-                .process("Fixtures"),
-                .process("tiles"),
-                .process("GGPark-to-BernalHeights.route"),
-                .process("li.tar"),
-                .process("turn_left.data"),
-                .process("UnionSquare-to-GGPark.route"),
-            ]),
-        .target(
-            name: "MaplibreTestPlayground",
-            dependencies: [
-                .product(name: "Quick", package: "Quick"),
-                .product(name: "Nimble", package: "Nimble"),
-            ],
-            path: "Support/MaplibreTestPlayground"),
-        
         // MARK: Test Targets
-
-        
         .testTarget(
             name: "MapboxCoreNavigationTests",
             dependencies: [
                 "MapboxCoreNavigation",
-                "MaplibreTestPlayground",
                 "TestHelper",
                 .product(name: "Quick", package: "Quick"),
                 .product(name: "Nimble", package: "Nimble"),
@@ -112,9 +68,19 @@ let package = Package(
                 .product(name: "Nimble", package: "Nimble"),
                 .product(name: "SnapshotTesting", package: "swift-snapshot-testing"),
             ],
-            exclude: ["Info.plist"],
+            exclude: ["Info.plist"]),
+        
+        // MARK: Testing Support Targets
+        .target(
+            name: "TestHelper",
+            dependencies: [
+                "MapboxCoreNavigation",
+                "MapboxNavigation"
+            ],
+            path: "Support/TestHelper",
             resources: [
-                .process("Fixtures")
+                .process("Fixtures"),
+                .process("tiles")
             ]),
     ]
 )

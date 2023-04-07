@@ -2,6 +2,32 @@ import Foundation
 import CoreLocation
 import Turf
 
+// TODO: Delete
+extension CLHeading {
+
+    public convenience init?(heading: CLLocationDirection, accuracy: CLLocationDirection) {
+        let coder = NSCoder()
+        coder.encode(heading, forKey: "magneticHeading")
+        coder.encode(heading, forKey: "trueHeading")
+        coder.encode(accuracy, forKey: "accuracy")
+
+        self.init(coder: coder)
+    }
+}
+
+extension CLLocationCoordinate2D: Decodable {
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.init(latitude: try container.decode(Double.self, forKey: .latitude),
+                  longitude: try container.decode(Double.self, forKey: .longitude))
+    }
+    
+    enum CodingKeys: String, CodingKey {
+        case latitude, longitude
+    }
+}
+
+
 enum DecodingError: Error {
     case missingData
 }

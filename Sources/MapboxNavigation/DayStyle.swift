@@ -57,9 +57,9 @@ extension UIFont {
  `DefaultStyle` is default style for Mapbox Navigation SDK.
  */
 open class DayStyle: Style {
-    public required init() {
+    public init(styleURL: URL) {
         super.init()
-        mapStyleURL = MGLStyle.navigationDayStyleURL
+        mapStyleURL = styleURL
         previewMapStyleURL = mapStyleURL
         styleType = .day
         statusBarStyle = .default

@@ -1,11 +1,11 @@
 import XCTest
 import SnapshotTesting
 import Mapbox
+
 @testable import MapboxNavigation
 
 class CarPlayCompassViewTests: XCTestCase {
     var window: UIWindow!
-    let styles = [DayStyle(), NightStyle()]
     
     override func setUp() {
         super.setUp()
