@@ -185,7 +185,8 @@ open class NavigationView: UIView {
     
     open override func prepareForInterfaceBuilder() {
         super.prepareForInterfaceBuilder()
-        DayStyle().apply()
+        fatalError("Unknown style")
+//        DayStyle().apply()
         [mapView, topBannerContainerView, bottomBannerContainerView].forEach( { $0.prepareForInterfaceBuilder() })
         wayNameView.text = "Street Label"
     }

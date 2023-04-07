@@ -44,23 +44,7 @@ public class JunctionView: UIImageView {
                 image = cachedImage
                 show(animated: true)
             } else {
-                guard let imageURL = guidanceViewImageRepresentation.imageURL else { return }
-                let baseURLString = imageURL.absoluteString
-                guard let accessToken = service.directions.credentials.accessToken else { return }
-                let stringURL = baseURLString + "&access_token=" + accessToken
-
-                guard let guidanceViewImageURL = URL(string: stringURL) else { return }
-                imageRepository.imageWithURL(guidanceViewImageURL, cacheKey: guidanceView.cacheKey!) { [weak self] (downloadedImage) in
-                    DispatchQueue.main.async {
-                        guard let self = self else { return }
-                        
-                        self.isCurrentlyVisible = true
-                        self.isHidden = !self.isCurrentlyVisible
-                        
-                        self.image = downloadedImage
-                        self.show(animated: true)
-                    }
-                }
+                debugPrint("NOT Implemented - would fetch junction view from Mapbox API (JunctionView.swift#L47)")
             }
         }
     }

@@ -5,10 +5,9 @@ import Mapbox
  `NightStyle` is the default night style for Mapbox Navigation SDK. Only will be applied when necessary and if `automaticallyAdjustStyleForSunPosition`.
  */
 open class NightStyle: DayStyle {
-    public required init() {
-        super.init()
-        mapStyleURL = MGLStyle.navigationNightStyleURL
-        previewMapStyleURL = mapStyleURL
+    public override init(styleURL: URL) {
+        super.init(styleURL: styleURL)
+        
         styleType = .night
         statusBarStyle = .lightContent
     }

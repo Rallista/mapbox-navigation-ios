@@ -5,7 +5,6 @@ import MapboxCoreNavigation
 import MapboxDirections
 import AVFoundation
 import MobileCoreServices
-import MaplibrePlayground
 
 /**
  A container view controller is a view controller that behaves as a navigation component; that is, it responds as the user progresses along a route according to the `NavigationServiceDelegate` protocol.
@@ -300,29 +299,29 @@ open class NavigationViewController: UIViewController, NavigationStatusPresenter
      - parameter routeOptions: The route options used to get the route.
      - parameter navigationOptions: The navigation options to use for the navigation session.
      */
-    required public init(for route: Route, routeIndex: Int, routeOptions: RouteOptions, navigationOptions: NavigationOptions? = nil) {
+    required public init(for route: Route, routeIndex: Int, routeOptions: RouteOptions, navigationOptions: NavigationOptions) {
         super.init(nibName: nil, bundle: nil)
         
-        self.navigationService = navigationOptions?.navigationService ?? MapboxNavigationService(route: route, routeIndex: routeIndex, routeOptions: routeOptions, directions: directions)
+        self.navigationService = navigationOptions.navigationService ?? MapboxNavigationService(route: route, routeIndex: routeIndex, routeOptions: routeOptions, directions: directions)
         self.navigationService.delegate = self
 
-        let credentials = navigationService.directions.credentials
-        self.voiceController = navigationOptions?.voiceController ?? RouteVoiceController(navigationService: navigationService,accessToken: credentials.accessToken, host: credentials.host.absoluteString)
+        self.voiceController = navigationOptions.voiceController ?? RouteVoiceController(navigationService: navigationService)
 
         NavigationSettings.shared.distanceUnit = routeOptions.locale.usesMetric ? .kilometer : .mile
         
         styleManager = StyleManager()
         styleManager.delegate = self
-        styleManager.styles = navigationOptions?.styles ?? [DayStyle(), NightStyle()]
         
-        let bottomBanner = navigationOptions?.bottomBanner ?? {
+        styleManager.styles = navigationOptions.styles
+        
+        let bottomBanner = navigationOptions.bottomBanner ?? {
             let viewController: BottomBannerViewController = .init()
             viewController.delegate = self
             return viewController
         }()
         bottomViewController = bottomBanner
 
-        if let customBanner = navigationOptions?.topBanner {
+        if let customBanner = navigationOptions.topBanner {
             topViewController = customBanner
         } else {
             let defaultBanner = TopBannerViewController(nibName: nil, bundle: nil)
@@ -355,8 +354,8 @@ open class NavigationViewController: UIViewController, NavigationStatusPresenter
      - parameter routeOptions: the options object used to generate the route.
      - parameter navigationService: The navigation service that manages navigation along the route.
      */
-    convenience init(route: Route, routeIndex: Int, routeOptions: RouteOptions, navigationService service: NavigationService) {
-        let options = NavigationOptions(navigationService: service)
+    convenience init(route: Route, routeIndex: Int, routeOptions: RouteOptions, navigationService service: NavigationService, styles: [Style]) {
+        let options = NavigationOptions(styles: styles, navigationService: service)
         self.init(for: route, routeIndex: routeIndex, routeOptions: routeOptions, navigationOptions: options)
     }
     
@@ -585,7 +584,7 @@ extension NavigationViewController: RouteMapViewControllerDelegate {
 //MARK: - NavigationServiceDelegate
 extension NavigationViewController: NavigationServiceDelegate {
     public func navigationService(_ service: NavigationService, shouldRerouteFrom location: CLLocation) -> Bool {
-        let defaultBehavior = RouteController.DefaultBehavior.shouldRerouteFromLocation
+        let defaultBehavior = LegacyRouteController.DefaultBehavior.shouldRerouteFromLocation
         let componentsWantReroute = navigationComponents.allSatisfy { $0.navigationService(service, shouldRerouteFrom: location) }
         return componentsWantReroute && (delegate?.navigationViewController(self, shouldRerouteFrom: location) ?? defaultBehavior)
     }
@@ -623,7 +622,7 @@ extension NavigationViewController: NavigationServiceDelegate {
     }
     
     public func navigationService(_ service: NavigationService, shouldDiscard location: CLLocation) -> Bool {
-        let defaultBehavior = RouteController.DefaultBehavior.shouldDiscardLocation
+        let defaultBehavior = LegacyRouteController.DefaultBehavior.shouldDiscardLocation
         let componentsWantToDiscard = navigationComponents.allSatisfy { $0.navigationService(service, shouldDiscard: location) }
         return componentsWantToDiscard && (delegate?.navigationViewController(self, shouldDiscard: location) ?? defaultBehavior)
     }
@@ -644,7 +643,7 @@ extension NavigationViewController: NavigationServiceDelegate {
         guard let destination = progress.currentLeg.destination else {
             preconditionFailure("Current leg has no destination")
         }
-        let shouldPrevent = navigationService.delegate?.navigationService(navigationService, shouldPreventReroutesWhenArrivingAt: destination) ?? RouteController.DefaultBehavior.shouldPreventReroutesWhenArrivingAtWaypoint
+        let shouldPrevent = navigationService.delegate?.navigationService(navigationService, shouldPreventReroutesWhenArrivingAt: destination) ?? LegacyRouteController.DefaultBehavior.shouldPreventReroutesWhenArrivingAtWaypoint
         let userHasArrivedAndShouldPreventRerouting = shouldPrevent && !progress.currentLegProgress.userHasArrivedAtWaypoint
         
         if snapsUserLocationAnnotationToRoute,
@@ -696,7 +695,7 @@ extension NavigationViewController: NavigationServiceDelegate {
     }
     
     public func navigationService(_ service: NavigationService, didArriveAt waypoint: Waypoint) -> Bool {
-        let defaultBehavior = RouteController.DefaultBehavior.didArriveAtWaypoint
+        let defaultBehavior = LegacyRouteController.DefaultBehavior.didArriveAtWaypoint
         let componentsWantAdvance = navigationComponents.allSatisfy { $0.navigationService(service, didArriveAt: waypoint) }
         let advancesToNextLeg = componentsWantAdvance && (delegate?.navigationViewController(self, didArriveAt: waypoint) ?? defaultBehavior)
         
@@ -762,19 +761,23 @@ extension NavigationViewController: NavigationServiceDelegate {
         
     public func navigationServiceDidChangeAuthorization(_ service: NavigationService, didChangeAuthorizationFor locationManager: CLLocationManager) {
         // CLLocationManager.accuracyAuthorization was introduced in the iOS 14 SDK in Xcode 12, so Xcode 11 doesn’t recognize it.
-        guard let accuracyAuthorizationValue = locationManager.value(forKey: "accuracyAuthorization") as? Int else { return }
-        let accuracyAuthorization = MBNavigationAccuracyAuthorization(rawValue: accuracyAuthorizationValue)
+        guard let accuracyAuthorizationValue = locationManager.value(forKey: "accuracyAuthorization") as? Int32 else { return }
         let previousAuthorizationValue = 1 - accuracyAuthorizationValue
-                        
-        // create authorization status
-        let title = NSLocalizedString("ENABLE_PRECISE_LOCATION", bundle: .mapboxNavigation, value: "Enable precise location to navigate", comment: "Label indicating precise location is off and needs to be turned on to navigate")
-        let authorizationStatus = StatusView.Status(identifier: "ENABLE_PRECISE_LOCATION", title: title, duration: .infinity, priority: 1)
         
-        if #available(iOS 14.0, *), accuracyAuthorization == .reducedAccuracy {
-            show(authorizationStatus)
+        let authorizationStatus = CLAuthorizationStatus(rawValue: accuracyAuthorizationValue)
+        
+        // create authorization status
+        let title = NSLocalizedString("ENABLE_PRECISE_LOCATION",
+                                      bundle: .mapboxNavigation,
+                                      value: "Enable precise location to navigate",
+                                      comment: "Label indicating precise location is off and needs to be turned on to navigate")
+        let preciseLocationStatus = StatusView.Status(identifier: "ENABLE_PRECISE_LOCATION", title: title, duration: .infinity, priority: 1)
+        
+        if #available(iOS 14.0, *), locationManager.accuracyAuthorization == .reducedAccuracy {
+            show(preciseLocationStatus)
             mapView?.reducedAccuracyActivatedMode = true
         } else if #available(iOS 14.0, *), previousAuthorizationValue == 1, didChangeAuthorizationIsFirstCalled == false {
-            hide(authorizationStatus)
+            hide(preciseLocationStatus)
             mapView?.reducedAccuracyActivatedMode = false
         } else {
             //Fallback on earlier versions

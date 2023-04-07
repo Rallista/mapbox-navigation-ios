@@ -3,7 +3,6 @@ import CoreLocation
 import MapboxDirections
 import Polyline
 import Turf
-import MaplibrePlayground
 
 protocol RouteControllerDataSource: AnyObject {
     var location: CLLocation? { get }
@@ -11,6 +10,14 @@ protocol RouteControllerDataSource: AnyObject {
 }
 
 open class LegacyRouteController: NSObject, Router, InternalRouter, CLLocationManagerDelegate {
+    
+    public enum DefaultBehavior {
+        public static let shouldRerouteFromLocation: Bool = true
+        public static let shouldDiscardLocation: Bool = false
+        public static let didArriveAtWaypoint: Bool = true
+        public static let shouldPreventReroutesWhenArrivingAtWaypoint: Bool = true
+        public static let shouldDisableBatteryMonitoring: Bool = true
+    }
     
     public weak var delegate: RouterDelegate?
 
@@ -191,7 +198,7 @@ open class LegacyRouteController: NSObject, Router, InternalRouter, CLLocationMa
         // If the user has arrived, do not continue monitor reroutes, step progress, etc
         if routeProgress.currentLegProgress.userHasArrivedAtWaypoint &&
             (delegate?.router(self, shouldPreventReroutesWhenArrivingAt: destination) ??
-                RouteController.DefaultBehavior.shouldPreventReroutesWhenArrivingAtWaypoint) {
+                DefaultBehavior.shouldPreventReroutesWhenArrivingAtWaypoint) {
             return true
         }
         
@@ -250,7 +257,7 @@ open class LegacyRouteController: NSObject, Router, InternalRouter, CLLocationMa
             potentialLocation = lastFiltered
         // `filteredLocations` does not contain good locations and we have found at least one good location previously.
         } else if hasFoundOneQualifiedLocation {
-            if let lastLocation = locations.last, delegate?.router(self, shouldDiscard: lastLocation) ?? RouteController.DefaultBehavior.shouldDiscardLocation {
+            if let lastLocation = locations.last, delegate?.router(self, shouldDiscard: lastLocation) ?? DefaultBehavior.shouldDiscardLocation {
                 // Allow the user puck to advance. A stationary puck is not great.
                 self.rawLocation = lastLocation
                 
@@ -277,7 +284,7 @@ open class LegacyRouteController: NSObject, Router, InternalRouter, CLLocationMa
         updateRouteLegProgress(for: location)
         updateVisualInstructionProgress()
 
-        if !userIsOnRoute(location) && delegate?.router(self, shouldRerouteFrom: location) ?? RouteController.DefaultBehavior.shouldRerouteFromLocation {
+        if !userIsOnRoute(location) && delegate?.router(self, shouldRerouteFrom: location) ?? DefaultBehavior.shouldRerouteFromLocation {
             reroute(from: location, along: routeProgress)
             return
         }
@@ -296,9 +303,9 @@ open class LegacyRouteController: NSObject, Router, InternalRouter, CLLocationMa
         
         //Fire the notification (for now)
         NotificationCenter.default.post(name: .routeControllerProgressDidChange, object: self, userInfo: [
-            RouteController.NotificationUserInfoKey.routeProgressKey: progress,
-            RouteController.NotificationUserInfoKey.locationKey: location, //guaranteed value
-            RouteController.NotificationUserInfoKey.rawLocationKey: rawLocation, //raw
+            NotificationUserInfoKey.routeProgressKey: progress,
+            NotificationUserInfoKey.locationKey: location, //guaranteed value
+            NotificationUserInfoKey.rawLocationKey: rawLocation, //raw
         ])
     }
         
@@ -325,7 +332,7 @@ open class LegacyRouteController: NSObject, Router, InternalRouter, CLLocationMa
                 previousArrivalWaypoint = currentDestination
                 legProgress.userHasArrivedAtWaypoint = true
                 
-                let advancesToNextLeg = delegate?.router(self, didArriveAt: currentDestination) ?? RouteController.DefaultBehavior.didArriveAtWaypoint
+                let advancesToNextLeg = delegate?.router(self, didArriveAt: currentDestination) ?? DefaultBehavior.didArriveAtWaypoint
                 
                 guard !routeProgress.isFinalLeg && advancesToNextLeg else { return }
                 advanceLegIndex()
@@ -358,7 +365,7 @@ open class LegacyRouteController: NSObject, Router, InternalRouter, CLLocationMa
 
         delegate?.router(self, willRerouteFrom: location)
         NotificationCenter.default.post(name: .routeControllerWillReroute, object: self, userInfo: [
-            RouteController.NotificationUserInfoKey.locationKey: location,
+            NotificationUserInfoKey.locationKey: location,
         ])
 
         self.lastRerouteLocation = location
@@ -373,7 +380,7 @@ open class LegacyRouteController: NSObject, Router, InternalRouter, CLLocationMa
             case let .failure(error):
                 strongSelf.delegate?.router(strongSelf, didFailToRerouteWith: error)
                  NotificationCenter.default.post(name: .routeControllerDidFailToReroute, object: self, userInfo: [
-                     RouteController.NotificationUserInfoKey.routingErrorKey: error,
+                     NotificationUserInfoKey.routingErrorKey: error,
                  ])
                  return
             case let .success(response):
@@ -491,8 +498,8 @@ open class LegacyRouteController: NSObject, Router, InternalRouter, CLLocationMa
             if userSnapToStepDistanceFromManeuver <= spokenInstruction.distanceAlongStep || firstInstructionOnFirstStep {
                 delegate?.router(self, didPassSpokenInstructionPoint: spokenInstruction, routeProgress: routeProgress)
                 NotificationCenter.default.post(name: .routeControllerDidPassSpokenInstructionPoint, object: self, userInfo: [
-                    RouteController.NotificationUserInfoKey.routeProgressKey: routeProgress,
-                    RouteController.NotificationUserInfoKey.spokenInstructionKey: spokenInstruction,
+                    NotificationUserInfoKey.routeProgressKey: routeProgress,
+                    NotificationUserInfoKey.spokenInstructionKey: spokenInstruction,
                 ])
 
                 routeProgress.currentLegProgress.currentStepProgress.spokenInstructionIndex += 1
@@ -502,21 +509,22 @@ open class LegacyRouteController: NSObject, Router, InternalRouter, CLLocationMa
     }
     
     func updateVisualInstructionProgress() {
-        guard let userSnapToStepDistanceFromManeuver = userSnapToStepDistanceFromManeuver else { return }
-        let currentStepProgress = routeProgress.currentLegProgress.currentStepProgress
-        guard let visualInstructions = currentStepProgress.remainingVisualInstructions else { return }
-        
-        for visualInstruction in visualInstructions {
-            if userSnapToStepDistanceFromManeuver <= visualInstruction.distanceAlongStep || isFirstLocation {
-                delegate?.router(self, didPassVisualInstructionPoint: visualInstruction, routeProgress: routeProgress)
-                NotificationCenter.default.post(name: .routeControllerDidPassVisualInstructionPoint, object: self, userInfo: [
-                    RouteController.NotificationUserInfoKey.routeProgressKey: routeProgress,
-                    RouteController.NotificationUserInfoKey.visualInstructionKey: visualInstruction,
-                ])
-                currentStepProgress.visualInstructionIndex += 1
-                return
-            }
-        }
+        // TODO: After test with latest MapboxDirections. This was resulting in an index of 1 & empty banner. Determine cause.
+//        guard let userSnapToStepDistanceFromManeuver = userSnapToStepDistanceFromManeuver else { return }
+//        let currentStepProgress = routeProgress.currentLegProgress.currentStepProgress
+//        guard let visualInstructions = currentStepProgress.remainingVisualInstructions else { return }
+//
+//        for visualInstruction in visualInstructions {
+//            if userSnapToStepDistanceFromManeuver > visualInstruction.distanceAlongStep || isFirstLocation {
+//                delegate?.router(self, didPassVisualInstructionPoint: visualInstruction, routeProgress: routeProgress)
+//                NotificationCenter.default.post(name: .routeControllerDidPassVisualInstructionPoint, object: self, userInfo: [
+//                    RouteController.NotificationUserInfoKey.routeProgressKey: routeProgress,
+//                    RouteController.NotificationUserInfoKey.visualInstructionKey: visualInstruction,
+//                ])
+//                currentStepProgress.visualInstructionIndex += 1
+//                return
+//            }
+//        }
     }
 
     func advanceStepIndex(to: Array<RouteStep>.Index? = nil) {

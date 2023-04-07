@@ -1,7 +1,6 @@
 import UIKit
 import CoreLocation
 import MapboxDirections
-import MaplibrePlayground
 
 public enum SimulationIntent: Int{
     case manual, poorGPS
@@ -329,9 +328,6 @@ public class MapboxNavigationService: NSObject, NavigationService {
     }
     
     public func stop() {
-        
-        MBXAccounts.resetSession()
-        
         nativeLocationSource.stopUpdatingHeading()
         nativeLocationSource.stopUpdatingLocation()
         
@@ -417,7 +413,7 @@ extension MapboxNavigationService: CLLocationManagerDelegate {
 
 //MARK: - RouteControllerDelegate
 extension MapboxNavigationService: RouterDelegate {
-    typealias Default = RouteController.DefaultBehavior
+    typealias Default = LegacyRouteController.DefaultBehavior
     
     public func router(_ router: Router, willRerouteFrom location: CLLocation) {
         //notify our consumer

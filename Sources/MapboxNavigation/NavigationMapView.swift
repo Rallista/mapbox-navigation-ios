@@ -3,7 +3,6 @@ import Mapbox
 import MapboxDirections
 import MapboxCoreNavigation
 import Turf
-import MaplibrePlayground
 
 let identifierNamespace = Bundle.mapboxNavigation.bundleIdentifier ?? ""
 
@@ -1517,10 +1516,6 @@ open class NavigationMapView: MGLMapView, UIGestureRecognizerDelegate {
      to call this method on the value of `NavigationViewController.mapView`.
      */
     public func localizeLabels() {
-        guard MGLAccountManager.hasChinaBaseURL == false else{
-            return
-        }
-        
         guard let style = style else {
             return
         }

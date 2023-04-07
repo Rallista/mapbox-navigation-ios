@@ -3,9 +3,7 @@ import CoreLocation
 import MapboxDirections
 import Turf
 import os.log
-//#if !SWIFT_PACKAGE
-import MaplibrePlayground
-import MaplibreTestPlayground
+
 @testable import TestHelper
 @testable import MapboxCoreNavigation
 
@@ -371,11 +369,11 @@ class NavigationServiceTests: XCTestCase {
     }
 
     func testRouteControllerDoesNotHaveRetainCycle() {
-        weak var subject: RouteController? = nil
+        weak var subject: LegacyRouteController? = nil
 
         autoreleasepool {
             let fakeDataSource = RouteControllerDataSourceFake()
-            let routeController = RouteController(along: initialRoute, routeIndex: 0, options: routeOptions,  directions: directionsClientSpy, dataSource: fakeDataSource)
+            let routeController = LegacyRouteController(along: initialRoute, routeIndex: 0, options: routeOptions,  directions: directionsClientSpy, dataSource: fakeDataSource)
             subject = routeController
         }
 
@@ -383,11 +381,11 @@ class NavigationServiceTests: XCTestCase {
     }
 
     func testLegacyRouteControllerDoesNotHaveRetainCycle() {
-        weak var subject: RouteController? = nil
+        weak var subject: LegacyRouteController? = nil
 
         autoreleasepool {
             let fakeDataSource = RouteControllerDataSourceFake()
-            let routeController = RouteController(along: initialRoute, routeIndex: 0, options: routeOptions,  directions: directionsClientSpy, dataSource: fakeDataSource)
+            let routeController = LegacyRouteController(along: initialRoute, routeIndex: 0, options: routeOptions,  directions: directionsClientSpy, dataSource: fakeDataSource)
             subject = routeController
         }
 
@@ -399,7 +397,7 @@ class NavigationServiceTests: XCTestCase {
 
         autoreleasepool {
             let fakeDataSource = RouteControllerDataSourceFake()
-            _ = RouteController(along: initialRoute, routeIndex: 0, options: routeOptions, directions: directionsClientSpy, dataSource: fakeDataSource)
+            _ = LegacyRouteController(along: initialRoute, routeIndex: 0, options: routeOptions, directions: directionsClientSpy, dataSource: fakeDataSource)
             subject = fakeDataSource
         }
 
@@ -463,7 +461,7 @@ class NavigationServiceTests: XCTestCase {
         let locationManager = NavigationLocationManager()
 
         let _ = expectation(forNotification: .routeControllerDidReroute, object: router) { (notification) -> Bool in
-            let isProactive = notification.userInfo![RouteController.NotificationUserInfoKey.isProactiveKey] as? Bool
+            let isProactive = notification.userInfo![LegacyRouteController.NotificationUserInfoKey.isProactiveKey] as? Bool
             return isProactive == true
         }
         let rerouteExpectation = expectation(description: "Proactive reroute should trigger")
@@ -529,4 +527,3 @@ class NavigationServiceTests: XCTestCase {
 }
 
 class EmptyNavigationServiceDelegate: NavigationServiceDelegate {}
-//#endif

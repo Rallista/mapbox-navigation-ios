@@ -1,4 +1,6 @@
 import XCTest
+import TestHelper
+
 @testable import MapboxNavigation
 
 class ImageCacheTests: XCTestCase {

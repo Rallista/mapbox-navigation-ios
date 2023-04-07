@@ -6,8 +6,7 @@ import TestHelper
 
 class TestableDayStyle: DayStyle {
     required init() {
-        super.init()
-        mapStyleURL = Fixture.blankStyle
+        super.init(styleURL: Fixture.blankStyle)
     }
 }
 
@@ -36,7 +35,7 @@ class SpeechSynthesizerStub: SpeechSynthesizing {
 }
 
 class RouteVoiceControllerStub: RouteVoiceController {
-    init(navigationService: NavigationService, speechSynthesizer: SpeechSynthesizing? = nil) {
+    override init(navigationService: NavigationService, speechSynthesizer: SpeechSynthesizing? = nil) {
         super.init(navigationService: navigationService,
                    speechSynthesizer: speechSynthesizer ?? SpeechSynthesizerStub())
     }

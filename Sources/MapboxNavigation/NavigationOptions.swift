@@ -14,7 +14,7 @@ open class NavigationOptions: NavigationCustomizable {
      
      If this property is set to `nil`, a `DayStyle` and a `NightStyle` are created to be used as the view controller’s styles. This property is set to `nil` by default.
      */
-    open var styles: [Style]? = nil
+    open var styles: [Style]
     
     /**
      The navigation service that manages navigation along the route.
@@ -43,6 +43,7 @@ open class NavigationOptions: NavigationCustomizable {
     // This makes the compiler happy.
     required public init() {
         // do nothing
+        styles = []
     }
     
     /**
@@ -54,7 +55,7 @@ open class NavigationOptions: NavigationCustomizable {
      - parameter topBanner: The container view controller that presents the top banner.
      - parameter bottomBanner: The container view controller that presents the bottom banner.
      */
-    public convenience init(styles: [Style]? = nil, navigationService: NavigationService? = nil, voiceController: RouteVoiceController? = nil, topBanner: ContainerViewController? = nil, bottomBanner: ContainerViewController? = nil) {
+    public convenience init(styles: [Style], navigationService: NavigationService? = nil, voiceController: RouteVoiceController? = nil, topBanner: ContainerViewController? = nil, bottomBanner: ContainerViewController? = nil) {
         self.init()
         self.styles = styles
         self.navigationService = navigationService

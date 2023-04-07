@@ -1,5 +1,4 @@
 import CoreLocation
-import MaplibrePlayground
 import MapboxDirections
 import Turf
 
@@ -28,28 +27,6 @@ extension CLLocation {
         locationDictionary["speed"] = speed
         locationDictionary["speedAccuracy"] = speedAccuracy
         return locationDictionary
-    }
-    
-    convenience init(_ location: FixLocation) {
-        if #available(iOS 13.4, *) {
-            self.init(coordinate: location.coordinate,
-                      altitude: location.altitude?.doubleValue ?? 0,
-                      horizontalAccuracy: location.accuracyHorizontal?.doubleValue ?? -1,
-                      verticalAccuracy: location.verticalAccuracy?.doubleValue ?? -1,
-                      course: location.bearing?.doubleValue ?? -1,
-                      courseAccuracy: location.bearingAccuracy?.doubleValue ?? -1,
-                      speed: location.speed?.doubleValue ?? -1,
-                      speedAccuracy: location.speedAccuracy?.doubleValue ?? -1,
-                      timestamp: location.time)
-        } else {
-            self.init(coordinate: location.coordinate,
-                      altitude: location.altitude?.doubleValue ?? 0,
-                      horizontalAccuracy: location.accuracyHorizontal?.doubleValue ?? -1,
-                      verticalAccuracy: location.verticalAccuracy?.doubleValue ?? -1,
-                      course: location.bearing?.doubleValue ?? -1,
-                      speed: location.speed?.doubleValue ?? -1,
-                      timestamp: location.time)
-        }
     }
     
     /**

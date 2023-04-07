@@ -1,6 +1,8 @@
 import XCTest
 import CoreLocation
 import Solar
+import TestHelper
+
 @testable import MapboxNavigation
 
 struct Location {
@@ -126,7 +128,7 @@ class StyleManagerTests: XCTestCase {
     }
     
     func testDidChangeStyleNotification() {
-        styleManager.styles = [DayStyle(), NightStyle()]
+        styleManager.styles = [DayStyle(styleURL: Fixture.blankStyle), NightStyle(styleURL: Fixture.blankStyle)]
         location = Location.paris
         
         styleManager.applyStyle(type: .day)

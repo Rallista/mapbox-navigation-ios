@@ -12,12 +12,12 @@ class StepsViewControllerTests: XCTestCase {
         static let credentials = Fixture.credentials
     }
     
-    lazy var dependencies: (stepsViewController: StepsViewController, routeController: RouteController, firstLocation: CLLocation, lastLocation: CLLocation) = {
+    lazy var dependencies: (stepsViewController: StepsViewController, routeController: LegacyRouteController, firstLocation: CLLocation, lastLocation: CLLocation) = {
         let bogusToken = "pk.feedCafeDeadBeefBadeBede"
         let directions = Directions(credentials: Fixture.credentials)
         let dataSource = RouteControllerDataSourceFake()
         
-        let routeController = RouteController(along: Constants.route, routeIndex: 0, options: Constants.options, directions: directions, dataSource: dataSource)
+        let routeController = LegacyRouteController(along: Constants.route, routeIndex: 0, options: Constants.options, directions: directions, dataSource: dataSource)
         
         let stepsViewController = StepsViewController(routeProgress: routeController.routeProgress)
         

@@ -7,7 +7,7 @@ import Turf
 @testable import MapboxCoreNavigation
 @testable import MapboxNavigation
 
-let jsonFileName = "routeWithInstructions"
+let jsonFileName = "routeWithInstructionsAlt"
 var routeOptions: NavigationRouteOptions {
     let from = Waypoint(coordinate: CLLocationCoordinate2D(latitude: 37.795042, longitude: -122.413165))
     let to = Waypoint(coordinate: CLLocationCoordinate2D(latitude: 37.7727, longitude: -122.433378))
@@ -24,7 +24,7 @@ class NavigationViewControllerTests: XCTestCase {
         let fakeDirections = DirectionsSpy()
         let fakeService = MapboxNavigationService(route: initialRoute, routeIndex: 0, routeOptions: routeOptions, directions: fakeDirections, locationSource: NavigationLocationManagerStub(), simulating: .never)
         let fakeVoice: RouteVoiceController = RouteVoiceControllerStub(navigationService: fakeService)
-        let options = NavigationOptions(navigationService: fakeService, voiceController: fakeVoice)
+        let options = NavigationOptions(styles: [DayStyle(styleURL: Fixture.blankStyle)], navigationService: fakeService, voiceController: fakeVoice)
         let navigationViewController = NavigationViewController(for: initialRoute, routeIndex: 0, routeOptions: routeOptions, navigationOptions: options)
         
         navigationViewController.delegate = self
@@ -65,99 +65,104 @@ class NavigationViewControllerTests: XCTestCase {
     // Brief: navigationViewController(_:roadNameAt:) delegate method is implemented,
     //        with a road name provided and wayNameView label is visible.
     func testNavigationViewControllerDelegateRoadNameAtLocationImplemented() {
-        let navigationViewController = dependencies.navigationViewController
-        let service = dependencies.navigationService
-        
-        // Identify a location to set the custom road name.
-        let taylorStreetLocation = dependencies.poi.first!
-        let roadName = "Taylor Swift Street"
-        customRoadName[taylorStreetLocation.coordinate] = roadName
-        
-        service.locationManager!(service.locationManager, didUpdateLocations: [taylorStreetLocation])
-        
-        let wayNameView = (navigationViewController.mapViewController?.navigationView.wayNameView)!
-        let currentRoadName = wayNameView.text
-        XCTAssertEqual(currentRoadName, roadName, "Expected: \(roadName); Actual: \(String(describing: currentRoadName))")
-        XCTAssertFalse(wayNameView.isHidden, "WayNameView should be visible.")
+        XCTFail("FIXME")
+//        let navigationViewController = dependencies.navigationViewController
+//        let service = dependencies.navigationService
+//
+//        // Identify a location to set the custom road name.
+//        let taylorStreetLocation = dependencies.poi.first!
+//        let roadName = "Taylor Swift Street"
+//        customRoadName[taylorStreetLocation.coordinate] = roadName
+//
+//        service.locationManager!(service.locationManager, didUpdateLocations: [taylorStreetLocation])
+//
+//        let wayNameView = (navigationViewController.mapViewController?.navigationView.wayNameView)!
+//        let currentRoadName = wayNameView.text
+//        XCTAssertEqual(currentRoadName, roadName, "Expected: \(roadName); Actual: \(String(describing: currentRoadName))")
+//        XCTAssertFalse(wayNameView.isHidden, "WayNameView should be visible.")
     }
     
     func testNavigationShouldNotCallStyleManagerDidRefreshAppearanceMoreThanOnceWithOneStyle() {
-        let options = NavigationOptions(styles: [DayStyle()], navigationService: dependencies.navigationService, voiceController: dependencies.voice)
-        let navigationViewController = NavigationViewController(for: initialRoute, routeIndex: 0, routeOptions: routeOptions, navigationOptions: options)
-        let service = dependencies.navigationService
-        navigationViewController.styleManager.delegate = self
-        
-        let someLocation = dependencies.poi.first!
-        
-        let test: (Any) -> Void = { _ in service.locationManager!(service.locationManager, didUpdateLocations: [someLocation]) }
-        
-        (0...2).forEach(test)
-        
-        XCTAssertEqual(updatedStyleNumberOfTimes, 0, "The style should not be updated.")
-        updatedStyleNumberOfTimes = 0
+        XCTFail("FIXME")
+//        let options = NavigationOptions(styles: [DayStyle(styleURL: Fixture.blankStyle)], navigationService: dependencies.navigationService, voiceController: dependencies.voice)
+//        let navigationViewController = NavigationViewController(for: initialRoute, routeIndex: 0, routeOptions: routeOptions, navigationOptions: options)
+//        let service = dependencies.navigationService
+//        navigationViewController.styleManager.delegate = self
+//
+//        let someLocation = dependencies.poi.first!
+//
+//        let test: (Any) -> Void = { _ in service.locationManager!(service.locationManager, didUpdateLocations: [someLocation]) }
+//
+//        (0...2).forEach(test)
+//
+//        XCTAssertEqual(updatedStyleNumberOfTimes, 0, "The style should not be updated.")
+//        updatedStyleNumberOfTimes = 0
     }
     
     func testCompleteRoute() {
-        let deps = dependencies
-        let navigationViewController = deps.navigationViewController
-        let service = deps.navigationService
-        
-        let delegate = NavigationServiceDelegateSpy()
-        service.delegate = delegate
-        
-        let rootViewController = UIApplication.shared.delegate!.window!!.rootViewController!
-        rootViewController.present(navigationViewController, animated: false, completion: nil)
-        
-        let now = Date()
-        let rawLocations = Fixture.generateTrace(for: initialRoute)
-        let locations = rawLocations.enumerated().map { $0.element.shifted(to: now + $0.offset) }
-        
-        for location in locations {
-            service.locationManager!(service.locationManager, didUpdateLocations: [location])
-        }
-        
-        XCTAssertTrue(delegate.recentMessages.contains("navigationService(_:willArriveAt:after:distance:)"), "Pre-arrival delegate message not fired.")
-        XCTAssertTrue(delegate.recentMessages.contains("navigationService(_:didArriveAt:)"))
-        
-        let dismissExpectation = XCTestExpectation(description: "VC should be dismissed")
-        navigationViewController.dismiss(animated: false) {
-            dismissExpectation.fulfill()
-        }
-        
-        wait(for: [dismissExpectation], timeout: 3)
+        XCTFail("FIXME")
+//        let deps = dependencies
+//        let navigationViewController = deps.navigationViewController
+//        let service = deps.navigationService
+//
+//        let delegate = NavigationServiceDelegateSpy()
+//        service.delegate = delegate
+//
+//        let rootViewController = UIApplication.shared.delegate!.window!!.rootViewController!
+//        rootViewController.present(navigationViewController, animated: false, completion: nil)
+//
+//        let now = Date()
+//        let rawLocations = Fixture.generateTrace(for: initialRoute)
+//        let locations = rawLocations.enumerated().map { $0.element.shifted(to: now + $0.offset) }
+//
+//        for location in locations {
+//            service.locationManager!(service.locationManager, didUpdateLocations: [location])
+//        }
+//
+//        XCTAssertTrue(delegate.recentMessages.contains("navigationService(_:willArriveAt:after:distance:)"), "Pre-arrival delegate message not fired.")
+//        XCTAssertTrue(delegate.recentMessages.contains("navigationService(_:didArriveAt:)"))
+//
+//        let dismissExpectation = XCTestExpectation(description: "VC should be dismissed")
+//        navigationViewController.dismiss(animated: false) {
+//            dismissExpectation.fulfill()
+//        }
+//
+//        wait(for: [dismissExpectation], timeout: 3)
     }
     
     // If tunnel flags are enabled and we need to switch styles, we should not force refresh the map style because we have only 1 style.
     func testNavigationShouldNotCallStyleManagerDidRefreshAppearanceWhenOnlyOneStyle() {
-        let options = NavigationOptions(styles:[NightStyle()], navigationService: dependencies.navigationService, voiceController: dependencies.voice)
-        let navigationViewController = NavigationViewController(for: initialRoute, routeIndex: 0, routeOptions: routeOptions, navigationOptions: options)
-        let service = dependencies.navigationService
-        navigationViewController.styleManager.delegate = self
-        
-        let someLocation = dependencies.poi.first!
-        
-        let test: (Any) -> Void = { _ in service.locationManager!(service.locationManager, didUpdateLocations: [someLocation]) }
-        
-        (0...2).forEach(test)
-        
-        XCTAssertEqual(updatedStyleNumberOfTimes, 0, "The style should not be updated.")
-        updatedStyleNumberOfTimes = 0
+        XCTFail("FIXME")
+//        let options = NavigationOptions(styles:[NightStyle(styleURL: Fixture.blankStyle)], navigationService: dependencies.navigationService, voiceController: dependencies.voice)
+//        let navigationViewController = NavigationViewController(for: initialRoute, routeIndex: 0, routeOptions: routeOptions, navigationOptions: options)
+//        let service = dependencies.navigationService
+//        navigationViewController.styleManager.delegate = self
+//
+//        let someLocation = dependencies.poi.first!
+//
+//        let test: (Any) -> Void = { _ in service.locationManager!(service.locationManager, didUpdateLocations: [someLocation]) }
+//
+//        (0...2).forEach(test)
+//
+//        XCTAssertEqual(updatedStyleNumberOfTimes, 0, "The style should not be updated.")
+//        updatedStyleNumberOfTimes = 0
     }
     
     func testNavigationShouldNotCallStyleManagerDidRefreshAppearanceMoreThanOnceWithTwoStyles() {
-        let options = NavigationOptions(styles: [DayStyle(), NightStyle()], navigationService: dependencies.navigationService, voiceController: dependencies.voice)
-        let navigationViewController = NavigationViewController(for: initialRoute, routeIndex: 0, routeOptions: routeOptions, navigationOptions: options)
-        let service = dependencies.navigationService
-        navigationViewController.styleManager.delegate = self
-        
-        let someLocation = dependencies.poi.first!
-        
-        let test: (Any) -> Void = { _ in service.locationManager!(service.locationManager, didUpdateLocations: [someLocation]) }
-        
-        (0...2).forEach(test)
-        
-        XCTAssertEqual(updatedStyleNumberOfTimes, 0, "The style should not be updated.")
-        updatedStyleNumberOfTimes = 0
+        XCTFail("FIXME")
+//        let options = NavigationOptions(styles: [DayStyle(styleURL: Fixture.blankStyle), NightStyle(styleURL: Fixture.blankStyle)], navigationService: dependencies.navigationService, voiceController: dependencies.voice)
+//        let navigationViewController = NavigationViewController(for: initialRoute, routeIndex: 0, routeOptions: routeOptions, navigationOptions: options)
+//        let service = dependencies.navigationService
+//        navigationViewController.styleManager.delegate = self
+//
+//        let someLocation = dependencies.poi.first!
+//
+//        let test: (Any) -> Void = { _ in service.locationManager!(service.locationManager, didUpdateLocations: [someLocation]) }
+//
+//        (0...2).forEach(test)
+//
+//        XCTAssertEqual(updatedStyleNumberOfTimes, 0, "The style should not be updated.")
+//        updatedStyleNumberOfTimes = 0
     }
     
     // Brief: navigationViewController(_:roadNameAt:) delegate method is implemented,
@@ -183,19 +188,20 @@ class NavigationViewControllerTests: XCTestCase {
     }
     
     func testNavigationViewControllerDelegateRoadNameAtLocationUmimplemented() {
-        let navigationViewController = dependencies.navigationViewController
-        UIApplication.shared.delegate!.window!!.addSubview(navigationViewController.view)
-        
-        let service = dependencies.navigationService
-        
-        // Identify a location without a custom road name.
-        let fultonStreetLocation = dependencies.poi[2]
-        
-        navigationViewController.mapViewController!.labelRoadNameCompletionHandler = { (defaultRoadNameAssigned) in
-            XCTAssertTrue(defaultRoadNameAssigned, "label road name was not successfully set")
-        }
-        
-        service.locationManager!(service.locationManager, didUpdateLocations: [fultonStreetLocation])
+        XCTFail("FIXME")
+//        let navigationViewController = dependencies.navigationViewController
+//        UIApplication.shared.delegate!.window!!.addSubview(navigationViewController.view)
+//
+//        let service = dependencies.navigationService
+//
+//        // Identify a location without a custom road name.
+//        let fultonStreetLocation = dependencies.poi[2]
+//
+//        navigationViewController.mapViewController!.labelRoadNameCompletionHandler = { (defaultRoadNameAssigned) in
+//            XCTAssertTrue(defaultRoadNameAssigned, "label road name was not successfully set")
+//        }
+//
+//        service.locationManager!(service.locationManager, didUpdateLocations: [fultonStreetLocation])
     }
     
     func testDestinationAnnotationUpdatesUponReroute() {
@@ -230,54 +236,56 @@ class NavigationViewControllerTests: XCTestCase {
     }
     
     func testBlankBanner() {
-        let window = UIApplication.shared.keyWindow!
-        let viewController = window.rootViewController!
-        
-        let options = NavigationRouteOptions(coordinates: [
-            CLLocationCoordinate2D(latitude: 38.853108, longitude: -77.043331),
-            CLLocationCoordinate2D(latitude: 38.910736, longitude: -76.966906),
-        ])
-        
-        let route = Fixture.route(from: "DCA-Arboretum", options: options)
-        let navigationViewController = NavigationViewController(for: route, routeIndex: 0, routeOptions: options)
-        
-        viewController.present(navigationViewController, animated: false, completion: nil)
-        
-        let firstInstruction = route.legs[0].steps[0].instructionsDisplayedAlongStep!.first
-        let topViewController = navigationViewController.topViewController as! TopBannerViewController
-        let instructionsBannerView = topViewController.instructionsBannerView
-        
-        XCTAssertNotNil(instructionsBannerView.primaryLabel.text)
-        XCTAssertEqual(instructionsBannerView.primaryLabel.text, firstInstruction?.primaryInstruction.text)
-        
-        let dismissExpectation = XCTestExpectation(description: "VC should be dismissed")
-        navigationViewController.dismiss(animated: false) {
-            dismissExpectation.fulfill()
-        }
-        
-        wait(for: [dismissExpectation], timeout: 3)
+        XCTFail("FIXME")
+//        let window = UIApplication.shared.keyWindow!
+//        let viewController = window.rootViewController!
+//
+//        let options = NavigationRouteOptions(coordinates: [
+//            CLLocationCoordinate2D(latitude: 38.853108, longitude: -77.043331),
+//            CLLocationCoordinate2D(latitude: 38.910736, longitude: -76.966906),
+//        ])
+//
+//        let route = Fixture.route(from: "DCA-Arboretum", options: options)
+//        let navigationViewController = NavigationViewController(for: route, routeIndex: 0, routeOptions: options, navigationOptions: .init(styles: [DayStyle(styleURL: Fixture.blankStyle)]))
+//
+//        viewController.present(navigationViewController, animated: false, completion: nil)
+//
+//        let firstInstruction = route.legs[0].steps[0].instructionsDisplayedAlongStep!.first
+//        let topViewController = navigationViewController.topViewController as! TopBannerViewController
+//        let instructionsBannerView = topViewController.instructionsBannerView
+//
+//        XCTAssertNotNil(instructionsBannerView.primaryLabel.text)
+//        XCTAssertEqual(instructionsBannerView.primaryLabel.text, firstInstruction?.primaryInstruction.text)
+//
+//        let dismissExpectation = XCTestExpectation(description: "VC should be dismissed")
+//        navigationViewController.dismiss(animated: false) {
+//            dismissExpectation.fulfill()
+//        }
+//
+//        wait(for: [dismissExpectation], timeout: 3)
     }
     
     func testBannerInjection() {
-        class BottomBannerFake: ContainerViewController { }
-        class TopBannerFake: ContainerViewController { }
-        
-        let top = TopBannerFake(nibName: nil, bundle: nil)
-        let bottom = BottomBannerFake(nibName: nil, bundle: nil)
-        
-        let navOptions = NavigationOptions(topBanner: top, bottomBanner: bottom)
-        
-        let options = NavigationRouteOptions(coordinates: [
-            CLLocationCoordinate2D(latitude: 38.853108, longitude: -77.043331),
-            CLLocationCoordinate2D(latitude: 38.910736, longitude: -76.966906),
-        ])
-        let route = Fixture.route(from: "DCA-Arboretum", options: options)
-        
-        let subject = NavigationViewController(for: route, routeIndex: 0, routeOptions: options, navigationOptions: navOptions)
-        XCTAssert(subject.topViewController == top, "Top banner not injected properly into NVC")
-        XCTAssert(subject.bottomViewController == bottom, "Bottom banner not injected properly into NVC")
-        XCTAssert(subject.mapViewController!.children.contains(top), "Top banner not found in child VC heirarchy")
-        XCTAssert(subject.mapViewController!.children.contains(bottom), "Bottom banner not found in child VC heirarchy")
+        XCTFail("FIXME")
+//        class BottomBannerFake: ContainerViewController { }
+//        class TopBannerFake: ContainerViewController { }
+//
+//        let top = TopBannerFake(nibName: nil, bundle: nil)
+//        let bottom = BottomBannerFake(nibName: nil, bundle: nil)
+//
+//        let navOptions = NavigationOptions(styles: [DayStyle(styleURL: Fixture.blankStyle)], topBanner: top, bottomBanner: bottom)
+//
+//        let options = NavigationRouteOptions(coordinates: [
+//            CLLocationCoordinate2D(latitude: 38.853108, longitude: -77.043331),
+//            CLLocationCoordinate2D(latitude: 38.910736, longitude: -76.966906),
+//        ])
+//        let route = Fixture.route(from: "DCA-Arboretum", options: options)
+//
+//        let subject = NavigationViewController(for: route, routeIndex: 0, routeOptions: options, navigationOptions: navOptions)
+//        XCTAssert(subject.topViewController == top, "Top banner not injected properly into NVC")
+//        XCTAssert(subject.bottomViewController == bottom, "Bottom banner not injected properly into NVC")
+//        XCTAssert(subject.mapViewController!.children.contains(top), "Top banner not found in child VC heirarchy")
+//        XCTAssert(subject.mapViewController!.children.contains(bottom), "Bottom banner not found in child VC heirarchy")
     }
 }
 
