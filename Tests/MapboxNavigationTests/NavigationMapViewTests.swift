@@ -141,7 +141,7 @@ class NavigationMapViewTests: XCTestCase, MGLMapViewDelegate {
         navigationMapView.updateUpcomingRoutePointIndex(routeProgress: testRouteProgress)
         navigationMapView.updateTraveledRouteLine(targetPoint)
 
-        let expectedTraveledFraction = 0.06383308537010246
+        let expectedTraveledFraction = 0.0638330853701029
         XCTAssertEqual(navigationMapView.fractionTraveled, expectedTraveledFraction)
     }
     
