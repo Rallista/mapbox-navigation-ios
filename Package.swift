@@ -22,8 +22,10 @@ let package = Package(
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
-        .package(url: "https://github.com/maplibre/maplibre-gl-native-distribution.git", from: "5.13.0"),
+        .package(url: "https://github.com/maplibre/maplibre-gl-native-distribution.git", exact: "5.13.0"),
         .package(url: "https://github.com/mapbox/mapbox-directions-swift.git", from: "2.9.0"),
+        .package(url: "https://github.com/raphaelmor/Polyline.git", from: "5.0.2"),
+        .package(url: "https://github.com/mapbox/turf-swift.git", from: "2.6.1"),
         .package(url: "https://github.com/ceeK/Solar.git", from: "3.0.0"),
         .package(url: "https://github.com/Quick/Quick.git", from: "2.0.0"),
         .package(url: "https://github.com/Quick/Nimble.git", from: "8.0.0"),
@@ -38,12 +40,16 @@ let package = Package(
                 .product(name: "Mapbox", package: "maplibre-gl-native-distribution"),
                 .product(name: "MapboxDirections", package: "mapbox-directions-swift"),
                 .product(name: "Solar", package: "Solar"),
+                .product(name: "Turf", package: "turf-swift"),
             ],
             exclude: ["Info.plist"],
             resources: [.process("Resources")]),
         .target(
             name: "MapboxCoreNavigation",
-            dependencies: [.product(name: "MapboxDirections", package: "mapbox-directions-swift")],
+            dependencies: [
+                .product(name: "MapboxDirections", package: "mapbox-directions-swift"),
+                .product(name: "Polyline", package: "Polyline"),
+            ],
             exclude: ["Info.plist"]),
         
         // MARK: Test Targets
@@ -75,7 +81,8 @@ let package = Package(
             name: "TestHelper",
             dependencies: [
                 "MapboxCoreNavigation",
-                "MapboxNavigation"
+                "MapboxNavigation",
+                .product(name: "Turf", package: "turf-swift"),
             ],
             path: "Support/TestHelper",
             resources: [
