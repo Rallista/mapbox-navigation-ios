@@ -1,5 +1,5 @@
 import UIKit
-import Mapbox
+import MapLibre
 
 extension UIColor {
     class var defaultRouteCasing: UIColor { get { return .defaultTintStroke } }

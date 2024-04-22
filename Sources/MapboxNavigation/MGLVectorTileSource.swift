@@ -1,7 +1,7 @@
 import Foundation
-import Mapbox
+import MapLibre
 
-extension MGLVectorTileSource {
+extension MLNVectorTileSource {
     /**
      The identifiers of the tile sets that make up this source.
      
@@ -35,6 +35,6 @@ extension MGLVectorTileSource {
      The identifier of a layer in this source that contains road names.
      */
     var roadLabelLayerIdentifier: String? {
-        return tileSetIdentifiers?.compactMap { MGLVectorTileSource.roadLabelLayerIdentifiersByTileSetIdentifier[$0] }.first
+        return tileSetIdentifiers?.compactMap { MLNVectorTileSource.roadLabelLayerIdentifiersByTileSetIdentifier[$0] }.first
     }
 }

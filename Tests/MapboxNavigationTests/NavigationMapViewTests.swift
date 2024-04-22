@@ -1,12 +1,12 @@
 import XCTest
-import Mapbox
+import MapLibre
 import MapboxDirections
 import TestHelper
 import Turf
 @testable import MapboxNavigation
 @testable import MapboxCoreNavigation
 
-class NavigationMapViewTests: XCTestCase, MGLMapViewDelegate {
+class NavigationMapViewTests: XCTestCase, MLNMapViewDelegate {
     let response = Fixture.routeResponse(from: "route-with-instructions", options: NavigationRouteOptions(coordinates: [
         CLLocationCoordinate2D(latitude: 40.311012, longitude: -112.47926),
         CLLocationCoordinate2D(latitude: 29.99908, longitude: -102.828197),
@@ -36,7 +36,7 @@ class NavigationMapViewTests: XCTestCase, MGLMapViewDelegate {
         super.tearDown()
     }
     
-    func mapView(_ mapView: MGLMapView, didFinishLoading style: MGLStyle) {
+    func mapView(_ mapView: MLNMapView, didFinishLoading style: MLNStyle) {
         XCTAssertNotNil(mapView.style)
         XCTAssertEqual(mapView.style, style)
         styleLoadingExpectation!.fulfill()
@@ -89,7 +89,7 @@ class NavigationMapViewTests: XCTestCase, MGLMapViewDelegate {
     
     func testRemoveWaypointsDoesNotRemoveUserAnnotations() {
         XCTAssertNil(mapView!.annotations)
-        mapView!.addAnnotation(MGLPointAnnotation())
+        mapView!.addAnnotation(MLNPointAnnotation())
         mapView!.addAnnotation(PersistentAnnotation())
         XCTAssertEqual(mapView!.annotations!.count, 2)
         
@@ -181,7 +181,7 @@ class NavigationMapViewTests: XCTestCase, MGLMapViewDelegate {
         return validRoute
     }
     
-    func congestionLevel(_ feature: MGLPolylineFeature) -> CongestionLevel? {
+    func congestionLevel(_ feature: MLNPolylineFeature) -> CongestionLevel? {
         guard let congestionLevel = feature.attributes["congestion"] as? String else { return nil }
         
         return CongestionLevel(rawValue: congestionLevel)
@@ -383,5 +383,5 @@ class NavigationMapViewTests: XCTestCase, MGLMapViewDelegate {
     }
 }
 
-class PersistentAnnotation: MGLPointAnnotation { }
+class PersistentAnnotation: MLNPointAnnotation { }
 

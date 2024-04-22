@@ -1,6 +1,6 @@
 import Foundation
 import CarPlay
-import Mapbox
+import MapLibre
 
 /**
  `CarPlayMapViewController` is responsible for administering the Mapbox map, the interface styles and the map template buttons to display on CarPlay.
@@ -220,7 +220,7 @@ extension CarPlayMapViewController: StyleManagerDelegate {
     public func styleManager(_ styleManager: StyleManager, didApply style: Style) {
         let styleURL = style.previewMapStyleURL
         if mapView.styleURL != styleURL {
-            mapView.style?.transition = MGLTransition(duration: 0.5, delay: 0)
+            mapView.style?.transition = MLNTransition(duration: 0.5, delay: 0)
             mapView.styleURL = styleURL
         }
     }

@@ -1,7 +1,7 @@
-import Mapbox
+import MapLibre
 import Turf
 
-extension MGLPointAnnotation {
+extension MLNPointAnnotation {
     /**
      Initializes a map point representation of the given Turf point.
      
@@ -13,7 +13,7 @@ extension MGLPointAnnotation {
     }
 }
 
-extension MGLPointFeature {
+extension MLNPointFeature {
     /**
      Initializes a map point feature representation of the given Turf point feature.
      
@@ -31,7 +31,7 @@ extension MGLPointFeature {
     }
 }
 
-extension MGLPolyline {
+extension MLNPolyline {
     /**
      Initializes a map polyline representation of the given Turf linestring.
      
@@ -42,7 +42,7 @@ extension MGLPolyline {
     }
 }
 
-extension MGLPolylineFeature {
+extension MLNPolylineFeature {
     /**
      Initializes a map polyline feature representation of the given Turf linestring feature.
      
@@ -60,19 +60,19 @@ extension MGLPolylineFeature {
     }
 }
 
-extension MGLMultiPolyline {
+extension MLNMultiPolyline {
     /**
      Initializes a map multipolyline representation of the given Turf multi linestring.
      
      - parameter lineString: The Turf multilinestring to convert to a map multipolyline.
      */
     public convenience init(_ multiLineString: MultiLineString) {
-        let polylines = multiLineString.coordinates.map { MGLPolyline(LineString($0)) }
+        let polylines = multiLineString.coordinates.map { MLNPolyline(LineString($0)) }
         self.init(polylines: polylines)
     }
 }
 
-extension MGLMultiPolylineFeature {
+extension MLNMultiPolylineFeature {
     /**
      Initializes a map multipolyline feature representation of the given Turf multilinestring feature.
      
@@ -90,7 +90,7 @@ extension MGLMultiPolylineFeature {
     }
 }
 
-extension MGLPolygon {
+extension MLNPolygon {
     /**
      Initializes a map polygon representation of the given Turf ring.
      
@@ -107,12 +107,12 @@ extension MGLPolygon {
      */
     public convenience init(_ polygon: Polygon) {
         let outerCoordinates = polygon.outerRing.coordinates
-        let interiorPolygons = polygon.innerRings.map { MGLPolygon($0) }
+        let interiorPolygons = polygon.innerRings.map { MLNPolygon($0) }
         self.init(coordinates: outerCoordinates, count: UInt(outerCoordinates.count), interiorPolygons: interiorPolygons)
     }
 }
 
-extension MGLPolygonFeature {
+extension MLNPolygonFeature {
     /**
      Initializes a map polygon feature representation of the given Turf polygon feature.
      
@@ -130,14 +130,14 @@ extension MGLPolygonFeature {
     }
 }
 
-extension MGLMultiPolygon {
+extension MLNMultiPolygon {
     public convenience init(_ multiPolygon: MultiPolygon) {
-        let polygons = multiPolygon.coordinates.map { MGLPolygon(Polygon($0)) }
+        let polygons = multiPolygon.coordinates.map { MLNPolygon(Polygon($0)) }
         self.init(polygons: polygons)
     }
 }
 
-extension MGLMultiPolygonFeature {
+extension MLNMultiPolygonFeature {
     /**
      Initializes a map multipolygon feature representation of the given Turf multipolygon feature.
      

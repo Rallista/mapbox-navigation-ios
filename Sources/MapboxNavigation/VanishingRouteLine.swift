@@ -1,5 +1,5 @@
 import CoreLocation
-import Mapbox
+import MapLibre
 import MapboxDirections
 import MapboxCoreNavigation
 import Turf
@@ -179,8 +179,8 @@ extension NavigationMapView {
         guard let mainRouteLayerIdentifier = identifier(routes?.first, identifierType: .route),
               let mainRouteCasingLayerIdentifier = identifier(routes?.first, identifierType: .routeCasing) else { return }
         
-        guard let mainRouteLayer = style?.layer(withIdentifier: mainRouteLayerIdentifier) as? MGLLineStyleLayer,
-              let mainRouteCasingLayer = style?.layer(withIdentifier: mainRouteCasingLayerIdentifier) as? MGLLineStyleLayer else { return }
+        guard let mainRouteLayer = style?.layer(withIdentifier: mainRouteLayerIdentifier) as? MLNLineStyleLayer,
+              let mainRouteCasingLayer = style?.layer(withIdentifier: mainRouteCasingLayerIdentifier) as? MLNLineStyleLayer else { return }
         
         if fractionTraveled >= 1.0 {
             // In case if route was fully travelled - remove main route and its casing.
@@ -208,8 +208,8 @@ extension NavigationMapView {
             guard let mainRouteLayerGradient = self.routeLineGradient(routeProgress.route, fractionTraveled: newFractionTraveled) else { return }
             let mainCasingLayerStops = self.routeCasingGradient(newFractionTraveled)
 
-            guard let mainRouteLayer = self.style?.layer(withIdentifier: mainRouteLayerIdentifier) as? MGLLineStyleLayer,
-                  let mainRouteCasingLayer = self.style?.layer(withIdentifier: mainRouteCasingLayerIdentifier) as? MGLLineStyleLayer else {
+            guard let mainRouteLayer = self.style?.layer(withIdentifier: mainRouteLayerIdentifier) as? MLNLineStyleLayer,
+                  let mainRouteCasingLayer = self.style?.layer(withIdentifier: mainRouteCasingLayerIdentifier) as? MLNLineStyleLayer else {
                 timer.invalidate()
                 return
             }
@@ -223,7 +223,7 @@ extension NavigationMapView {
         
         // In case if mainRouteLayer was already added - extract congestion segments out of it.
         if let identifier = identifier(routes?.first, identifierType: .route),
-           let mainRouteLayer = style?.layer(withIdentifier: identifier) as? MGLLineStyleLayer,
+           let mainRouteLayer = style?.layer(withIdentifier: identifier) as? MLNLineStyleLayer,
            // lineGradient contains 4 arguments, last one (stops) allows to store line gradient stops, if they're present - reuse them.
            let lineGradients = mainRouteLayer.lineGradient?.arguments?[3],
            let stops = lineGradients.expressionValue(with: nil, context: nil) as? NSDictionary {
@@ -242,7 +242,7 @@ extension NavigationMapView {
 
             /**
              Begin by calculating individual congestion segments associated
-             with a congestion level, represented as `MGLPolylineFeature`s.
+             with a congestion level, represented as `MLNPolylineFeature`s.
              */
             guard let congestionSegments = addCongestion(to: route, legIndex: 0) else { return nil }
 
@@ -334,7 +334,7 @@ extension NavigationMapView {
             // [0.4109119609930762 = nil,
             // 0.4109119609930761 = nil]
             // Passing NSDictionary with all data from original Dictionary to NSExpression fixes issue.
-            return NSExpression(format: "mgl_interpolate:withCurveType:parameters:stops:($lineProgress, 'linear', nil, %@)", NSDictionary(dictionary: filteredGradientStops))
+            return NSExpression(format: "MLN_interpolate:withCurveType:parameters:stops:($lineProgress, 'linear', nil, %@)", NSDictionary(dictionary: filteredGradientStops))
         }
         return nil
     }
@@ -346,7 +346,7 @@ extension NavigationMapView {
         gradientStops[percentTraveled.nextDown] = traversedRouteColor
         gradientStops[percentTraveled] = routeCasingColor
         
-        return NSExpression(format: "mgl_interpolate:withCurveType:parameters:stops:($lineProgress, 'linear', nil, %@)", NSDictionary(dictionary: gradientStops))
+        return NSExpression(format: "MLN_interpolate:withCurveType:parameters:stops:($lineProgress, 'linear', nil, %@)", NSDictionary(dictionary: gradientStops))
     }
     
     /**

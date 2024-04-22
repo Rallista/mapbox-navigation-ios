@@ -1,6 +1,6 @@
 import XCTest
 import SnapshotTesting
-import Mapbox
+import MapLibre
 
 @testable import MapboxNavigation
 
@@ -27,7 +27,7 @@ class CarPlayCompassViewTests: XCTestCase {
 //        let stackView = UIStackView(orientation: .vertical, spacing: 5, autoLayout: true)
 //        window.addSubview(stackView)
 //        
-//        let baseBundle = Bundle(for: MGLCompassDirectionFormatter.self)
+//        let baseBundle = Bundle(for: MLNCompassDirectionFormatter.self)
 //        let bundle = Bundle(path: baseBundle.path(forResource: language, ofType: "lproj")!)!
 //        let directions = ["COMPASS_N_SHORT",
 //                          "COMPASS_NE_SHORT",

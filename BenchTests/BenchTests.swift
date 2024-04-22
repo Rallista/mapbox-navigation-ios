@@ -10,7 +10,7 @@ class BenchTests: XCTestCase, CLLocationManagerDelegate {
     
     override func setUp() {
         super.setUp()
-        MGLAccountManager.accessToken = token
+        MLNAccountManager.accessToken = token
     }
     
     func testControlFirstRoute() {

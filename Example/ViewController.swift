@@ -1,5 +1,5 @@
 import UIKit
-import Mapbox
+import MapLibre
 import MapboxCoreNavigation
 import MapboxNavigation
 import MapboxDirections
@@ -17,8 +17,8 @@ class ViewController: UIViewController {
     @IBOutlet weak var clearMap: UIButton!
     @IBOutlet weak var bottomBarBackground: UIView!
 
-    var trackPolyline: MGLPolyline?
-    var rawTrackPolyline: MGLPolyline?
+    var trackPolyline: MLNPolyline?
+    var rawTrackPolyline: MLNPolyline?
 
     // MARK: Properties
     var mapView: NavigationMapView? {
@@ -327,7 +327,7 @@ class ViewController: UIViewController {
         customViewController.userIndexedRoute = (route, 0)
         customViewController.userRouteOptions = routeOptions
 
-        let destination = MGLPointAnnotation()
+        let destination = MLNPointAnnotation()
         destination.coordinate = route.shape!.coordinates.last!
         customViewController.destination = destination
         customViewController.simulateLocation = simulationButton.isSelected
@@ -424,8 +424,8 @@ class ViewController: UIViewController {
     }
 }
 
-extension ViewController: MGLMapViewDelegate {
-    func mapView(_ mapView: MGLMapView, didFinishLoading style: MGLStyle) {
+extension ViewController: MLNMapViewDelegate {
+    func mapView(_ mapView: MLNMapView, didFinishLoading style: MLNStyle) {
         guard mapView == self.mapView else {
             return
         }
@@ -433,14 +433,14 @@ extension ViewController: MGLMapViewDelegate {
         self.mapView?.localizeLabels()
 
         if let routes = response?.routes, let currentRoute = routes.first, let coords = currentRoute.shape?.coordinates {
-            mapView.setVisibleCoordinateBounds(MGLPolygon(coordinates: coords, count: UInt(coords.count)).overlayBounds, animated: false)
+            mapView.setVisibleCoordinateBounds(MLNPolygon(coordinates: coords, count: UInt(coords.count)).overlayBounds, animated: false)
             self.mapView?.show(routes)
             self.mapView?.showWaypoints(on: currentRoute)
             self.mapView?.showRouteDurations(along: routes)
         }
     }
 
-    func mapView(_ mapView: MGLMapView, strokeColorForShapeAnnotation annotation: MGLShape) -> UIColor {
+    func mapView(_ mapView: MLNMapView, strokeColorForShapeAnnotation annotation: MLNShape) -> UIColor {
         if annotation == trackPolyline {
             return .darkGray
         }
@@ -450,11 +450,11 @@ extension ViewController: MGLMapViewDelegate {
         return .black
     }
 
-    func mapView(_ mapView: MGLMapView, lineWidthForPolylineAnnotation annotation: MGLPolyline) -> CGFloat {
+    func mapView(_ mapView: MLNMapView, lineWidthForPolylineAnnotation annotation: MLNPolyline) -> CGFloat {
         return annotation == trackPolyline || annotation == rawTrackPolyline ? 4 : 1
     }
 
-    func mapViewRegionIsChanging(_ mapView: MGLMapView) {
+    func mapViewRegionIsChanging(_ mapView: MLNMapView) {
         if activeNavigationViewController == nil, foundAllBuildings == false, let navMapView = mapView as? NavigationMapView {
             let buildingHighlightCoordinates = waypoints.compactMap { $0.targetCoordinate }
             if buildingHighlightCoordinates.count > 0 {
@@ -463,7 +463,7 @@ extension ViewController: MGLMapViewDelegate {
         }
     }
 
-    func mapView(_ mapView: MGLMapView, regionDidChangeWith reason: MGLCameraChangeReason, animated: Bool) {
+    func mapView(_ mapView: MLNMapView, regionDidChangeWith reason: MLNCameraChangeReason, animated: Bool) {
         guard reason != .programmatic, activeNavigationViewController == nil, let routes = response?.routes else { return }
         self.mapView?.showRouteDurations(along: routes)
     }
@@ -608,7 +608,7 @@ extension ViewController {
 
         if let location = notification.userInfo?[PassiveLocationDataSource.NotificationUserInfoKey.locationKey] as? CLLocation {
             if trackPolyline == nil {
-                trackPolyline = MGLPolyline()
+                trackPolyline = MLNPolyline()
             }
 
             var coordinates: [CLLocationCoordinate2D] = [location.coordinate]
@@ -617,7 +617,7 @@ extension ViewController {
 
         if let rawLocation = notification.userInfo?[PassiveLocationDataSource.NotificationUserInfoKey.rawLocationKey] as? CLLocation {
             if rawTrackPolyline == nil {
-                rawTrackPolyline = MGLPolyline()
+                rawTrackPolyline = MLNPolyline()
             }
 
             var coordinates: [CLLocationCoordinate2D] = [rawLocation.coordinate]

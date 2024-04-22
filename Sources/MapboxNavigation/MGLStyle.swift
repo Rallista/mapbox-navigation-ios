@@ -1,13 +1,13 @@
 import Foundation
-import Mapbox
+import MapLibre
 import Turf
 
-extension MGLStyle {
+extension MLNStyle {
     
     /**
      Remove the given style layers from the style in order.
      */
-    func remove(_ layers: [MGLStyleLayer]) {
+    func remove(_ layers: [MLNStyleLayer]) {
         for layer in layers {
             removeLayer(layer)
         }
@@ -18,7 +18,7 @@ extension MGLStyle {
      
      Only remove a source after removing all the style layers that use it.
      */
-    func remove(_ sources: Set<MGLSource>) {
+    func remove(_ sources: Set<MLNSource>) {
         for source in sources {
             removeSource(source)
         }
@@ -30,13 +30,13 @@ extension MGLStyle {
      Useful for debugging or visualizing data.
      */
     public func addDebugCircleLayer(identifier: String, coordinate: CLLocationCoordinate2D, color: UIColor = UIColor.purple) {
-        let point = MGLPointFeature()
+        let point = MLNPointFeature()
         point.coordinate = coordinate
 
-        let dataSource = MGLShapeSource(identifier: "debugCircleLayer" + identifier, features: [point], options: nil)
+        let dataSource = MLNShapeSource(identifier: "debugCircleLayer" + identifier, features: [point], options: nil)
         addSource(dataSource)
 
-        let circle = MGLCircleStyleLayer(identifier: "debugCircleLayer" + identifier, source: dataSource)
+        let circle = MLNCircleStyleLayer(identifier: "debugCircleLayer" + identifier, source: dataSource)
         circle.circleRadius = NSExpression(forConstantValue: 10)
         circle.circleOpacity = NSExpression(forConstantValue: 0.75)
         circle.circleColor = NSExpression(forConstantValue: color)
@@ -53,11 +53,11 @@ extension MGLStyle {
      */
     public func addDebugLineLayer(identifier: String, coordinates: [CLLocationCoordinate2D], color: UIColor = UIColor.purple) {
         let lineString = LineString(coordinates)
-        let lineFeature = MGLPolylineFeature(lineString)
-        let shapeSource = MGLShapeSource(identifier: "debugLineLayer" + identifier, features: [lineFeature], options: nil)
+        let lineFeature = MLNPolylineFeature(lineString)
+        let shapeSource = MLNShapeSource(identifier: "debugLineLayer" + identifier, features: [lineFeature], options: nil)
         addSource(shapeSource)
 
-        let lineLayer = MGLLineStyleLayer(identifier: "debugLineLayer" + identifier, source: shapeSource)
+        let lineLayer = MLNLineStyleLayer(identifier: "debugLineLayer" + identifier, source: shapeSource)
         lineLayer.lineColor = NSExpression(forConstantValue: color)
         lineLayer.lineWidth = NSExpression(forConstantValue: 8)
         lineLayer.lineCap = NSExpression(forConstantValue: "round")
@@ -72,11 +72,11 @@ extension MGLStyle {
     public func addDebugPolygonLayer(identifier: String, coordinates: [CLLocationCoordinate2D], color: UIColor = UIColor.purple) {
         removeDebugPolygonLayers()
 
-        let fillFeature = MGLPolygonFeature(coordinates: coordinates, count: UInt(coordinates.count))
-        let shapeSource = MGLShapeSource(identifier: "debugPolygonLayer" + identifier, features: [fillFeature], options: nil)
+        let fillFeature = MLNPolygonFeature(coordinates: coordinates, count: UInt(coordinates.count))
+        let shapeSource = MLNShapeSource(identifier: "debugPolygonLayer" + identifier, features: [fillFeature], options: nil)
         addSource(shapeSource)
 
-        let fillLayer = MGLFillStyleLayer(identifier: "debugPolygonLayer" + identifier, source: shapeSource)
+        let fillLayer = MLNFillStyleLayer(identifier: "debugPolygonLayer" + identifier, source: shapeSource)
         fillLayer.fillColor = NSExpression(forConstantValue: color)
         fillLayer.fillOpacity = NSExpression(forConstantValue: NSNumber(0.25))
         fillLayer.fillOutlineColor = NSExpression(forConstantValue: color)
@@ -92,7 +92,7 @@ extension MGLStyle {
     public func removeDebugLineLayers() {
         // remove any old layers
         let styleLayers = layers.filter({ layer -> Bool in
-            guard let layer = layer as? MGLLineStyleLayer else { return false }
+            guard let layer = layer as? MLNLineStyleLayer else { return false }
             return layer.identifier.contains("debugLineLayer")
         })
 
@@ -113,7 +113,7 @@ extension MGLStyle {
      */
     public func removeDebugPolygonLayers() {
         let styleLayers = layers.filter({ layer -> Bool in
-            guard let layer = layer as? MGLFillStyleLayer else { return false }
+            guard let layer = layer as? MLNFillStyleLayer else { return false }
             return layer.identifier.contains("debugPolygonLayer")
         })
 
@@ -135,7 +135,7 @@ extension MGLStyle {
     public func removeDebugCircleLayers() {
         // remove any old layers
         let styleLayers = layers.filter({ layer -> Bool in
-            guard let layer = layer as? MGLCircleStyleLayer else { return false }
+            guard let layer = layer as? MLNCircleStyleLayer else { return false }
             return layer.identifier.contains("debugCircleLayer")
         })
 

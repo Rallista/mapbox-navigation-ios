@@ -1,5 +1,5 @@
 import Foundation
-import Mapbox
+import MapLibre
 import MapboxDirections
 import MapboxCoreNavigation
 import CarPlay
@@ -321,7 +321,7 @@ public class CarPlayNavigationViewController: UIViewController, NavigationMapVie
         
         // Update the user puck
         mapView?.updatePreferredFrameRate(for: routeProgress)
-        let camera = MGLMapCamera(lookingAtCenter: location.coordinate, altitude: 120, pitch: 60, heading: location.course)
+        let camera = MLNMapCamera(lookingAtCenter: location.coordinate, altitude: 120, pitch: 60, heading: location.course)
         mapView?.updateCourseTracking(location: location, camera: camera, animated: true)
         
         let congestionLevel = routeProgress.averageCongestionLevelRemainingOnLeg ?? .unknown
@@ -512,7 +512,7 @@ extension CarPlayNavigationViewController: StyleManagerDelegate {
     
     public func styleManager(_ styleManager: StyleManager, didApply style: Style) {
         if mapView?.styleURL != style.mapStyleURL {
-            mapView?.style?.transition = MGLTransition(duration: 0.5, delay: 0)
+            mapView?.style?.transition = MLNTransition(duration: 0.5, delay: 0)
             mapView?.styleURL = style.mapStyleURL
         }
     }

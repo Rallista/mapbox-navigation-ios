@@ -1,5 +1,5 @@
 import UIKit
-import Mapbox
+import MapLibre
 
 /**
  `Style` is a convenient wrapper for styling the appearance of various interface components throughout the Navigation UI.
@@ -34,14 +34,14 @@ open class Style: NSObject {
     /**
      URL of the style to display on the map during turn-by-turn navigation.
      */
-    @objc open var mapStyleURL: URL = MGLStyle.defaultStyleURL()
+    @objc open var mapStyleURL: URL? = MLNStyle.defaultStyleURL()
     
     /**
      URL of the style to display on the map when previewing a route, for example on CarPlay or your own route preview map.
      
      Defaults to same style as `mapStyleURL`.
      */
-    @objc open var previewMapStyleURL: URL = MGLStyle.defaultStyleURL()
+    @objc open var previewMapStyleURL: URL? = MLNStyle.defaultStyleURL()
     
     /**
      Applies the style for all changed properties.
@@ -596,7 +596,7 @@ open class BottomPaddingView: BottomBannerView { }
 /**
  `NavigationAnnotation` is an annotation, which is used to mark final destination on `NavigationMapView`.
  */
-public class NavigationAnnotation: MGLPointAnnotation { }
+public class NavigationAnnotation: MLNPointAnnotation { }
 
 /// :nodoc:
 @objc(MBMarkerView)
