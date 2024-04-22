@@ -1,6 +1,6 @@
 import Foundation
 import Turf
-import Mapbox
+import MapLibre
 import MapboxDirections
 @testable import MapboxCoreNavigation
 @testable import MapboxNavigation
@@ -147,7 +147,7 @@ extension LinePlotter {
 
 public class NavigationPlotter: UIView {
     var mapView: NavigationMapView?
-    var coordinateBounds: MGLCoordinateBounds?
+    var coordinateBounds: MLNCoordinateBounds?
     public var routePlotters: [RoutePlotter]? { didSet { setNeedsDisplay() } }
     public var matchPlotters: [MatchPlotter]? { didSet { setNeedsDisplay() } }
     public var coordinatePlotters: [CoordinatePlotter]? { didSet { setNeedsDisplay() } }
@@ -328,7 +328,7 @@ extension UIView {
 }
 
 extension Array where Element == CLLocationCoordinate2D {
-    fileprivate var bounds: MGLCoordinateBounds {
+    fileprivate var bounds: MLNCoordinateBounds {
         var maximumLatitude: CLLocationDegrees = -80
         var minimumLatitude: CLLocationDegrees = 80
         var maximumLongitude: CLLocationDegrees = -180
@@ -344,7 +344,7 @@ extension Array where Element == CLLocationCoordinate2D {
         let sw = CLLocationCoordinate2D(latitude: minimumLatitude, longitude: minimumLongitude)
         let ne = CLLocationCoordinate2D(latitude: maximumLatitude, longitude: maximumLongitude)
         
-        return MGLCoordinateBounds(sw: sw, ne: ne)
+        return MLNCoordinateBounds(sw: sw, ne: ne)
     }
 }
 

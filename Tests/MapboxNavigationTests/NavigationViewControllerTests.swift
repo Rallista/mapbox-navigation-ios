@@ -1,6 +1,6 @@
 import XCTest
 import CoreLocation
-import Mapbox
+import MapLibre
 import MapboxDirections
 import Turf
 @testable import TestHelper
@@ -218,7 +218,7 @@ class NavigationViewControllerTests: XCTestCase {
             return !navigationViewController.mapView!.annotations!.isEmpty
         })
         
-        guard let annotations = navigationViewController.mapView?.annotations?.compactMap({ $0 as? MGLPointAnnotation }) else {
+        guard let annotations = navigationViewController.mapView?.annotations?.compactMap({ $0 as? MLNPointAnnotation }) else {
             return XCTFail("No point annotations found.")
         }
         

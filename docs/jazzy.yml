@@ -62,18 +62,18 @@ custom_categories:
       - NavigationMapView
       - NavigationMapViewDelegate
       - NavigationMapViewCourseTrackingDelegate
-      - MGLMapView
-      - MGLAccountManager
-      - MGLMultiPolygonFeature
-      - MGLMultiPolyline
-      - MGLMultiPolylineFeature
-      - MGLPointAnnotation
-      - MGLPointFeature
-      - MGLPolygon
-      - MGLPolygonFeature
-      - MGLPolyline
-      - MGLPolylineFeature
-      - MGLStyle
+      - MLNMapView
+      - MLNAccountManager
+      - MLNMultiPolygonFeature
+      - MLNMultiPolyline
+      - MLNMultiPolylineFeature
+      - MLNPointAnnotation
+      - MLNPointFeature
+      - MLNPolygon
+      - MLNPolygonFeature
+      - MLNPolyline
+      - MLNPolylineFeature
+      - MLNStyle
       - PassiveLocationManager
       - WaypointStyle
   - name: Styling

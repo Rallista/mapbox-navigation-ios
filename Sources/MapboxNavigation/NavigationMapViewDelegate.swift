@@ -1,5 +1,5 @@
 import Foundation
-import Mapbox
+import MapLibre
 import MapboxDirections
 import MapboxCoreNavigation
 
@@ -9,64 +9,64 @@ import MapboxCoreNavigation
 public protocol NavigationMapViewDelegate: AnyObject, UnimplementedLogging {
 
     /**
-     Asks the receiver to return an MGLStyleLayer for the main route line, given an identifier and source.
+     Asks the receiver to return an MLNStyleLayer for the main route line, given an identifier and source.
      This method is invoked when the map view loads and any time routes are added.
      - parameter mapView: The NavigationMapView.
      - parameter identifier: The style identifier.
      - parameter source: The source containing the route data that this method would style.
-     - returns: An MGLStyleLayer that is applied to the main route line.
+     - returns: An MLNStyleLayer that is applied to the main route line.
      */
-    func navigationMapView(_ mapView: NavigationMapView, mainRouteStyleLayerWithIdentifier identifier: String, source: MGLSource) -> MGLStyleLayer?
+    func navigationMapView(_ mapView: NavigationMapView, mainRouteStyleLayerWithIdentifier identifier: String, source: MLNSource) -> MLNStyleLayer?
 
     /**
-     Asks the receiver to return an MGLStyleLayer for the casing layer that surrounds main route line, given an identifier and source.
+     Asks the receiver to return an MLNStyleLayer for the casing layer that surrounds main route line, given an identifier and source.
      This method is invoked when the map view loads and any time routes are added.
      - parameter mapView: The NavigationMapView.
      - parameter identifier: The style identifier.
      - parameter source: The source containing the route data that this method would style.
-     - returns: An MGLStyleLayer that is applied as a casing around the main route line.
+     - returns: An MLNStyleLayer that is applied as a casing around the main route line.
      */
-    func navigationMapView(_ mapView: NavigationMapView, mainRouteCasingStyleLayerWithIdentifier identifier: String, source: MGLSource) -> MGLStyleLayer?
+    func navigationMapView(_ mapView: NavigationMapView, mainRouteCasingStyleLayerWithIdentifier identifier: String, source: MLNSource) -> MLNStyleLayer?
 
     /**
-     Asks the receiver to return an MGLStyleLayer for the alternative route lines, given an identifier and source.
+     Asks the receiver to return an MLNStyleLayer for the alternative route lines, given an identifier and source.
      This method is invoked when the map view loads and any time routes are added.
      - parameter mapView: The NavigationMapView.
      - parameter identifier: The style identifier.
      - parameter source: The source containing the route data that this method would style.
-     - returns: An MGLStyleLayer that is applied to alternative routes.
+     - returns: An MLNStyleLayer that is applied to alternative routes.
      */
-    func navigationMapView(_ mapView: NavigationMapView, alternativeRouteStyleLayerWithIdentifier identifier: String, source: MGLSource) -> MGLStyleLayer?
+    func navigationMapView(_ mapView: NavigationMapView, alternativeRouteStyleLayerWithIdentifier identifier: String, source: MLNSource) -> MLNStyleLayer?
 
     /**
-     Asks the receiver to return an MGLStyleLayer for the casing layer that surrounds alternative route lines, given an identifier and source.
+     Asks the receiver to return an MLNStyleLayer for the casing layer that surrounds alternative route lines, given an identifier and source.
      This method is invoked when the map view loads and any time routes are added.
      - parameter mapView: The NavigationMapView.
      - parameter identifier: The style identifier.
      - parameter source: The source containing the route data that this method would style.
-     - returns: An MGLStyleLayer that is applied as a casing around alternative route lines.
+     - returns: An MLNStyleLayer that is applied as a casing around alternative route lines.
      */
-    func navigationMapView(_ mapView: NavigationMapView, alternativeRouteCasingStyleLayerWithIdentifier identifier: String, source: MGLSource) -> MGLStyleLayer?
+    func navigationMapView(_ mapView: NavigationMapView, alternativeRouteCasingStyleLayerWithIdentifier identifier: String, source: MLNSource) -> MLNStyleLayer?
     
     /**
-     Asks the receiver to return an MGLStyleLayer for waypoints, given an identifier and source.
+     Asks the receiver to return an MLNStyleLayer for waypoints, given an identifier and source.
      This method is invoked when the map view loads and any time waypoints are added.
      - parameter mapView: The NavigationMapView.
      - parameter identifier: The style identifier.
      - parameter source: The Layer source containing the waypoint data that this method would style.
-     - returns: An MGLStyleLayer that the map applies to all waypoints.
+     - returns: An MLNStyleLayer that the map applies to all waypoints.
      */
-    func navigationMapView(_ mapView: NavigationMapView, waypointStyleLayerWithIdentifier identifier: String, source: MGLSource) -> MGLStyleLayer?
+    func navigationMapView(_ mapView: NavigationMapView, waypointStyleLayerWithIdentifier identifier: String, source: MLNSource) -> MLNStyleLayer?
     
     /**
-     Asks the receiver to return an MGLStyleLayer for waypoint symbols, given an identifier and source.
+     Asks the receiver to return an MLNStyleLayer for waypoint symbols, given an identifier and source.
      This method is invoked when the map view loads and any time waypoints are added.
      - parameter mapView: The NavigationMapView.
      - parameter identifier: The style identifier.
      - parameter source: The Layer source containing the waypoint data that this method would style.
-     - returns: An MGLStyleLayer that the map applies to all waypoint symbols.
+     - returns: An MLNStyleLayer that the map applies to all waypoint symbols.
      */
-    func navigationMapView(_ mapView: NavigationMapView, waypointSymbolStyleLayerWithIdentifier identifier: String, source: MGLSource) -> MGLStyleLayer?
+    func navigationMapView(_ mapView: NavigationMapView, waypointSymbolStyleLayerWithIdentifier identifier: String, source: MLNSource) -> MLNStyleLayer?
     
     /**
      Tells the receiver that the user has selected a route by interacting with the map view.
@@ -83,34 +83,34 @@ public protocol NavigationMapViewDelegate: AnyObject, UnimplementedLogging {
     func navigationMapView(_ mapView: NavigationMapView, didSelect waypoint: Waypoint)
     
     /**
-     Asks the receiver to return an MGLShape that describes the geometry of the route.
+     Asks the receiver to return an MLNShape that describes the geometry of the route.
         
-     Resulting `MGLShape` will then be styled using `NavigationMapView.navigationMapView(_: mainRouteStyleLayerWithIdentifier: source:)` provided style or a default congestion style if above delegate method was not implemented. In latter case, consider modifing your custom `MGLShape` `attributes` to have 'isAlternateRoute' key set to 'false'. Otherwise style predicate condition will filter out the shape.
-     - note: The returned value represents the route in full detail. For example, individual `MGLPolyline` objects in an `MGLShapeCollectionFeature` object can represent traffic congestion segments. For improved performance, you should also implement `navigationMapView(_:simplifiedShapeFor:)`, which defines the overall route as a single feature.
+     Resulting `MLNShape` will then be styled using `NavigationMapView.navigationMapView(_: mainRouteStyleLayerWithIdentifier: source:)` provided style or a default congestion style if above delegate method was not implemented. In latter case, consider modifing your custom `MLNShape` `attributes` to have 'isAlternateRoute' key set to 'false'. Otherwise style predicate condition will filter out the shape.
+     - note: The returned value represents the route in full detail. For example, individual `MLNPolyline` objects in an `MLNShapeCollectionFeature` object can represent traffic congestion segments. For improved performance, you should also implement `navigationMapView(_:simplifiedShapeFor:)`, which defines the overall route as a single feature.
      - parameter mapView: The NavigationMapView.
      - parameter routes: The routes that the sender is asking about. The first route will always be rendered as the main route, while all subsequent routes will be rendered as alternative routes.
-     - returns: Optionally, a `MGLShape` that defines the shape of the route, or `nil` to use default behavior.
+     - returns: Optionally, a `MLNShape` that defines the shape of the route, or `nil` to use default behavior.
      */
-    func navigationMapView(_ mapView: NavigationMapView, shapeFor routes: [Route]) -> MGLShape?
+    func navigationMapView(_ mapView: NavigationMapView, shapeFor routes: [Route]) -> MLNShape?
     
     /**
-     Asks the receiver to return an MGLShape that describes the geometry of the route at lower zoomlevels.
+     Asks the receiver to return an MLNShape that describes the geometry of the route at lower zoomlevels.
      
-     Resulting `MGLShape` will then be styled using `NavigationMapView.navigationMapView(_: mainRouteCasingStyleLayerWithIdentifier: source:)` provided style or a default style if above delegate method was not implemented. In latter case, consider modifing your custom `MGLShape` `attributes` to have 'isAlternateRoute' key set to 'false'. Otherwise style predicate condition will filter out the shape.
+     Resulting `MLNShape` will then be styled using `NavigationMapView.navigationMapView(_: mainRouteCasingStyleLayerWithIdentifier: source:)` provided style or a default style if above delegate method was not implemented. In latter case, consider modifing your custom `MLNShape` `attributes` to have 'isAlternateRoute' key set to 'false'. Otherwise style predicate condition will filter out the shape.
      - note: The returned value represents the simplfied route. It is designed to be used with `navigationMapView(_:shapeFor:), and if used without its parent method, can cause unexpected behavior.
      - parameter mapView: The NavigationMapView.
      - parameter route: The route that the sender is asking about.
-     - returns: Optionally, a `MGLShape` that defines the shape of the route at lower zoomlevels, or `nil` to use default behavior.
+     - returns: Optionally, a `MLNShape` that defines the shape of the route at lower zoomlevels, or `nil` to use default behavior.
      */
-    func navigationMapView(_ mapView: NavigationMapView, simplifiedShapeFor route: Route) -> MGLShape?
+    func navigationMapView(_ mapView: NavigationMapView, simplifiedShapeFor route: Route) -> MLNShape?
     
     /**
-     Asks the receiver to return an MGLShape that describes the geometry of the waypoint.
+     Asks the receiver to return an MLNShape that describes the geometry of the waypoint.
      - parameter mapView: The NavigationMapView.
      - parameter waypoints: The waypoints to be displayed on the map.
-     - returns: Optionally, a `MGLShape` that defines the shape of the waypoint, or `nil` to use default behavior.
+     - returns: Optionally, a `MLNShape` that defines the shape of the waypoint, or `nil` to use default behavior.
      */
-    func navigationMapView(_ mapView: NavigationMapView, shapeFor waypoints: [Waypoint], legIndex: Int) -> MGLShape?
+    func navigationMapView(_ mapView: NavigationMapView, shapeFor waypoints: [Waypoint], legIndex: Int) -> MLNShape?
     
     /**
      Asks the receiver to return a CGPoint to serve as the anchor for the user icon.
@@ -126,7 +126,7 @@ public extension NavigationMapViewDelegate {
     /**
      `UnimplementedLogging` prints a warning to standard output the first time this method is called.
      */
-    func navigationMapView(_ mapView: NavigationMapView, mainRouteStyleLayerWithIdentifier identifier: String, source: MGLSource) -> MGLStyleLayer? {
+    func navigationMapView(_ mapView: NavigationMapView, mainRouteStyleLayerWithIdentifier identifier: String, source: MLNSource) -> MLNStyleLayer? {
         logUnimplemented(protocolType: NavigationMapViewDelegate.self, level: .debug)
         return nil
     }
@@ -134,7 +134,7 @@ public extension NavigationMapViewDelegate {
     /**
      `UnimplementedLogging` prints a warning to standard output the first time this method is called.
      */
-    func navigationMapView(_ mapView: NavigationMapView, mainRouteCasingStyleLayerWithIdentifier identifier: String, source: MGLSource) -> MGLStyleLayer? {
+    func navigationMapView(_ mapView: NavigationMapView, mainRouteCasingStyleLayerWithIdentifier identifier: String, source: MLNSource) -> MLNStyleLayer? {
         logUnimplemented(protocolType: NavigationMapViewDelegate.self, level: .debug)
         return nil
     }
@@ -142,7 +142,7 @@ public extension NavigationMapViewDelegate {
     /**
      `UnimplementedLogging` prints a warning to standard output the first time this method is called.
      */
-    func navigationMapView(_ mapView: NavigationMapView, alternativeRouteStyleLayerWithIdentifier identifier: String, source: MGLSource) -> MGLStyleLayer? {
+    func navigationMapView(_ mapView: NavigationMapView, alternativeRouteStyleLayerWithIdentifier identifier: String, source: MLNSource) -> MLNStyleLayer? {
         logUnimplemented(protocolType: NavigationMapViewDelegate.self, level: .debug)
         return nil
     }
@@ -150,7 +150,7 @@ public extension NavigationMapViewDelegate {
     /**
      `UnimplementedLogging` prints a warning to standard output the first time this method is called.
      */
-    func navigationMapView(_ mapView: NavigationMapView, alternativeRouteCasingStyleLayerWithIdentifier identifier: String, source: MGLSource) -> MGLStyleLayer? {
+    func navigationMapView(_ mapView: NavigationMapView, alternativeRouteCasingStyleLayerWithIdentifier identifier: String, source: MLNSource) -> MLNStyleLayer? {
         logUnimplemented(protocolType: NavigationMapViewDelegate.self, level: .debug)
         return nil
     }
@@ -158,7 +158,7 @@ public extension NavigationMapViewDelegate {
     /**
      `UnimplementedLogging` prints a warning to standard output the first time this method is called.
      */
-    func navigationMapView(_ mapView: NavigationMapView, waypointStyleLayerWithIdentifier identifier: String, source: MGLSource) -> MGLStyleLayer? {
+    func navigationMapView(_ mapView: NavigationMapView, waypointStyleLayerWithIdentifier identifier: String, source: MLNSource) -> MLNStyleLayer? {
         logUnimplemented(protocolType: NavigationMapViewDelegate.self, level: .debug)
         return nil
     }
@@ -166,7 +166,7 @@ public extension NavigationMapViewDelegate {
     /**
      `UnimplementedLogging` prints a warning to standard output the first time this method is called.
      */
-    func navigationMapView(_ mapView: NavigationMapView, waypointSymbolStyleLayerWithIdentifier identifier: String, source: MGLSource) -> MGLStyleLayer? {
+    func navigationMapView(_ mapView: NavigationMapView, waypointSymbolStyleLayerWithIdentifier identifier: String, source: MLNSource) -> MLNStyleLayer? {
         logUnimplemented(protocolType: NavigationMapViewDelegate.self, level: .debug)
         return nil
     }
@@ -188,7 +188,7 @@ public extension NavigationMapViewDelegate {
     /**
      `UnimplementedLogging` prints a warning to standard output the first time this method is called.
      */
-    func navigationMapView(_ mapView: NavigationMapView, shapeFor routes: [Route]) -> MGLShape? {
+    func navigationMapView(_ mapView: NavigationMapView, shapeFor routes: [Route]) -> MLNShape? {
         logUnimplemented(protocolType: NavigationMapViewDelegate.self, level: .debug)
         return nil
     }
@@ -196,7 +196,7 @@ public extension NavigationMapViewDelegate {
     /**
      `UnimplementedLogging` prints a warning to standard output the first time this method is called.
      */
-    func navigationMapView(_ mapView: NavigationMapView, simplifiedShapeFor route: Route) -> MGLShape? {
+    func navigationMapView(_ mapView: NavigationMapView, simplifiedShapeFor route: Route) -> MLNShape? {
         logUnimplemented(protocolType: NavigationMapViewDelegate.self, level: .debug)
         return nil
     }
@@ -204,7 +204,7 @@ public extension NavigationMapViewDelegate {
     /**
      `UnimplementedLogging` prints a warning to standard output the first time this method is called.
      */
-    func navigationMapView(_ mapView: NavigationMapView, shapeFor waypoints: [Waypoint], legIndex: Int) -> MGLShape? {
+    func navigationMapView(_ mapView: NavigationMapView, shapeFor waypoints: [Waypoint], legIndex: Int) -> MLNShape? {
         logUnimplemented(protocolType: NavigationMapViewDelegate.self, level: .debug)
         return nil
     }

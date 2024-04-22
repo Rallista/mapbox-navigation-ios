@@ -1,14 +1,14 @@
 import UIKit
 import MapboxCoreNavigation
 import MapboxNavigation
-import Mapbox
+import MapLibre
 import CoreLocation
 import AVFoundation
 import MapboxDirections
 import Turf
 
-class CustomViewController: UIViewController, MGLMapViewDelegate {
-    var destination: MGLPointAnnotation!
+class CustomViewController: UIViewController, MLNMapViewDelegate {
+    var destination: MLNPointAnnotation!
     let directions = Directions.shared
     var navigationService: NavigationService!
     var simulateLocation = false
@@ -77,7 +77,7 @@ class CustomViewController: UIViewController, MGLMapViewDelegate {
         NotificationCenter.default.removeObserver(self, name: .routeControllerDidPassVisualInstructionPoint, object: nil)
     }
 
-    func mapView(_ mapView: MGLMapView, didFinishLoading style: MGLStyle) {
+    func mapView(_ mapView: MLNMapView, didFinishLoading style: MLNStyle) {
         self.mapView.show([navigationService.route])
     }
 

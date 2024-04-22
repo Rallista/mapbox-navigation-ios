@@ -86,7 +86,7 @@ The MapboxNavigation framework [does not yet support Swift Package Manager](http
 
 ## Configuration
 
-1. Mapbox APIs and vector tiles require a Mapbox account and API access token. In the project editor, select the application target, then go to the Info tab. Under the “Custom iOS Target Properties” section, set `MGLMapboxAccessToken` to your access token. You can obtain an access token from the [Mapbox account page](https://account.mapbox.com/access-tokens/).
+1. Mapbox APIs and vector tiles require a Mapbox account and API access token. In the project editor, select the application target, then go to the Info tab. Under the “Custom iOS Target Properties” section, set `MLNMapboxAccessToken` to your access token. You can obtain an access token from the [Mapbox account page](https://account.mapbox.com/access-tokens/).
 
 1. In order for the SDK to track the user’s location as they move along the route, set `NSLocationWhenInUseUsageDescription` to:
    > Shows your location on the map and helps improve the map.
@@ -138,7 +138,7 @@ This repository also contains [a testbed](https://github.com/mapbox/mapbox-navig
 1. Run `carthage update --platform ios --use-netrc` to build just the iOS dependencies.
 1. Open `MapboxNavigation.xcodeproj`.
 1. Sign up or log in to your Mapbox account and grab a [Mapbox Access Token](https://account.mapbox.com/access-tokens/).
-1. Open the Info.plist in the `Example` target and paste your [Mapbox Access Token](https://account.mapbox.com/access-tokens/) into `MGLMapboxAccessToken`. (Alternatively, if you plan to use this project as the basis for a public project on GitHub, place the access token in a plain text file named `.mapbox` or `mapbox` in your home directory instead of adding it to Info.plist.)
+1. Open the Info.plist in the `Example` target and paste your [Mapbox Access Token](https://account.mapbox.com/access-tokens/) into `MLNMapboxAccessToken`. (Alternatively, if you plan to use this project as the basis for a public project on GitHub, place the access token in a plain text file named `.mapbox` or `mapbox` in your home directory instead of adding it to Info.plist.)
 1. Build and run the `Example` target.
 
 ## Customization

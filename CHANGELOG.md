@@ -61,12 +61,12 @@
   * `NavigationMapView.showRouteDurations(along routes:)` to show duration annotation callouts on the map for the provided routes.
   * `NavigationMapView.removeRouteDurations()` to remove any route duration annotations currently displayed on the map.
 * Added convenience methods for visualizing geographic information on a map style as a debugging tool. ([#2734](https://github.com/mapbox/mapbox-navigation-ios/pull/2734)):
-  * `MGStyle.addDebugCircleLayer(identifier:coordinate:color:)` to add a MGLCircleStyleLayer with the specified coordinate and color.
-  * `MGStyle.removeDebugCircleLayers()` to remove from the style all MGLCircleStyleLayers added via `MGStyle.addDebugCircleLayer(identifier:coordinate:color:)`
-  * `MGStyle.addDebugLineLayer(identifier:coordinates:color:)` to add a MGLLineStyleLayer with the specified coordinates and color.
-  * `MGStyle.removeDebugLineLayers()` to remove from the style all MGLLineStyleLayers added via `MGStyle.addDebugLineLayer(identifier:coordinates:color:)`
-  * `MGStyle.addDebugPolygonLayer(identifier:coordinates:color:)` to add a MGLFillStyleLayer with the specified coordinates and color.
-  * `MGStyle.removeDebugLineLayers()` to remove from the style all MGLFillStyleLayers added via `MGStyle.addDebugPolygonLayer(identifier:coordinates:color:)`
+  * `MGStyle.addDebugCircleLayer(identifier:coordinate:color:)` to add a MLNCircleStyleLayer with the specified coordinate and color.
+  * `MGStyle.removeDebugCircleLayers()` to remove from the style all MLNCircleStyleLayers added via `MGStyle.addDebugCircleLayer(identifier:coordinate:color:)`
+  * `MGStyle.addDebugLineLayer(identifier:coordinates:color:)` to add a MLNLineStyleLayer with the specified coordinates and color.
+  * `MGStyle.removeDebugLineLayers()` to remove from the style all MLNLineStyleLayers added via `MGStyle.addDebugLineLayer(identifier:coordinates:color:)`
+  * `MGStyle.addDebugPolygonLayer(identifier:coordinates:color:)` to add a MLNFillStyleLayer with the specified coordinates and color.
+  * `MGStyle.removeDebugLineLayers()` to remove from the style all MLNFillStyleLayers added via `MGStyle.addDebugPolygonLayer(identifier:coordinates:color:)`
 
 ### Instruction banners
 
@@ -133,14 +133,14 @@
 
 ### Map
 
-* The `MGLStyle.navigationDayStyleURL` and `MGLStyle.navigationNightStyleURL` properties contain URLs to the Mapbox Navigation Day and Night v5 styles, both of which show traffic congestion lines on all roads by default. The traffic congestion layer is appropriate for a preview map; to tailor the style to turn-by-turn navigation, set `MGLMapView.showsTraffic` to `false`. ([#2523](https://github.com/mapbox/mapbox-navigation-ios/pull/2523))
+* The `MLNStyle.navigationDayStyleURL` and `MLNStyle.navigationNightStyleURL` properties contain URLs to the Mapbox Navigation Day and Night v5 styles, both of which show traffic congestion lines on all roads by default. The traffic congestion layer is appropriate for a preview map; to tailor the style to turn-by-turn navigation, set `MLNMapView.showsTraffic` to `false`. ([#2523](https://github.com/mapbox/mapbox-navigation-ios/pull/2523))
 * A portion of the route line now disappears behind the user puck as the user travels along the route during turn-by-turn navigation if `NavigationViewController.routeLineTracksTraversal` is set to `true`. ([#2377](https://github.com/mapbox/mapbox-navigation-ios/pull/2377))
 * Ability to hide the route line behind the user puck on CarPlay can be enabled by setting `CarPlayNavigationViewController.routeLineTracksTraversal` to `true`. ([#2601](https://github.com/mapbox/mapbox-navigation-ios/pull/2601))
 * Traffic congestion segments along the route line and the estimated arrival time periodically update to reflect current conditions when using the `DirectionsProfileIdentifier.automobileAvoidingTraffic` profile. These updates correspond to the new `Notification.Name.routeControllerDidRefreshRoute` notification, `NavigationServiceDelegate.navigationService(_:didRefresh:)` method, and `NavigationViewControllerDelegate.navigationViewController(_:didRefresh:)` method. To disable these updates, set `RouteOptions.refreshingEnabled` to `false`. ([#2366](https://github.com/mapbox/mapbox-navigation-ios/pull/2366))
 * A building at the destination waypoint can be extruded in 3D and highlighted for emphasis and recognizability. To enable building extrusion or highlighting, set the `NavigationViewController.waypointStyle` property. For a standalone map view that is not part of `NavigationViewController`, call the `NavigationMapView.highlightBuildings(at:in3D:)` method to highlight the destination building at a specific coordinate and `NavigationMapView.unhighlightBuildings()` to reverse this effect. ([#2535](https://github.com/mapbox/mapbox-navigation-ios/pull/2535))
-* Replaced the `MGLStyle.navigationPreviewDayStyleURL` and `MGLStyle.navigationGuidanceDayStyleURL` properties with `MGLStyle.navigationDayStyleURL`, and replaced `MGLStyle.navigationPreviewNightStyleURL` and `MGLStyle.navigationGuidanceNightStyleURL` with `MGLStyle.navigationNightStyleURL`. ([#2523](https://github.com/mapbox/mapbox-navigation-ios/pull/2523))
-* Replaced the `MGLStyle.navigationGuidanceDayStyleURL(version:)` and `MGLStyle.navigationGuidanceNightStyleURL(version:)` methods with `MGLStyle.navigationDayStyleURL(version:)` and `MGLStyle.navigationNightStyleURL(version:)` respectively, removed the `MGLStyle.navigationPreviewDayStyleURL(version:)` and `MGLStyle.navigationPreviewNightStyleURL(version:)` methods. ([#2567](https://github.com/mapbox/mapbox-navigation-ios/pull/2567)) 
-* Removed the `NavigationViewControllerDelegate.navigationViewController(_:imageFor:)` and `NavigationViewControllerDelegate.navigationViewController(_:viewFor:)` methods in favor of `MGLMapViewDelegate.mapView(_:imageFor:)` and `MGLMapViewDelegate.mapView(_:viewFor:)`, respectively. ([#2396](https://github.com/mapbox/mapbox-navigation-ios/pull/2396))
+* Replaced the `MLNStyle.navigationPreviewDayStyleURL` and `MLNStyle.navigationGuidanceDayStyleURL` properties with `MLNStyle.navigationDayStyleURL`, and replaced `MLNStyle.navigationPreviewNightStyleURL` and `MLNStyle.navigationGuidanceNightStyleURL` with `MLNStyle.navigationNightStyleURL`. ([#2523](https://github.com/mapbox/mapbox-navigation-ios/pull/2523))
+* Replaced the `MLNStyle.navigationGuidanceDayStyleURL(version:)` and `MLNStyle.navigationGuidanceNightStyleURL(version:)` methods with `MLNStyle.navigationDayStyleURL(version:)` and `MLNStyle.navigationNightStyleURL(version:)` respectively, removed the `MLNStyle.navigationPreviewDayStyleURL(version:)` and `MLNStyle.navigationPreviewNightStyleURL(version:)` methods. ([#2567](https://github.com/mapbox/mapbox-navigation-ios/pull/2567)) 
+* Removed the `NavigationViewControllerDelegate.navigationViewController(_:imageFor:)` and `NavigationViewControllerDelegate.navigationViewController(_:viewFor:)` methods in favor of `MLNMapViewDelegate.mapView(_:imageFor:)` and `MLNMapViewDelegate.mapView(_:viewFor:)`, respectively. ([#2396](https://github.com/mapbox/mapbox-navigation-ios/pull/2396))
 * Removed `NavigationMapViewDelegate.navigationMapView(_:routeStyleLayerWithIdentifier:source:)`, `NavigationMapViewDelegate.navigationMapView(_:routeCasingStyleLayerWithIdentifier:source:)` in favor of four new delegate methods to customize the route styling ([#2377](https://github.com/mapbox/mapbox-navigation-ios/pull/2377)):
   * `NavigationMapViewDelegate.navigationMapView(_:mainRouteStyleLayerWithIdentifier:source:)` to style the main route.
   * `NavigationMapViewDelegate.navigationMapView(_:mainRouteCasingStyleLayerWithIdentifier:source:)` to style the casing of the main route.
@@ -149,7 +149,7 @@
 * Removed the deprecated `NavigationMapView.showRoutes(_:legIndex:)` method in favor of `NavigationMapView.show(_:legIndex:)` and `NavigationMapView.showWaypoints(_:legIndex:)` in favor of `NavigationMapView.showWaypoints(on:legIndex:)`. ([#2539](https://github.com/mapbox/mapbox-navigation-ios/pull/2539))
 * Fixed an issue where the casing for the main route would not overlap alternative routes. ([#2377](https://github.com/mapbox/mapbox-navigation-ios/pull/2377))
 * Fixed memory leaks after disconnecting the application from CarPlay. ([#2470](https://github.com/mapbox/mapbox-navigation-ios/pull/2470))
-* Fixed issue which was causing incorrect alignment of `MGLMapView.attributionButton` and `MGLMapView.logoView`. ([#2613](https://github.com/mapbox/mapbox-navigation-ios/pull/2613))
+* Fixed issue which was causing incorrect alignment of `MLNMapView.attributionButton` and `MLNMapView.logoView`. ([#2613](https://github.com/mapbox/mapbox-navigation-ios/pull/2613))
 
 ### Visual and spoken instructions
 
@@ -175,7 +175,7 @@
 ### User location
 
 * Improved the accuracy of location tracking and off-route detection. ([#2319](https://github.com/mapbox/mapbox-navigation-ios/pull/2319))
-* Added the `PassiveLocationManager` class for use with the `MGLMapView.locationManager` property. Unlike `CLLocationManager`, this class causes the map view to display user locations snapped to the road network, just like during turn-by-turn navigation. To receive these locations without an `MGLMapView`, use the `PassiveLocationDataSource` class and implement the `PassiveLocationDataSourceDelegate.passiveLocationDataSource(_:didUpdateLocation:rawLocation:)` method or observe `Notification.Name.passiveLocationDataSourceDidUpdate` notifications. ([#2410](https://github.com/mapbox/mapbox-navigation-ios/pull/2410))
+* Added the `PassiveLocationManager` class for use with the `MLNMapView.locationManager` property. Unlike `CLLocationManager`, this class causes the map view to display user locations snapped to the road network, just like during turn-by-turn navigation. To receive these locations without an `MLNMapView`, use the `PassiveLocationDataSource` class and implement the `PassiveLocationDataSourceDelegate.passiveLocationDataSource(_:didUpdateLocation:rawLocation:)` method or observe `Notification.Name.passiveLocationDataSourceDidUpdate` notifications. ([#2410](https://github.com/mapbox/mapbox-navigation-ios/pull/2410))
 * The `NavigationViewController.route` and `NavigationService.route` properties are now read-only. To change the route that the user is traveling along, set the `NavigationViewController.indexedRoute` or `NavigationService.indexedRoute` property instead, pairing the route with the index of the route in the original `RouteResponse` object. ([#2366](https://github.com/mapbox/mapbox-navigation-ios/pull/2366))
 * The following methods now require a route index to be passed in as an argument ([#2366](https://github.com/mapbox/mapbox-navigation-ios/pull/2366)):
    * `NavigationViewController(for:routeIndex:routeOptions:navigationOptions:)`
@@ -245,13 +245,13 @@
 * Removed the `NavigationViewController.carPlayManager(_:didBeginNavigationWith:window:delegate:)` and `NavigationViewController.carPlayManagerDidEndNavigation(_:window:)` methods. To mirror CarPlay navigation on the main device, present and dismiss a `NavigationViewController` in the `CarPlayManagerDelegate.carPlayManager(_:didBeginNavigationWith:)` and `CarPlayManagerDelegate.carPlayManagerDidEndNavigation(_:)` methods, respectively. ([#2297](https://github.com/mapbox/mapbox-navigation-ios/pull/2297))
 * When Dark Mode is enabled, user notifications now draw maneuver icons in white instead of black for better contrast. ([#2283](https://github.com/mapbox/mapbox-navigation-ios/pull/2283))
 * Added the `RouteLegProgress.currentSpeedLimit` property. ([#2114](https://github.com/mapbox/mapbox-navigation-ios/pull/2114))
-* Added convenience initializers for converting Turf geometry structures into `MGLShape` and `MGLFeature` objects such as `MGLPolyline` and `MGLPolygonFeature`. ([#2308](https://github.com/mapbox/mapbox-navigation-ios/pull/2308))
+* Added convenience initializers for converting Turf geometry structures into `MLNShape` and `MLNFeature` objects such as `MLNPolyline` and `MLNPolygonFeature`. ([#2308](https://github.com/mapbox/mapbox-navigation-ios/pull/2308))
 * Fixed an issue where the “End Navigation” button in the end-of-route feedback panel appeared in English regardless of the current localization. ([#2315](https://github.com/mapbox/mapbox-navigation-ios/pull/2315))
 
 ## v0.39.0
 
 * Upgraded to [Mapbox Maps SDK for iOS v5.5.1](https://github.com/mapbox/mapbox-gl-native-ios/releases/tag/ios-v5.5.1). (#2341)
-* Fixed an issue where the spoken instructions always fell back to VoiceOver when the `MGLMapboxAPIBaseURL` key was set in the Info.plist file. ([#2329](https://github.com/mapbox/mapbox-navigation-ios/pull/2329))
+* Fixed an issue where the spoken instructions always fell back to VoiceOver when the `MLNMapboxAPIBaseURL` key was set in the Info.plist file. ([#2329](https://github.com/mapbox/mapbox-navigation-ios/pull/2329))
 * Fixed a crash when setting certain properties of a `Style` subclass to a dynamic color. ([#2338](https://github.com/mapbox/mapbox-navigation-ios/pull/2338))
 
 ## v0.38.3
@@ -347,7 +347,7 @@
 * Restored “Declaration” and “Parameters” sections throughout the API reference. ([#2076](https://github.com/mapbox/mapbox-navigation-ios/pull/2076))
 * Deprecated `NavigationMapView.navigationMapDelegate` in favor of `NavigationMapView.navigationMapViewDelegate`. ([#2061](https://github.com/mapbox/mapbox-navigation-ios/pull/2061))
 * The `NavigationMapView.navigationMapViewDelegate` and `RouteVoiceController.voiceControllerDelegate` properties are now accessible in Objective-C. ([#2061](https://github.com/mapbox/mapbox-navigation-ios/pull/2061))
-* The sources added to the style by `NavigationMapView.showRoutes(_:legIndex:)` once again enables `MGLShapeSourceOptions.lineDistanceMetrics`. ([#2071](https://github.com/mapbox/mapbox-navigation-ios/pull/2071))
+* The sources added to the style by `NavigationMapView.showRoutes(_:legIndex:)` once again enables `MLNShapeSourceOptions.lineDistanceMetrics`. ([#2071](https://github.com/mapbox/mapbox-navigation-ios/pull/2071))
 * Deprecated `NavigationDirections.configureRouter(tilesURL:translationsURL:completionHandler:)` in favor of `NavigationDirections.configureRouter(tilesURL:completionHandler:)`. ([#2079](https://github.com/mapbox/mapbox-navigation-ios/pull/2079))
 * Fixed a crash that occurred if the `Route` lacked `SpokenInstruction` data, such as if the request was made using `RouteOptions` instead of `NavigationRouteOptions` or if the route was generated by a non-Mapbox API. ([#2079](https://github.com/mapbox/mapbox-navigation-ios/pull/2079))
 
@@ -464,7 +464,7 @@
 * Fixed spurious rerouting on multi-leg routes. ([#1884](https://github.com/mapbox/mapbox-navigation-ios/pull/1884))
 * Fixed a hang that occurred when failing to fetch a route shield image for display in a visual instruction banner. ([#1888](https://github.com/mapbox/mapbox-navigation-ios/pull/1888))
 * Adding property `RouteController.nearbyCoordinates`, which offers similar behavior to `RouteLegProgress.nearbyCoordinates`, which the addition of step lookahead/lookbehind in multi-leg routes. ([#1883](https://github.com/mapbox/mapbox-navigation-ios/pull/1883))
-* The `MGLShapeSourceOptions.lineDistanceMetrics` property has been temporarily disabled from the route line shape source due to a crash. This means it isn’t possible to set the `MGLLineStyleLayer.lineGradient` property on the route line style layers. ([#1886](https://github.com/mapbox/mapbox-navigation-ios/pull/1886))
+* The `MLNShapeSourceOptions.lineDistanceMetrics` property has been temporarily disabled from the route line shape source due to a crash. This means it isn’t possible to set the `MLNLineStyleLayer.lineGradient` property on the route line style layers. ([#1886](https://github.com/mapbox/mapbox-navigation-ios/pull/1886))
 
 ## v0.25.0 (November 22, 2018)
 
@@ -479,7 +479,7 @@
 * Some additional members of `CarPlayManager` are now accessible in Objective-C code. ([#1836](https://github.com/mapbox/mapbox-navigation-ios/pull/1836))
 * Fixed an issue where distances are incorrectly displayed as “0 m” in regions that use the metric system. ([#1854](https://github.com/mapbox/mapbox-navigation-ios/pull/1854))
 * Fixed an issue where the user puck pointed away from the route line during turn-by-turn navigation in CarPlay. The map’s vanishing point now accounts for safe area insets, including the side maneuver view. ([#1845](https://github.com/mapbox/mapbox-navigation-ios/pull/1845))
-* Fixed an issue where the map view used for browsing and previewing failed to call `MGLMapViewDelegate.mapView(_:viewFor:)` and `MGLMapViewDelegate.mapViewWillStartLocatingUser(_:)`. ([#1852](https://github.com/mapbox/mapbox-navigation-ios/pull/1852))
+* Fixed an issue where the map view used for browsing and previewing failed to call `MLNMapViewDelegate.mapView(_:viewFor:)` and `MLNMapViewDelegate.mapViewWillStartLocatingUser(_:)`. ([#1852](https://github.com/mapbox/mapbox-navigation-ios/pull/1852))
 * You can now create a `UserPuckCourseView` using the `UserPuckCourseView(frame:)` initializer. ([#1852](https://github.com/mapbox/mapbox-navigation-ios/pull/1852))
 
 ### Other changes
@@ -491,10 +491,10 @@
 
 ## v0.24.0 (November 7, 2018)
 
-* It is now safe to set the `NavigationMapView.delegate` property of the `NavigationMapView` in `NavigationViewController.mapView`. Implement `MGLMapViewDelegate` in your own class to customize annotations and other details. ([#1601](https://github.com/mapbox/mapbox-navigation-ios/pull/1601))
+* It is now safe to set the `NavigationMapView.delegate` property of the `NavigationMapView` in `NavigationViewController.mapView`. Implement `MLNMapViewDelegate` in your own class to customize annotations and other details. ([#1601](https://github.com/mapbox/mapbox-navigation-ios/pull/1601))
 * Fixed an issue where the map view while navigating in CarPlay showed labels in the style’s original language instead of the local language. ([#1601](https://github.com/mapbox/mapbox-navigation-ios/pull/1601))
 * Fixed an issue where rerouting could still occur after arrival, even though `NavigationServiceDelegate.navigationService(_:shouldPreventReroutesWhenArrivingAt:)` returned `true`. ([#1833](https://github.com/mapbox/mapbox-navigation-ios/pull/1833))
-* `NavigationMapViewDelegate.navigationMapView(_:routeStyleLayerWithIdentifier:source:)`, `NavigationMapViewDelegate.navigationMapView(_:routeCasingStyleLayerWithIdentifier:source:)`, `NavigationViewControllerDelegate.navigationViewController(_:routeStyleLayerWithIdentifier:source:)`, and `NavigationViewControllerDelegate.navigationViewController(_:routeCasingStyleLayerWithIdentifier:source:)` can now set the `MGLLineStyleLayer.lineGradient` property. ([#1799](https://github.com/mapbox/mapbox-navigation-ios/pull/1799))
+* `NavigationMapViewDelegate.navigationMapView(_:routeStyleLayerWithIdentifier:source:)`, `NavigationMapViewDelegate.navigationMapView(_:routeCasingStyleLayerWithIdentifier:source:)`, `NavigationViewControllerDelegate.navigationViewController(_:routeStyleLayerWithIdentifier:source:)`, and `NavigationViewControllerDelegate.navigationViewController(_:routeCasingStyleLayerWithIdentifier:source:)` can now set the `MLNLineStyleLayer.lineGradient` property. ([#1799](https://github.com/mapbox/mapbox-navigation-ios/pull/1799))
 * Reduced the `NavigationMapView.minimumFramesPerSecond` property’s default value from 30 frames per second to 20 frames per second for improved performance on battery power. ([#1819](https://github.com/mapbox/mapbox-navigation-ios/pull/1819))
 
 ## v0.23.0 (October 24, 2018)
@@ -592,8 +592,8 @@
 
 ## v0.19.2 (August 23, 2018)
 
-* The `MGLStyle.navigationGuidanceDayStyleURL` and `MGLStyle.navigationGuidanceNightStyleURL` properties now return [version 4 of the Mapbox Navigation Guidance Day and Night styles](https://blog.mapbox.com/incidents-are-live-on-the-map-beeff6b84bf9), respectively. These styles indicate incidents such as road closures and detours. ([#1619](https://github.com/mapbox/mapbox-navigation-ios/pull/1619))
-* Added an `MGLMapView.showsIncidents` property to toggle the visibility of any Mapbox Incidents data on a map view. ([#1613](https://github.com/mapbox/mapbox-navigation-ios/pull/1613))
+* The `MLNStyle.navigationGuidanceDayStyleURL` and `MLNStyle.navigationGuidanceNightStyleURL` properties now return [version 4 of the Mapbox Navigation Guidance Day and Night styles](https://blog.mapbox.com/incidents-are-live-on-the-map-beeff6b84bf9), respectively. These styles indicate incidents such as road closures and detours. ([#1619](https://github.com/mapbox/mapbox-navigation-ios/pull/1619))
+* Added an `MLNMapView.showsIncidents` property to toggle the visibility of any Mapbox Incidents data on a map view. ([#1613](https://github.com/mapbox/mapbox-navigation-ios/pull/1613))
 
 ## v0.19.1 (August 15, 2018)
 
@@ -604,7 +604,7 @@
 ### Packaging
 
 * Moved guides and examples to [a new Mapbox Navigation SDK for iOS website](https://docs.mapbox.com/ios/navigation/). ([#1552](https://github.com/mapbox/mapbox-navigation-ios/pull/1552))
-* Applications intended for use in mainland China can set the `MGLMapboxAPIBaseURL` key in Info.plist to `https://api.mapbox.cn/` to use China-optimized APIs. This setting causes `NavigationMapView` to default to China-optimized day and night styles with places and roads labeled in Simplified Chinese. ([#1558](https://github.com/mapbox/mapbox-navigation-ios/pull/1558))
+* Applications intended for use in mainland China can set the `MLNMapboxAPIBaseURL` key in Info.plist to `https://api.mapbox.cn/` to use China-optimized APIs. This setting causes `NavigationMapView` to default to China-optimized day and night styles with places and roads labeled in Simplified Chinese. ([#1558](https://github.com/mapbox/mapbox-navigation-ios/pull/1558))
 
 ### User interface
 
@@ -889,7 +889,7 @@
 
 ## User interface
 
-* Added a `NavigationMapView.localizeLabels()` method that should be called within `MGLMapViewDelegate.mapView(_:didFinishLoading:)` for standalone `NavigationMapView`s to ensure that map labels are in the correct language. [#1111](https://github.com/mapbox/mapbox-navigation-ios/pull/1122)
+* Added a `NavigationMapView.localizeLabels()` method that should be called within `MLNMapViewDelegate.mapView(_:didFinishLoading:)` for standalone `NavigationMapView`s to ensure that map labels are in the correct language. [#1111](https://github.com/mapbox/mapbox-navigation-ios/pull/1122)
 * The `/` delimiter is longer shown when a shield is shown on either side of the delimiter. This also removes the dependency SDWebImage. [#1046](https://github.com/mapbox/mapbox-navigation-ios/pull/1046)
 * Exposes constants used for styling the route line. [#1124](https://github.com/mapbox/mapbox-navigation-ios/pull/1124/)
 * Exposes `update(for:)` on `InstructionBannerView`. This is helpful for developers creating a custom user interface. [#1085](https://github.com/mapbox/mapbox-navigation-ios/pull/1085/)
@@ -1034,7 +1034,7 @@ Beginning with this release, the navigation SDK and Core Navigation are written 
 
 ### Map
 
-* `MGLMapView init(frame:styleURL:)` is exposed again on `NavigationMapView`. #850
+* `MLNMapView init(frame:styleURL:)` is exposed again on `NavigationMapView`. #850
 
 ### User location tracking
 
@@ -1050,7 +1050,7 @@ Beginning with this release, the navigation SDK and Core Navigation are written 
 
 * Xcode 9 is required for building the navigation SDK or Core Navigation. (#786)
 * Added German and Dutch localizations. [Help us speak your language!](https://www.transifex.com/mapbox/mapbox-navigation-ios/dashboard/) (#778)
-* To build and run the provided sample applications, you now have the option to create a plain text file named .mapbox containing a Mapbox access token and place it in your home folder. The SDK will read this file and automatically populate the `MGLMapboxAccessToken` of the `Info.plist` at build-time. (#817)
+* To build and run the provided sample applications, you now have the option to create a plain text file named .mapbox containing a Mapbox access token and place it in your home folder. The SDK will read this file and automatically populate the `MLNMapboxAccessToken` of the `Info.plist` at build-time. (#817)
 
 ### Instruction banner
 
@@ -1292,7 +1292,7 @@ Beginning with this release, the navigation SDK and Core Navigation are written 
 * Fixed an issue causing NavigationViewController and voice alerts to stop updating after a modal view controller is pushed atop NavigationViewController. (#306)
 * The map displays attribution during turn-by-turn navigation. (#288)
 * Added a `NavigationMapViewControllerDelegate.navigationMapView(_:imageFor:)` method for customizing the destination annotation. (#268)
-* Fixed an issue where the wrong source was passed into `MGLMapViewDelegate.navigationMapView(_:routeCasingStyleLayerWithIdentifier:source:)`. (#265, #267)
+* Fixed an issue where the wrong source was passed into `MLNMapViewDelegate.navigationMapView(_:routeCasingStyleLayerWithIdentifier:source:)`. (#265, #267)
 * The turn banner abbreviates road names when using the Catalan, Lithuanian, Spanish, Swedish, or Vietnamese localization. (#254, #376)
 
 ### Voice guidance

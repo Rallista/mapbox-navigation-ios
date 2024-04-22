@@ -1,5 +1,5 @@
 import UIKit
-import Mapbox
+import MapLibre
 
 /**
  `NightStyle` is the default night style for Mapbox Navigation SDK. Only will be applied when necessary and if `automaticallyAdjustStyleForSunPosition`.

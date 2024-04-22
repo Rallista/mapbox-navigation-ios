@@ -22,7 +22,7 @@ let package = Package(
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
-        .package(url: "https://github.com/maplibre/maplibre-gl-native-distribution.git", exact: "5.13.0"),
+        .package(url: "https://github.com/maplibre/maplibre-gl-native-distribution.git", exact: "6.4.0"),
         .package(url: "https://github.com/mapbox/mapbox-directions-swift.git", from: "2.9.0"),
         .package(url: "https://github.com/raphaelmor/Polyline.git", from: "5.0.2"),
         .package(url: "https://github.com/mapbox/turf-swift.git", from: "2.6.1"),
@@ -37,7 +37,7 @@ let package = Package(
             name: "MapboxNavigation",
             dependencies: [
                 "MapboxCoreNavigation",
-                .product(name: "Mapbox", package: "maplibre-gl-native-distribution"),
+                .product(name: "MapLibre", package: "maplibre-gl-native-distribution"),
                 .product(name: "MapboxDirections", package: "mapbox-directions-swift"),
                 .product(name: "Solar", package: "Solar"),
                 .product(name: "Turf", package: "turf-swift"),

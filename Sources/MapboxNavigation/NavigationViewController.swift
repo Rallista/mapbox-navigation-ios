@@ -1,6 +1,6 @@
 import UIKit
 import CoreLocation
-import Mapbox
+import MapLibre
 import MapboxCoreNavigation
 import MapboxDirections
 import AVFoundation
@@ -77,14 +77,14 @@ open class NavigationViewController: UIViewController, NavigationStatusPresenter
     }
     
     /**
-     An optional `MGLMapCamera` you can use to improve the initial transition from a previous viewport and prevent a trigger from an excessive significant location update.
+     An optional `MLNMapCamera` you can use to improve the initial transition from a previous viewport and prevent a trigger from an excessive significant location update.
      */
-    public var pendingCamera: MGLMapCamera?
+    public var pendingCamera: MLNMapCamera?
     
     /**
-     An instance of `MGLAnnotation` representing the origin of your route.
+     An instance of `MLNAnnotation` representing the origin of your route.
      */
-    public var origin: MGLAnnotation?
+    public var origin: MLNAnnotation?
     
     /**
      The receiver’s delegate.
@@ -506,19 +506,19 @@ open class NavigationViewController: UIViewController, NavigationStatusPresenter
 //MARK: - RouteMapViewControllerDelegate
 extension NavigationViewController: RouteMapViewControllerDelegate {
 
-    public func navigationMapView(_ mapView: NavigationMapView, mainRouteStyleLayerWithIdentifier identifier: String, source: MGLSource) -> MGLStyleLayer? {
+    public func navigationMapView(_ mapView: NavigationMapView, mainRouteStyleLayerWithIdentifier identifier: String, source: MLNSource) -> MLNStyleLayer? {
         return delegate?.navigationViewController(self, mainRouteStyleLayerWithIdentifier: identifier, source: source)
     }
 
-    public func navigationMapView(_ mapView: NavigationMapView, mainRouteCasingStyleLayerWithIdentifier identifier: String, source: MGLSource) -> MGLStyleLayer? {
+    public func navigationMapView(_ mapView: NavigationMapView, mainRouteCasingStyleLayerWithIdentifier identifier: String, source: MLNSource) -> MLNStyleLayer? {
         return delegate?.navigationViewController(self, mainRouteCasingStyleLayerWithIdentifier: identifier, source: source)
     }
 
-    public func navigationMapView(_ mapView: NavigationMapView, alternativeRouteStyleLayerWithIdentifier identifier: String, source: MGLSource) -> MGLStyleLayer? {
+    public func navigationMapView(_ mapView: NavigationMapView, alternativeRouteStyleLayerWithIdentifier identifier: String, source: MLNSource) -> MLNStyleLayer? {
         return delegate?.navigationViewController(self, alternativeRouteStyleLayerWithIdentifier: identifier, source: source)
     }
 
-    public func navigationMapView(_ mapView: NavigationMapView, alternativeRouteCasingStyleLayerWithIdentifier identifier: String, source: MGLSource) -> MGLStyleLayer? {
+    public func navigationMapView(_ mapView: NavigationMapView, alternativeRouteCasingStyleLayerWithIdentifier identifier: String, source: MLNSource) -> MLNStyleLayer? {
         return delegate?.navigationViewController(self, alternativeRouteCasingStyleLayerWithIdentifier: identifier, source: source)
     }
     
@@ -526,23 +526,23 @@ extension NavigationViewController: RouteMapViewControllerDelegate {
         delegate?.navigationViewController(self, didSelect: route)
     }
     
-    public func navigationMapView(_ mapView: NavigationMapView, shapeFor routes: [Route]) -> MGLShape? {
+    public func navigationMapView(_ mapView: NavigationMapView, shapeFor routes: [Route]) -> MLNShape? {
         return delegate?.navigationViewController(self, shapeFor: routes)
     }
     
-    public func navigationMapView(_ mapView: NavigationMapView, simplifiedShapeFor route: Route) -> MGLShape? {
+    public func navigationMapView(_ mapView: NavigationMapView, simplifiedShapeFor route: Route) -> MLNShape? {
         return delegate?.navigationViewController(self, simplifiedShapeFor: route)
     }
     
-    public func navigationMapView(_ mapView: NavigationMapView, waypointStyleLayerWithIdentifier identifier: String, source: MGLSource) -> MGLStyleLayer? {
+    public func navigationMapView(_ mapView: NavigationMapView, waypointStyleLayerWithIdentifier identifier: String, source: MLNSource) -> MLNStyleLayer? {
         return delegate?.navigationViewController(self, waypointStyleLayerWithIdentifier: identifier, source: source)
     }
     
-    public func navigationMapView(_ mapView: NavigationMapView, waypointSymbolStyleLayerWithIdentifier identifier: String, source: MGLSource) -> MGLStyleLayer? {
+    public func navigationMapView(_ mapView: NavigationMapView, waypointSymbolStyleLayerWithIdentifier identifier: String, source: MLNSource) -> MLNStyleLayer? {
         return delegate?.navigationViewController(self, waypointSymbolStyleLayerWithIdentifier: identifier, source: source)
     }
     
-    public func navigationMapView(_ mapView: NavigationMapView, shapeFor waypoints: [Waypoint], legIndex: Int) -> MGLShape? {
+    public func navigationMapView(_ mapView: NavigationMapView, shapeFor waypoints: [Waypoint], legIndex: Int) -> MLNShape? {
         return delegate?.navigationViewController(self, shapeFor: waypoints, legIndex: legIndex)
     }
     
@@ -805,7 +805,7 @@ extension NavigationViewController: NavigationServiceDelegate {
             mapView.altitude = mapView.defaultAltitude
         }
         
-        let altitude = MGLAltitudeForZoomLevel(16.1, mapView.camera.pitch, location.coordinate.latitude, mapView.frame.size)
+        let altitude = MLNAltitudeForZoomLevel(16.1, mapView.camera.pitch, location.coordinate.latitude, mapView.frame.size)
         
         if !passedApproachingDestinationThreshold, progress.currentLegProgress.distanceRemaining < approachingDestinationThreshold {
             passedApproachingDestinationThreshold = true
@@ -859,7 +859,7 @@ extension NavigationViewController: StyleManagerDelegate {
     
     private func updateMapStyle(_ style: Style, animated: Bool = true) {
         if mapView?.styleURL != style.mapStyleURL {
-            mapView?.style?.transition = MGLTransition(duration: animated ? 0.5 : 0, delay: 0)
+            mapView?.style?.transition = MLNTransition(duration: animated ? 0.5 : 0, delay: 0)
             mapView?.styleURL = style.mapStyleURL
         }
         
@@ -936,7 +936,7 @@ extension NavigationViewController: TopBannerViewControllerDelegate {
         guard let upcomingStep = legProgress.upcomingStep else { return }
         
         let previewBanner: CompletionHandler = {
-            // Since Mapbox SDK v6.2.0-beta.1 `MGLMapView.setCenter(_:zoomLevel:direction:animated:completionHandler:)` method is calling `completionHandler`
+            // Since Mapbox SDK v6.2.0-beta.1 `MLNMapView.setCenter(_:zoomLevel:direction:animated:completionHandler:)` method is calling `completionHandler`
             // synchronously, this prevents from well-timed maneuver redrawing in `ManeuverView`. Workaround is to perform asynchronous redrawing on main queue.
             DispatchQueue.main.async {
                 banner.preview(step: legProgress.currentStep, maneuverStep: upcomingStep, distance: legProgress.currentStep.distance, steps: remaining)
