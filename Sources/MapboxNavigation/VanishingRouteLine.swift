@@ -334,7 +334,7 @@ extension NavigationMapView {
             // [0.4109119609930762 = nil,
             // 0.4109119609930761 = nil]
             // Passing NSDictionary with all data from original Dictionary to NSExpression fixes issue.
-            return NSExpression(format: "MLN_interpolate:withCurveType:parameters:stops:($lineProgress, 'linear', nil, %@)", NSDictionary(dictionary: filteredGradientStops))
+            return NSExpression(format: "mgl_interpolate:withCurveType:parameters:stops:($lineProgress, 'linear', nil, %@)", NSDictionary(dictionary: filteredGradientStops))
         }
         return nil
     }
@@ -346,7 +346,7 @@ extension NavigationMapView {
         gradientStops[percentTraveled.nextDown] = traversedRouteColor
         gradientStops[percentTraveled] = routeCasingColor
         
-        return NSExpression(format: "MLN_interpolate:withCurveType:parameters:stops:($lineProgress, 'linear', nil, %@)", NSDictionary(dictionary: gradientStops))
+        return NSExpression(format: "mgl_interpolate:withCurveType:parameters:stops:($lineProgress, 'linear', nil, %@)", NSDictionary(dictionary: gradientStops))
     }
     
     /**

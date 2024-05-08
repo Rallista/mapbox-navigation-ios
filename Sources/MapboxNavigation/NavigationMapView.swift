@@ -645,7 +645,7 @@ open class NavigationMapView: MLNMapView, UIGestureRecognizerDelegate {
         
         let mainRouteLayer = MLNLineStyleLayer(identifier: identifier, source: source)
         mainRouteLayer.lineColor = NSExpression(forConstantValue: trafficUnknownColor)
-        mainRouteLayer.lineWidth = NSExpression(format: "MLN_interpolate:withCurveType:parameters:stops:($zoomLevel, 'linear', nil, %@)", MBRouteLineWidthByZoomLevel)
+        mainRouteLayer.lineWidth = NSExpression(format: "mgl_interpolate:withCurveType:parameters:stops:($zoomLevel, 'linear', nil, %@)", MBRouteLineWidthByZoomLevel)
         mainRouteLayer.lineJoin = NSExpression(forConstantValue: "round")
         mainRouteLayer.lineCap = NSExpression(forConstantValue: "round")
         mainRouteLayer.lineGradient = lineGradient
@@ -678,7 +678,7 @@ open class NavigationMapView: MLNMapView, UIGestureRecognizerDelegate {
         
         let mainRouteCasingLayer = MLNLineStyleLayer(identifier: identifier, source: source)
         mainRouteCasingLayer.lineColor = NSExpression(forConstantValue: routeCasingColor)
-        mainRouteCasingLayer.lineWidth = NSExpression(format: "MLN_interpolate:withCurveType:parameters:stops:($zoomLevel, 'linear', nil, %@)", MBRouteLineWidthByZoomLevel.multiplied(by: 1.5))
+        mainRouteCasingLayer.lineWidth = NSExpression(format: "mgl_interpolate:withCurveType:parameters:stops:($zoomLevel, 'linear', nil, %@)", MBRouteLineWidthByZoomLevel.multiplied(by: 1.5))
         mainRouteCasingLayer.lineJoin = NSExpression(forConstantValue: "round")
         mainRouteCasingLayer.lineCap = NSExpression(forConstantValue: "round")
         mainRouteCasingLayer.lineGradient = lineGradient
@@ -709,7 +709,7 @@ open class NavigationMapView: MLNMapView, UIGestureRecognizerDelegate {
         
         let alternativeRoutesLayer = MLNLineStyleLayer(identifier: identifier, source: source)
         alternativeRoutesLayer.lineColor = NSExpression(forConstantValue: routeAlternateColor)
-        alternativeRoutesLayer.lineWidth = NSExpression(format: "MLN_interpolate:withCurveType:parameters:stops:($zoomLevel, 'linear', nil, %@)", MBRouteLineWidthByZoomLevel)
+        alternativeRoutesLayer.lineWidth = NSExpression(format: "mgl_interpolate:withCurveType:parameters:stops:($zoomLevel, 'linear', nil, %@)", MBRouteLineWidthByZoomLevel)
         alternativeRoutesLayer.lineJoin = NSExpression(forConstantValue: "round")
         alternativeRoutesLayer.lineCap = NSExpression(forConstantValue: "round")
         style.insertLayer(alternativeRoutesLayer, below: layer)
@@ -738,7 +738,7 @@ open class NavigationMapView: MLNMapView, UIGestureRecognizerDelegate {
         
         let alternativeRoutesCasingLayer = MLNLineStyleLayer(identifier: identifier, source: source)
         alternativeRoutesCasingLayer.lineColor = NSExpression(forConstantValue: routeAlternateCasingColor)
-        alternativeRoutesCasingLayer.lineWidth = NSExpression(format: "MLN_interpolate:withCurveType:parameters:stops:($zoomLevel, 'linear', nil, %@)", MBRouteLineWidthByZoomLevel.multiplied(by: 1.5))
+        alternativeRoutesCasingLayer.lineWidth = NSExpression(format: "mgl_interpolate:withCurveType:parameters:stops:($zoomLevel, 'linear', nil, %@)", MBRouteLineWidthByZoomLevel.multiplied(by: 1.5))
         alternativeRoutesCasingLayer.lineJoin = NSExpression(forConstantValue: "round")
         alternativeRoutesCasingLayer.lineCap = NSExpression(forConstantValue: "round")
         style.insertLayer(alternativeRoutesCasingLayer, below: layer)
@@ -924,7 +924,7 @@ open class NavigationMapView: MLNMapView, UIGestureRecognizerDelegate {
                 arrow.minimumZoomLevel = minimumZoomLevel
                 arrow.lineCap = NSExpression(forConstantValue: "butt")
                 arrow.lineJoin = NSExpression(forConstantValue: "round")
-                arrow.lineWidth = NSExpression(format: "MLN_interpolate:withCurveType:parameters:stops:($zoomLevel, 'linear', nil, %@)", MBRouteLineWidthByZoomLevel.multiplied(by: 0.70))
+                arrow.lineWidth = NSExpression(format: "mgl_interpolate:withCurveType:parameters:stops:($zoomLevel, 'linear', nil, %@)", MBRouteLineWidthByZoomLevel.multiplied(by: 0.70))
                 arrow.lineColor = NSExpression(forConstantValue: maneuverArrowColor)
                 
                 style.addSource(arrowSource)
@@ -941,7 +941,7 @@ open class NavigationMapView: MLNMapView, UIGestureRecognizerDelegate {
                 arrowStroke.minimumZoomLevel = arrow.minimumZoomLevel
                 arrowStroke.lineCap = arrow.lineCap
                 arrowStroke.lineJoin = arrow.lineJoin
-                arrowStroke.lineWidth = NSExpression(format: "MLN_interpolate:withCurveType:parameters:stops:($zoomLevel, 'linear', nil, %@)", MBRouteLineWidthByZoomLevel.multiplied(by: 0.80))
+                arrowStroke.lineWidth = NSExpression(format: "mgl_interpolate:withCurveType:parameters:stops:($zoomLevel, 'linear', nil, %@)", MBRouteLineWidthByZoomLevel.multiplied(by: 0.80))
                 arrowStroke.lineColor = NSExpression(forConstantValue: maneuverArrowStrokeColor)
                 
                 style.addSource(arrowSourceStroke)
@@ -968,7 +968,7 @@ open class NavigationMapView: MLNMapView, UIGestureRecognizerDelegate {
                 arrowSymbolLayer.iconColor = NSExpression(forConstantValue: maneuverArrowColor)
                 arrowSymbolLayer.iconRotationAlignment = NSExpression(forConstantValue: "map")
                 arrowSymbolLayer.iconRotation = NSExpression(forConstantValue: shaftDirection as NSNumber)
-                arrowSymbolLayer.iconScale = NSExpression(format: "MLN_interpolate:withCurveType:parameters:stops:($zoomLevel, 'linear', nil, %@)", MBRouteLineWidthByZoomLevel.multiplied(by: 0.12))
+                arrowSymbolLayer.iconScale = NSExpression(format: "mgl_interpolate:withCurveType:parameters:stops:($zoomLevel, 'linear', nil, %@)", MBRouteLineWidthByZoomLevel.multiplied(by: 0.12))
                 arrowSymbolLayer.iconAllowsOverlap = NSExpression(forConstantValue: true)
                 
                 let arrowSymbolLayerCasing = MLNSymbolStyleLayer(identifier: StyleLayerIdentifier.arrowCasingSymbol, source: arrowSymbolSource)
@@ -977,7 +977,7 @@ open class NavigationMapView: MLNMapView, UIGestureRecognizerDelegate {
                 arrowSymbolLayerCasing.iconColor = NSExpression(forConstantValue: maneuverArrowStrokeColor)
                 arrowSymbolLayerCasing.iconRotationAlignment = arrowSymbolLayer.iconRotationAlignment
                 arrowSymbolLayerCasing.iconRotation = arrowSymbolLayer.iconRotation
-                arrowSymbolLayerCasing.iconScale = NSExpression(format: "MLN_interpolate:withCurveType:parameters:stops:($zoomLevel, 'linear', nil, %@)", MBRouteLineWidthByZoomLevel.multiplied(by: 0.14))
+                arrowSymbolLayerCasing.iconScale = NSExpression(format: "mgl_interpolate:withCurveType:parameters:stops:($zoomLevel, 'linear', nil, %@)", MBRouteLineWidthByZoomLevel.multiplied(by: 0.14))
                 arrowSymbolLayerCasing.iconAllowsOverlap = arrowSymbolLayer.iconAllowsOverlap
                 
                 style.addSource(arrowSymbolSource)
@@ -1179,7 +1179,7 @@ open class NavigationMapView: MLNMapView, UIGestureRecognizerDelegate {
             13: NSExpression(forConstantValue: 16),
             15.5: NSExpression(forConstantValue: 20)
         ]
-        shapeLayer.textFontSize = NSExpression(format: "MLN_interpolate:withCurveType:parameters:stops:($zoomLevel, 'linear', nil, %@)", fontSizeByZoomLevel)
+        shapeLayer.textFontSize = NSExpression(format: "mgl_interpolate:withCurveType:parameters:stops:($zoomLevel, 'linear', nil, %@)", fontSizeByZoomLevel)
 
         shapeLayer.textColor = NSExpression(forConditional: NSPredicate(format: "selected == true"),
                                             trueExpression: NSExpression(forConstantValue: routeDurationAnnotationSelectedTextColor),
@@ -1732,9 +1732,9 @@ extension NavigationMapView {
         
         let opacityStops = [13: 0.5, 17: 0.8]
         
-        highlightedBuildingsLayer.fillExtrusionHeight = NSExpression(format: "MLN_interpolate:withCurveType:parameters:stops:($zoomLevel, 'linear', nil, %@)", fillExtrusionHeightStops)
-        highlightedBuildingsLayer.fillExtrusionBase = NSExpression(format: "MLN_interpolate:withCurveType:parameters:stops:($zoomLevel, 'linear', nil, %@)", fillExtrusionBaseStops)
+        highlightedBuildingsLayer.fillExtrusionHeight = NSExpression(format: "mgl_interpolate:withCurveType:parameters:stops:($zoomLevel, 'linear', nil, %@)", fillExtrusionHeightStops)
+        highlightedBuildingsLayer.fillExtrusionBase = NSExpression(format: "mgl_interpolate:withCurveType:parameters:stops:($zoomLevel, 'linear', nil, %@)", fillExtrusionBaseStops)
         highlightedBuildingsLayer.fillExtrusionColor = highlightedBuildingsColorExpression
-        highlightedBuildingsLayer.fillExtrusionOpacity = NSExpression(format: "MLN_interpolate:withCurveType:parameters:stops:($zoomLevel, 'linear', nil, %@)", opacityStops)
+        highlightedBuildingsLayer.fillExtrusionOpacity = NSExpression(format: "mgl_interpolate:withCurveType:parameters:stops:($zoomLevel, 'linear', nil, %@)", opacityStops)
     }
 }
