@@ -22,10 +22,10 @@ let package = Package(
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
-        .package(url: "https://github.com/maplibre/maplibre-gl-native-distribution.git", from: "6.4.0"),
-        .package(url: "https://github.com/mapbox/mapbox-directions-swift.git", from: "2.9.0"),
-        .package(url: "https://github.com/raphaelmor/Polyline.git", from: "5.0.2"),
-        .package(url: "https://github.com/mapbox/turf-swift.git", from: "2.6.1"),
+        .package(url: "https://github.com/maplibre/maplibre-gl-native-distribution.git", from: "6.22.1"),
+        .package(url: "https://github.com/mapbox/mapbox-directions-swift.git", from: "2.14.3"),
+        .package(url: "https://github.com/raphaelmor/Polyline.git", from: "5.1.0"),
+        .package(url: "https://github.com/mapbox/turf-swift.git", from: "2.8.0"),
         .package(url: "https://github.com/ceeK/Solar.git", from: "3.0.0"),
         .package(url: "https://github.com/Quick/Quick.git", from: "2.0.0"),
         .package(url: "https://github.com/Quick/Nimble.git", from: "8.0.0"),

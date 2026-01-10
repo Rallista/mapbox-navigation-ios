@@ -5,8 +5,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/mapbox/mapbox-directions-swift.git",
       "state" : {
-        "revision" : "3aaab4fb516638c51ec8a2e73cd2fabdb4588622",
-        "version" : "2.11.1"
+        "revision" : "4b5e49ac3e980f36f5d64c8a4cba752b397a0281",
+        "version" : "2.14.3"
       }
     },
     {
@@ -14,8 +14,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/maplibre/maplibre-gl-native-distribution.git",
       "state" : {
-        "revision" : "816a24eb56b7cd004e389f7da404047839d5dc2b",
-        "version" : "6.4.2"
+        "revision" : "fa12216f30833c2b4d897714f7c1ca2f5608f685",
+        "version" : "6.22.1"
       }
     },
     {
