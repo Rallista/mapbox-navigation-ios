@@ -1,11 +1,14 @@
-# [Mapbox Navigation SDK for iOS](https://docs.mapbox.com/ios/navigation/)
+# Mapbox Navigation SDK for iOS
 
-[![CircleCI](https://circleci.com/gh/mapbox/mapbox-navigation-ios.svg?style=svg)](https://circleci.com/gh/mapbox/mapbox-navigation-ios)
-[![codecov](https://codecov.io/gh/mapbox/mapbox-navigation-ios/branch/main/graph/badge.svg)](https://codecov.io/gh/mapbox/mapbox-navigation-ios)
-[![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
-[![CocoaPods](https://img.shields.io/cocoapods/v/MapboxNavigation.svg)](https://cocoapods.org/pods/MapboxNavigation/)
+> [!Warning]
+> This repository is an archive supporting a very minimal use case. Several areas of the codebase have not been used, verified, etc.
 
-<img alt="Mapbox Navigation SDK" src="./docs/img/navigation.png" width="258" align="right" />
+# Better Alternatives
+
+- If you're looking for a modern FOSS navigation SDK. We've collaborated with StadiaMaps to create [Ferrostar](https://github.com/stadiamaps/ferrostar).
+- If you're looking for a maintained Mapbox fork. Use [maplibre-navigation-ios](https://github.com/maplibre/maplibre-navigation-ios)
+
+## Start of Old Readme
 
 Mapbox Navigation gives you all the tools you need to add turn-by-turn navigation to your iOS application.
 
