@@ -118,7 +118,7 @@ public class CarPlayMapViewController: UIViewController {
     }
     
     override public func loadView() {
-        let mapView = NavigationMapView()
+        let mapView = NavigationMapView(frame: .zero)
         mapView.logoView.isHidden = true
         mapView.attributionButton.isHidden = true
         
